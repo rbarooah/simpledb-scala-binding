@@ -56,8 +56,7 @@ package org.sublime.amazon.simpleDB {
 			}
 			
 			// Return the signature as a pair
-//			"Signature" -> encode.toString
-			"signature" -> "other string"
+			"Signature" -> new String(encode)
 		}
 	}	
 }
