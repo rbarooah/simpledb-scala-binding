@@ -1,5 +1,4 @@
 package org.sublime.amazon.simpleDB {
-	import Request._
 	
 	trait RequiredParameters {
 		def action:String
@@ -19,12 +18,12 @@ package org.sublime.amazon.simpleDB {
 		def specificParameters:Map[String, String]
 	}
 	
-	trait CreateDomainRequest extends RequiredParameters {
+	trait CreateDomain extends RequiredParameters {
 		def action = "CreateDomain"
 		def specificParameters = Map.empty
 	}
 	
-	trait DeleteDomainRequest extends RequiredParameters {
+	trait DeleteDomain extends RequiredParameters {
 		def action = "DeleteDomain"
 		def specificParameters = Map.empty
 	}
@@ -52,7 +51,7 @@ package org.sublime.amazon.simpleDB {
 		
 		def attributeMap :Map[String,String] = {
 			import scala.collection.immutable.HashMap;
-			var coded:Map[String, String] = new HashMap[String, String]();
+			var coded:Map[String, String] = new HashMap[String, String]()
 			var pos = 0;
 			
 			for (name <- attributes.keys) {
@@ -69,6 +68,32 @@ package org.sublime.amazon.simpleDB {
 	trait DeleteAttributes extends RequiredParameters {
 		def action = "DeleteAttributes"
 		def attributes:Map[String, Set[String]]
+		def specificParameters = attributeMap
+		
+		def attributeMap :Map[String, String] = {
+			import scala.collection.immutable.HashMap;		
+			var coded :Map[String, String] = new HashMap[String, String]()
+			var pos = 0;
+			
+			def addName (name:String) {
+				coded = coded + ("Attribute."+pos+".Name" -> name)
+				pos = pos + 1
+			}
+			
+			def addPair (name:String, value:String) {
+				coded = coded + ("Attribute."+pos+".Name" -> name)
+				coded = coded + ("Attribute."+pos+".Value" -> value)
+				pos = pos + 1
+			}
+			
+			for (name <- attributes.keys) {
+				val set = attributes(name)
+				if (set.size <= 1) addName(name) 
+					else for (value <- set) addPair(name, value)
+			}
+
+			coded
+		}
 	}
 	
 	trait GetAttributes extends RequiredParameters {
