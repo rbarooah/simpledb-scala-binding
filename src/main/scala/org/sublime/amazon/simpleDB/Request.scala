@@ -47,9 +47,9 @@ package org.sublime.amazon.simpleDB {
 		def action = "PutAttributes"
 		def itemName:String
 		def attributes:Map[String, (String, Boolean)]
-		def specificParameters = attributeMap ++ Map("ItemName"->itemName) 
+		def specificParameters = attributeNames ++ Map("ItemName"->itemName) 
 		
-		def attributeMap :Map[String,String] = {
+		def attributeNames :Map[String,String] = {
 			import scala.collection.immutable.HashMap;
 			var coded:Map[String, String] = new HashMap[String, String]()
 			var pos = 0;
@@ -68,9 +68,9 @@ package org.sublime.amazon.simpleDB {
 	trait DeleteAttributes extends RequiredParameters {
 		def action = "DeleteAttributes"
 		def attributes:Map[String, Set[String]]
-		def specificParameters = attributeMap
+		def specificParameters = attributeNames
 		
-		def attributeMap :Map[String, String] = {
+		def attributeNames :Map[String, String] = {
 			import scala.collection.immutable.HashMap;		
 			var coded :Map[String, String] = new HashMap[String, String]()
 			var pos = 0;
@@ -97,9 +97,12 @@ package org.sublime.amazon.simpleDB {
 	}
 	
 	trait GetAttributes extends RequiredParameters {
+		import Attributes._
 		def action = "GetAttributes"
 		def itemName:String
-		def attributeName:Set[String]
+		def attributes:Set[String]
+		def specificParameters = attributeNames(attributes) ++
+			Map("ItemName"->itemName)	
 	}
 	
 	trait Query extends RequiredParameters {
@@ -108,13 +111,38 @@ package org.sublime.amazon.simpleDB {
 		def nextToken:String
 		def queryExpression:String
 		
+		def specificParameters = Map(
+				"MaxNumberOfItems" -> maxNumberOfItems.toString,
+				"NextToken" -> nextToken,
+				"QueryExpression" -> queryExpression
+			)
 	}
 	
 	trait QueryWithAttributes extends RequiredParameters {
+		import Attributes._
+		
 		def action = "QueryWithAttributes"
 		def attributes:Set[String]
 		def maxNumberOfItems:int
 		def nextToken:String
 		def queryExpression:String
+		
+		def specificParameters = Map(
+				"MaxNumberOfItems" -> maxNumberOfItems.toString,
+				"NextToken" -> nextToken,
+				"QueryExpression" -> queryExpression
+			) ++ attributeNames(attributes)
 	}	
+	
+	object Attributes {
+		def attributeNames (names:Set[String]) :Map[String, String] = {
+			import scala.collection.immutable.HashMap;		
+			var coded :Map[String, String] = new HashMap[String, String]()
+			var pos = 0;
+			for (name <- names) {
+				coded = coded + ("AttributeName."+pos -> name)
+			}			
+			coded
+		}		
+	}
 }
