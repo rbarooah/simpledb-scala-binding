@@ -10,6 +10,11 @@ package org.sublime.amazon.simpleDB {
 		
 		val awsSecretKey = new SecretKeySpec(key.getBytes, "hmacsha1")
 		
+		/**
+		 * Given a map of request parameters, return a signed map containing
+		 * the same parameters.  This is idempotent and will return a correct value map even if what is
+		 * passed in is already signed.
+		 */
 		def sign (m:Map[String, String]) = {
 			// the parameters with the actual signature and version added
 			val versioned = m update ("SignatureVersion", "1")
@@ -17,7 +22,7 @@ package org.sublime.amazon.simpleDB {
 		}
 				
 		/**
-		 * Return the signature as a tuple.
+		 * Return the signature of a map of request parameters as a tuple.
 		 */
 		def signature (m:Map[String, String]) :(String,String) = {
 		
@@ -39,10 +44,10 @@ package org.sublime.amazon.simpleDB {
 			 * Combine the list.
 			 */
 			def combinedParameters = sortedKeys map {
-				(param:String) => {
-					param + m(param)	
-				}
-			} mkString	
+					(param:String) => {
+						param + m(param)	
+					}
+				} mkString	
 		
 			/**
 			 * Get the hash of it.
