@@ -1,11 +1,20 @@
 package org.sublime.amazon.simpleDB {
 	
+	/**
+	 * Class to sign simpleDB REST http requests.
+	 */ 
 	class Signer(key:String)
 	{
 		import scala.util.Sorting._
 		import javax.crypto.spec.SecretKeySpec
 		
 		val awsSecretKey = new SecretKeySpec(key.getBytes, "hmacsha1")
+		
+		def sign (m:Map[String, String]) = {
+			// the parameters with the actual signature and version added
+			val versioned = m update ("SignatureVersion", "1")
+			versioned + signature(versioned)
+		}
 				
 		/**
 		 * Return the signature as a tuple.
