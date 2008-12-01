@@ -1,7 +1,47 @@
 package org.sublime.amazon.simpleDB {
 	import scala.xml._
 	import XMLFields._
-	import AttributeReader._
+	import SimpleDBReader._
+	
+	class SimpleDBResponse (implicit xml:NodeSeq) {
+		val metadata = readMetadata
+	}
+	
+	class CreateDomainResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse 
+	
+	class DeleteDomainResponse (implicit xml:NodeSeq) 
+		extends SimpleDBResponse
+		
+	class ListDomainsResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	{
+		val result = new ListDomainsResult()
+	}
+	
+	class PutAttributesResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	
+	class DeleteAttributesResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+		
+	class GetAttributesResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	{
+		val result = new GetAttributesResult()
+	}
+
+	class QueryResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	{
+		val result = new QueryResult()
+	}
+	
+	class QueryWithAttributesResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	{
+		val result = new QueryWithAttributesResult()
+	}	
 	
 	class QueryWithAttributesResult (implicit xml:NodeSeq) {
 		class Item (implicit xml:NodeSeq) {
@@ -20,7 +60,23 @@ package org.sublime.amazon.simpleDB {
 		val attributes:Map[String, Set[String]] = readAttributes
 	}
 	
-	object AttributeReader {
+	class ListDomainsResult (implicit xml:NodeSeq) {
+		val domainNames = strings("DomainName")
+		val nextToken = string("NextToken")
+	}
+	
+	class ResponseMetadata (implicit xml:NodeSeq) {
+		val requestId = string("RequestId")
+		val boxUsage = double("BoxUsage")
+	}
+	
+	/**
+	 * Functions for decomposing simpleDB specific types.
+	 */
+	object SimpleDBReader {
+		def readMetadata (implicit xml:NodeSeq) =
+		 	new ResponseMetadata()(node("ResponseMetaData"))
+		
 		def readAttributes (implicit xml:NodeSeq) = {
 			import scala.collection.immutable.HashMap
 			var found:HashMap[String,Set[String]] = new HashMap[String,Set[String]]()
@@ -36,18 +92,8 @@ package org.sublime.amazon.simpleDB {
 		}		
 	}
 	
-	class ListDomainsResult (implicit xml:NodeSeq) {
-		val domainNames = strings("DomainName")
-		val nextToken = string("NextToken")
-	}
-	
-	class ResponseMetaData (implicit xml:NodeSeq) {
-		val requestId = string("RequestId")
-		val boxUsage = double("BoxUsage")
-	}
-	
 	/**
-	 * Trait for breaking down XML
+	 * functions for breaking down XML
 	 */ 
 	object XMLFields {
 				
