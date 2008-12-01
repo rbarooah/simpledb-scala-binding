@@ -1,11 +1,27 @@
 package org.sublime.amazon.simpleDB {
 	import scala.xml._
 	import XMLFields._
+	import AttributeReader._
 	
-	class GetAttributesResult (implicit xml:NodeSeq) {
+	class QueryWithAttributesResult (implicit xml:NodeSeq) {
+		class Item (implicit xml:NodeSeq) {
+			val name = string("Name")
+			val attributes:Map[String, Set[String]] = readAttributes
+		}
+		
+		val items = nodes("Item") map (new Item()(_))
+	}
+	
+	class QueryResult (implicit xml:NodeSeq) {
+		val itemNames = strings("ItemName")
+	}
+	
+	class GetAttributesResult (implicit xml:NodeSeq) {		
 		val attributes:Map[String, Set[String]] = readAttributes
-
-		private def readAttributes = {
+	}
+	
+	object AttributeReader {
+		def readAttributes (implicit xml:NodeSeq) = {
 			import scala.collection.immutable.HashMap
 			var found:HashMap[String,Set[String]] = new HashMap[String,Set[String]]()
 			
@@ -17,7 +33,7 @@ package org.sublime.amazon.simpleDB {
 				add(string("Name")(node), string("Value")(node))
 				
 			found
-		}
+		}		
 	}
 	
 	class ListDomainsResult (implicit xml:NodeSeq) {
