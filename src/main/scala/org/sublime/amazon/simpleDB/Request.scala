@@ -1,16 +1,14 @@
 package org.sublime.amazon.simpleDB {
 	
-	trait RequiredParameters {
+	trait SimpleDBRequest {
 		def action:String
 		def awsAccessKeyId:String
-		def domainName:String
 		def timeStamp:String
 		def version:String = "2007-11-07"
 		
 		def parameters = Map(
 			"Action" -> action, 
 			"AWSAccessKeyId" -> awsAccessKeyId,
-			"DomainName" -> domainName,
 			"Timestamp" -> timeStamp,
 			"Version" -> version
 		) ++ specificParameters
@@ -18,17 +16,19 @@ package org.sublime.amazon.simpleDB {
 		def specificParameters:Map[String, String]
 	}
 	
-	trait CreateDomain extends RequiredParameters {
+	trait CreateDomain extends SimpleDBRequest {
 		def action = "CreateDomain"
-		def specificParameters = Map.empty
+		def domainName:String		
+		def specificParameters = Map("DomainName" -> domainName)
 	}
 	
-	trait DeleteDomain extends RequiredParameters {
+	trait DeleteDomain extends SimpleDBRequest {
 		def action = "DeleteDomain"
-		def specificParameters = Map.empty
+		def domainName:String		
+		def specificParameters = Map("DomainName" -> domainName)
 	}
 	
-	trait ListDomains extends RequiredParameters {
+	trait ListDomains extends SimpleDBRequest {
 		def action = "ListDomains"
 		def maxNumberOfDomains:Option[String]
 		def nextToken:Option[String]
@@ -43,11 +43,13 @@ package org.sublime.amazon.simpleDB {
 			}				
 	}
 	
-	trait PutAttributes extends RequiredParameters {
+	trait PutAttributes extends SimpleDBRequest {
 		def action = "PutAttributes"
 		def itemName:String
 		def attributes:Map[String, (String, Boolean)]
-		def specificParameters = attributeNames ++ Map("ItemName"->itemName) 
+		def domainName:String		
+		def specificParameters = attributeNames ++ 
+			Map("DomainName" -> domainName, "ItemName"->itemName) 
 		
 		def attributeNames :Map[String,String] = {
 			import scala.collection.immutable.HashMap;
@@ -65,10 +67,11 @@ package org.sublime.amazon.simpleDB {
 		}
 	}
 	
-	trait DeleteAttributes extends RequiredParameters {
+	trait DeleteAttributes extends SimpleDBRequest {
 		def action = "DeleteAttributes"
 		def attributes:Map[String, Set[String]]
-		def specificParameters = attributeNames
+		def domainName:String		
+		def specificParameters = Map("DomainName" -> domainName) ++ attributeNames	
 		
 		def attributeNames :Map[String, String] = {
 			import scala.collection.immutable.HashMap;		
@@ -96,29 +99,32 @@ package org.sublime.amazon.simpleDB {
 		}
 	}
 	
-	trait GetAttributes extends RequiredParameters {
+	trait GetAttributes extends SimpleDBRequest {
 		import Attributes._
 		def action = "GetAttributes"
 		def itemName:String
+		def domainName:String
 		def attributes:Set[String]
 		def specificParameters = attributeNames(attributes) ++
-			Map("ItemName"->itemName)	
+			Map("ItemName"->itemName, "DomainName" -> domainName)	
 	}
 	
-	trait Query extends RequiredParameters {
+	trait Query extends SimpleDBRequest {
 		def action = "Query"
 		def maxNumberOfItems:int
 		def nextToken:String
 		def queryExpression:String
+		def domainName:String
 		
 		def specificParameters = Map(
+				"DomainName" -> domainName,
 				"MaxNumberOfItems" -> maxNumberOfItems.toString,
 				"NextToken" -> nextToken,
 				"QueryExpression" -> queryExpression
 			)
 	}
 	
-	trait QueryWithAttributes extends RequiredParameters {
+	trait QueryWithAttributes extends SimpleDBRequest {
 		import Attributes._
 		
 		def action = "QueryWithAttributes"
@@ -126,8 +132,10 @@ package org.sublime.amazon.simpleDB {
 		def maxNumberOfItems:int
 		def nextToken:String
 		def queryExpression:String
+		def domainName:String		
 		
 		def specificParameters = Map(
+				"DomainName" -> domainName,
 				"MaxNumberOfItems" -> maxNumberOfItems.toString,
 				"NextToken" -> nextToken,
 				"QueryExpression" -> queryExpression
