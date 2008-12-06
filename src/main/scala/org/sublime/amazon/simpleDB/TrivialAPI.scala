@@ -19,7 +19,7 @@ package org.sublime.amazon.simpleDB {
 		import java.text.SimpleDateFormat
 		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 		
-		def makeRequest (request:SimpleDBRequest) :NodeSeq = {
+		def makeRequest (request:SimpleDBRequest) :Elem = {
 			val method = 
 				new PostMethod(url + 
 					QueryParameters(signer.sign(request.parameters)))
@@ -34,11 +34,21 @@ package org.sublime.amazon.simpleDB {
 			def awsAccessKeyId = id
 		}
 		
-		class ListDomainsRequest extends ListDomains() with Basics {
+		class ListDomainsRequest extends ListDomains with Basics {
 			val nextToken = None
 			val maxNumberOfDomains = None
+			
+			def response = new ListDomainsResponse() (makeRequest(this))			
 		}
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
+		{
+			def response = new CreateDomainResponse() (makeRequest(this))
+		}
+		
+		class DeleteDomainRequest (val domainName:String) extends DeleteDomain with Basics
+		{
+			def response = new DeleteDomainResponse() (makeRequest(this)) 
+		}
 	}	
 }

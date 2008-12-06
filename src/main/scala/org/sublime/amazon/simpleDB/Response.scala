@@ -16,7 +16,7 @@ package org.sublime.amazon.simpleDB {
 	class ListDomainsResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	{
-		val result = new ListDomainsResult()
+		val result = new ListDomainsResult() (node("ListDomainsResult"))
 	}
 	
 	class PutAttributesResponse (implicit xml:NodeSeq)
@@ -63,11 +63,15 @@ package org.sublime.amazon.simpleDB {
 	class ListDomainsResult (implicit xml:NodeSeq) {
 		val domainNames = strings("DomainName")
 		val nextToken = string("NextToken")
+		
+		override def toString = domainNames mkString ("\n")
 	}
 	
 	class ResponseMetadata (implicit xml:NodeSeq) {
 		val requestId = string("RequestId")
 		val boxUsage = double("BoxUsage")
+		
+		override def toString = "Box Usage: "+boxUsage+"s"+" request id: "+requestId
 	}
 	
 	/**
@@ -75,7 +79,7 @@ package org.sublime.amazon.simpleDB {
 	 */
 	object SimpleDBReader {
 		def readMetadata (implicit xml:NodeSeq) =
-		 	new ResponseMetadata()(node("ResponseMetaData"))
+		 	new ResponseMetadata()(node("ResponseMetadata"))
 		
 		def readAttributes (implicit xml:NodeSeq) = {
 			import scala.collection.immutable.HashMap
