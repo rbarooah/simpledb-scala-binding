@@ -14,7 +14,7 @@ package org.sublime.amazon.simpleDB {
 		val signer = new Signer(secretKey)
 		val client = new HttpClient()
 		
-		def timestamp () :String = dateFormat.format(new java.util.Date())
+		def now () :String = dateFormat.format(new java.util.Date())
 		
 		import java.text.SimpleDateFormat
 		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -29,11 +29,16 @@ package org.sublime.amazon.simpleDB {
 			xml
 		}
 		
-		def listDomainsRequest = new ListDomains() {
+		trait Basics {
+			def timeStamp = now()
+			def awsAccessKeyId = id
+		}
+		
+		class ListDomainsRequest extends ListDomains() with Basics {
 			val nextToken = None
 			val maxNumberOfDomains = None
-			val timeStamp = timestamp()
-			val awsAccessKeyId = id
 		}
+		
+		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
 	}	
 }
