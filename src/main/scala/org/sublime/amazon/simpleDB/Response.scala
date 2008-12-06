@@ -19,6 +19,12 @@ package org.sublime.amazon.simpleDB {
 		val result = new ListDomainsResult() (node("ListDomainsResult"))
 	}
 	
+	class DomainMetadataResponse (implicit xml:NodeSeq)
+		extends SimpleDBResponse
+	{
+		val result = new DomainMetadataResult() (node("DomainMetadataResult"))
+	}
+	
 	class PutAttributesResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	
@@ -65,6 +71,32 @@ package org.sublime.amazon.simpleDB {
 		val nextToken = string("NextToken")
 		
 		override def toString = domainNames mkString ("\n")
+	}
+	
+	class DomainMetadataResult (implicit xml:NodeSeq) {
+		
+		// oddly this field is listed in the documentation
+		// but isn't in the real responses
+		// val creation = dateField("CreationDateTime")		
+		
+		val itemCount = int("ItemCount")
+		val itemNameSizeBytes = int("ItemNamesSizeBytes")
+		val attributeNameCount = int("AttributeNameCount")
+		val attributeNameSizeBytes = int("AttributeNamesSizeBytes")
+		val attributeValueCount = int("AttributeValueCount")
+		val attributeValueSizeBytes = int("AttributeValuesSizeBytes")
+		val timestamp = int("Timestamp")
+		
+		override def toString = List (
+				//"created: " + creation,
+				"items: " + itemCount,
+				"item names in bytes: " + itemNameSizeBytes,
+				"attibute names: " + attributeNameCount,
+				"attibute names in bytes: " + attributeNameSizeBytes,
+				"attribute value count: " + attributeValueCount,
+				"attribute value size in bytes: " + attributeValueSizeBytes,
+				"timestamp: " + timestamp
+			) mkString ("\n")
 	}
 	
 	class ResponseMetadata (implicit xml:NodeSeq) {

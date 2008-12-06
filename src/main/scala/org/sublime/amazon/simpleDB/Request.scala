@@ -43,6 +43,12 @@ package org.sublime.amazon.simpleDB {
 			}				
 	}
 	
+	trait DomainMetadata extends SimpleDBRequest {
+		def action = "DomainMetadata"
+		def domainName:String		
+		def specificParameters = Map("DomainName" -> domainName)
+	}
+	
 	trait PutAttributes extends SimpleDBRequest {
 		def action = "PutAttributes"
 		def itemName:String

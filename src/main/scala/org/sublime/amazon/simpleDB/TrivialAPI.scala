@@ -29,6 +29,12 @@ package org.sublime.amazon.simpleDB {
 			xml
 		}
 		
+		val printer = new PrettyPrinter(80, 2)
+		
+		def diagnose (request:SimpleDBRequest) {
+			Console.println(printer.format(makeRequest(request)))
+		}		
+		
 		trait Basics {
 			def timeStamp = now()
 			def awsAccessKeyId = id
@@ -49,6 +55,11 @@ package org.sublime.amazon.simpleDB {
 		class DeleteDomainRequest (val domainName:String) extends DeleteDomain with Basics
 		{
 			def response = new DeleteDomainResponse() (makeRequest(this)) 
+		}
+		
+		class DomainMetadataRequest (val domainName:String) extends DomainMetadata with Basics
+		{
+			def response = new DomainMetadataResponse() (makeRequest(this))
 		}
 	}	
 }
