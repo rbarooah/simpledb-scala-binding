@@ -3,6 +3,29 @@ package org.sublime.amazon.simpleDB {
 	import XMLFields._
 	import SimpleDBReader._
 	
+	
+	
+	class Errors (implicit xml:NodeSeq) {
+	    val error = new Error() (node("Error"))	    
+	}
+	
+	object Error {
+	    /** Extractor so we can pattern match errors **/
+	    def unapply (xml:NodeSeq) :Option[(String, String, Double)] = {
+	        val element = node("Errors") (xml)
+	        if (element.length > 0) {
+	            val error = (new Errors() (element)).error
+	            Some((error.code, error.message, error.boxUsage))
+	        } else None
+	    }
+	}
+	
+	class Error (implicit xml:NodeSeq) {
+	    val code = string("Code")
+	    val message = string("Message")
+	    val boxUsage = double("BoxUsage")
+	}
+	
 	class SimpleDBResponse (implicit xml:NodeSeq) {
 		val metadata = readMetadata
 	}
