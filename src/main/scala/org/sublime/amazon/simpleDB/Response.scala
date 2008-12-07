@@ -63,33 +63,41 @@ package org.sublime.amazon.simpleDB {
 	class QueryResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	{
-		val result = new QueryResult()
+		val result = new QueryResult() (node("QueryResult"))
 	}
 	
 	class QueryWithAttributesResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	{
-		val result = new QueryWithAttributesResult()
+		val result = new QueryWithAttributesResult() (node("QueryWithAttributesResult"))
 	}	
 	
 	class QueryWithAttributesResult (implicit xml:NodeSeq) {
 		class Item (implicit xml:NodeSeq) {
+		    import Format._		    
 			val name = string("Name")
 			val attributes:Map[String, Set[String]] = readAttributes
+			
+			override def toString = name + "\n" + ("-" * name.length) + "\n" +
+			    formatAttributes(attributes)
 		}
 		
 		val items = nodes("Item") map (new Item()(_))
+		
+		override def toString = items mkString "\n\n"
 	}
 	
 	class QueryResult (implicit xml:NodeSeq) {
 		val itemNames = strings("ItemName")
+		
+		override def toString = itemNames mkString ", "
 	}
 	
 	class GetAttributesResult (implicit xml:NodeSeq) {		
+	    import Format._
 		val attributes:Map[String, Set[String]] = readAttributes
 		
-		override def toString = 
-		    (attributes.keys map ( n => n + ": " + (attributes(n) mkString ", "))) mkString "\n"
+		override def toString = formatAttributes(attributes)
 	}
 	
 	class ListDomainsResult (implicit xml:NodeSeq) {
@@ -152,6 +160,11 @@ package org.sublime.amazon.simpleDB {
 			
 			found
 		}		
+	}
+	
+	object Format {
+	    def formatAttributes(map:Map[String, Set[String]]) =
+	        (map.keys map ( n => n + ": " + (map(n) mkString ", "))) mkString "\n"	    
 	}
 	
 	/**
