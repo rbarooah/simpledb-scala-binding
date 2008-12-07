@@ -44,7 +44,7 @@ package org.sublime.amazon.simpleDB {
 		
 		def diagnose (parameters:Map[String, String]) {
 		    Console.println(
-		        (parameters.keys map ( k => k + ": "+parameters(k))) mkString "\n"
+		        (parameters.keys map (k => k + ": "+parameters(k))) mkString "\n"
 		    )
 		}
 				
@@ -95,5 +95,24 @@ package org.sublime.amazon.simpleDB {
 		{
 		    def response = new GetAttributesResponse() (makeRequest(this))
 		}
+		
+		class QueryRequest (val domainName:String, val queryExpression:String) 
+		    extends Query with Basics
+		{
+		    val nextToken = None
+		    val maxNumberOfItems = None
+		    
+		    def response = new QueryResponse() (makeRequest(this))
+	    }
+	    
+	    class QueryWithAttributesRequest (val domainName:String, 
+	        val queryExpression:String,
+	        val attributes:Set[String]) extends QueryWithAttributes with Basics
+	    {
+		    val nextToken = None
+		    val maxNumberOfItems = None
+		    
+	        def response = new QueryWithAttributesResponse() (makeRequest(this))
+	    }	    
 	}	
 }
