@@ -63,7 +63,8 @@ package org.sublime.amazon.simpleDB {
 			var pos = 0;
 			
 			for (name <- attributes.keys) {
-				coded = coded + ("Attribute."+pos+"."+name -> attributes(name)._1)
+				coded = coded + ("Attribute."+pos+".Name" -> name)
+				coded = coded + ("Attribute."+pos+".Value" -> attributes(name)._1)
 				if (attributes(name)._2) {
 					coded = coded + ("Attribute."+pos+".Replace" -> "true")
 				}
