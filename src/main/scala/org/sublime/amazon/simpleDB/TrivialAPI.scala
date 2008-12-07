@@ -81,5 +81,12 @@ package org.sublime.amazon.simpleDB {
 		{
 		    def response = new PutAttributesResponse() (makeRequest(this))
 		}
+		
+		class DeleteAttributesRequest (val domainName:String, 
+		    val itemName:String,
+		    val attributes:Map[String, Set[String]]) extends DeleteAttributes with Basics
+		{
+		    def response = new DeleteAttributesResponse() (makeRequest(this))
+		}		
 	}	
 }
