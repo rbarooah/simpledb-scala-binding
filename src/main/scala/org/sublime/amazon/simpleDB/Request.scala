@@ -29,18 +29,14 @@ package org.sublime.amazon.simpleDB {
 	}
 	
 	trait ListDomains extends SimpleDBRequest {
+	    import Attributes._
+	    
 		def action = "ListDomains"
-		def maxNumberOfDomains:Option[String]
+		def maxNumberOfDomains:Option[int]
 		def nextToken:Option[String]
 		def specificParameters = 
 			optional("MaxNumberOfDomains", maxNumberOfDomains) ++
-			optional("NextToken", nextToken)		
-			
-		def optional (name:String, value:Option[String]) :Map[String,String] =
-			value match {
-				case Some(v) => Map(name->v)
-				case None => Map.empty
-			}				
+			optional("NextToken", nextToken)					
 	}
 	
 	trait DomainMetadata extends SimpleDBRequest {
@@ -119,18 +115,20 @@ package org.sublime.amazon.simpleDB {
 	}
 	
 	trait Query extends SimpleDBRequest {
+	    import Attributes._
+	    
 		def action = "Query"
-		def maxNumberOfItems:int
-		def nextToken:String
+		def maxNumberOfItems:Option[int]
+		def nextToken:Option[String]
 		def queryExpression:String
 		def domainName:String
 		
 		def specificParameters = Map(
 				"DomainName" -> domainName,
-				"MaxNumberOfItems" -> maxNumberOfItems.toString,
-				"NextToken" -> nextToken,
 				"QueryExpression" -> queryExpression
-			)
+			) ++ 
+			optional("MaxNumberOfItems", maxNumberOfItems) ++
+			optional("NextToken", nextToken)			
 	}
 	
 	trait QueryWithAttributes extends SimpleDBRequest {
@@ -138,17 +136,17 @@ package org.sublime.amazon.simpleDB {
 		
 		def action = "QueryWithAttributes"
 		def attributes:Set[String]
-		def maxNumberOfItems:int
-		def nextToken:String
+		def maxNumberOfItems:Option[int]
+		def nextToken:Option[String]
 		def queryExpression:String
 		def domainName:String		
 		
-		def specificParameters = Map(
+		def specificParameters = Map[String, String] (
 				"DomainName" -> domainName,
-				"MaxNumberOfItems" -> maxNumberOfItems.toString,
-				"NextToken" -> nextToken,
 				"QueryExpression" -> queryExpression
-			) ++ attributeNames(attributes)
+			) ++ attributeNames(attributes) ++
+			optional("MaxNumberOfItems", maxNumberOfItems) ++
+			optional("NextToken", nextToken)			
 	}	
 	
 	object Attributes {
@@ -160,6 +158,12 @@ package org.sublime.amazon.simpleDB {
 				coded = coded + ("AttributeName."+pos -> name)
 			}			
 			coded
-		}		
+		}
+		
+		def optional [T] (name:String, value:Option[T]) :Map[String, String] =
+			value match {
+			    case Some(v) => Map(name->v.toString)
+			    case None => Map.empty
+			}						
 	}
 }
