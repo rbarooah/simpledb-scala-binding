@@ -13,6 +13,7 @@ package org.sublime.amazon.simpleDB {
 		
 		val signer = new Signer(secretKey)
 		val client = new HttpClient()
+		def trace = false
 		
 		def now () :String = dateFormat.format(new java.util.Date())
 		
@@ -20,21 +21,33 @@ package org.sublime.amazon.simpleDB {
 		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 		
 		def makeRequest (request:SimpleDBRequest) :Elem = {
+		    if (trace) diagnose(request.parameters)
 			val method = 
 				new PostMethod(url + 
 					QueryParameters(signer.sign(request.parameters)))
 			client.executeMethod(method)
 			val xml = XML.load(method.getResponseBodyAsStream())
 			method.releaseConnection
-			xml
+			if (trace) diagnose(xml)
+			xml match { 
+			    case Error(code, message, boxUsage) => 
+			        throw new SimpleDBException(code, message, boxUsage)
+			    case _ => xml
+		    }
 		}
 		
 		val printer = new PrettyPrinter(80, 2)
 		
-		def diagnose (request:SimpleDBRequest) {
-			Console.println(printer.format(makeRequest(request)))
-		}		
+		def diagnose (xml:Node) {
+		    Console.println(printer.format(xml))
+		}
 		
+		def diagnose (parameters:Map[String, String]) {
+		    Console.println(
+		        (parameters.keys map ( k => k + ": "+parameters(k))) mkString "\n"
+		    )
+		}
+				
 		trait Basics {
 			def timeStamp = now()
 			def awsAccessKeyId = id
@@ -60,6 +73,13 @@ package org.sublime.amazon.simpleDB {
 		class DomainMetadataRequest (val domainName:String) extends DomainMetadata with Basics
 		{
 			def response = new DomainMetadataResponse() (makeRequest(this))
+		}
+		
+		class PutAttributesRequest (val domainName:String, 
+		    val itemName:String, 
+		    val attributes:Map[String, (String, Boolean)]) extends PutAttributes with Basics
+		{
+		    def response = new PutAttributesResponse() (makeRequest(this))
 		}
 	}	
 }
