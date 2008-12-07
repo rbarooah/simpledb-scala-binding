@@ -78,7 +78,9 @@ package org.sublime.amazon.simpleDB {
 		def action = "DeleteAttributes"
 		def attributes:Map[String, Set[String]]
 		def domainName:String		
-		def specificParameters = Map("DomainName" -> domainName) ++ attributeNames	
+		def itemName:String
+		def specificParameters = Map("DomainName" -> domainName, "ItemName" -> itemName) ++ 
+		    attributeNames	
 		
 		def attributeNames :Map[String, String] = {
 			import scala.collection.immutable.HashMap;		

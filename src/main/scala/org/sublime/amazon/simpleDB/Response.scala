@@ -57,7 +57,7 @@ package org.sublime.amazon.simpleDB {
 	class GetAttributesResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	{
-		val result = new GetAttributesResult()
+		val result = new GetAttributesResult() (node("GetAttributesResult"))
 	}
 
 	class QueryResponse (implicit xml:NodeSeq)
@@ -87,6 +87,9 @@ package org.sublime.amazon.simpleDB {
 	
 	class GetAttributesResult (implicit xml:NodeSeq) {		
 		val attributes:Map[String, Set[String]] = readAttributes
+		
+		override def toString = 
+		    (attributes.keys map ( n => n + ": " + (attributes(n) mkString ", "))) mkString "\n"
 	}
 	
 	class ListDomainsResult (implicit xml:NodeSeq) {
@@ -138,15 +141,15 @@ package org.sublime.amazon.simpleDB {
 		
 		def readAttributes (implicit xml:NodeSeq) = {
 			import scala.collection.immutable.HashMap
-			var found:HashMap[String,Set[String]] = new HashMap[String,Set[String]]()
-			
+			var found:Map[String,Set[String]] = new HashMap[String,Set[String]]()
+						
 			def add(name:String, value:String) {
-				found update (name, (found getOrElse(name, Set())) + value)
+				found = found update (name, (found getOrElse(name, Set())) + value)
 			}
 			
 			for (node <- nodes("Attribute")) 
-				add(string("Name")(node), string("Value")(node))
-				
+				add(string("Name")(node), string("Value")(node))			    			
+			
 			found
 		}		
 	}
