@@ -3,8 +3,6 @@ package org.sublime.amazon.simpleDB {
 	import XMLFields._
 	import SimpleDBReader._
 	
-	
-	
 	class Errors (implicit xml:NodeSeq) {
 	    val error = new Error() (node("Error"))	    
 	}
