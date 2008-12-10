@@ -3,9 +3,68 @@ package org.sublime.amazon.simpleDB {
 	
 	class SimpleConnection (id:String, key:String) 
 		extends Connection(id, key)
-	{						
+	{	
+		override def trace = true
+		
 		class Item(val domain:Domain, val name:String) {
+			/**
+			 * Read all of the attributes from this item.
+			 */
+			def attributes = (new GetAttributesRequest(domain.name, name, Set()))
+				.response.result.attributes
 			
+			/**
+			 * Read a selection of attributes from this item
+			 */
+			def attributes (attributes:Set[String]) = 
+				(new GetAttributesRequest(domain.name, name, Set())).response.result.attributes
+				
+			/**
+			 * Read a single attribute from this item.
+			 */
+			def attribute (attributeName:String) =
+				(new GetAttributesRequest(domain.name, name, Set(attributeName)))
+					.response.result.attributes(attributeName)
+			
+			def putAttribute (pair :(String, String), replace:Boolean) = {
+				(new PutAttributesRequest(domain.name, name, 
+						Map(pair._1 -> (pair._2 -> replace))
+					)
+				).response.metadata				
+			}
+					
+			/**
+			 * Add a single attribute to this item.
+			 */
+			def += (pair:(String, String)) = putAttribute(pair, false)
+
+			/**
+			 * Replace a single attribute in this item.
+			 */
+			def set (pair:(String,String)) = putAttribute(pair, true)
+			
+			/** 
+			 * Delete all of the attributes in this item.
+			 */
+			def clear = {
+				(new DeleteAttributesRequest(domain.name, name, Map()).response.metadata)
+			}
+			
+			/**
+			 * Delete a single attribute value pair in this item.
+			 */
+			def -= (pair :(String, String)) = {
+				(new DeleteAttributesRequest(domain.name, name, Map(pair._1 -> Set(pair._2))))
+					.response.metadata
+			}		
+			
+			/**
+			 * Delete a single attribute in this item.
+			 */
+			def -= (name:String) = {
+				(new DeleteAttributesRequest(domain.name, name, Map(name -> Set())))
+					.response.metadata
+			}
 		}
 		
 		class Domain(val name:String) {
