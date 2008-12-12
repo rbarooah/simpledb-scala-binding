@@ -83,14 +83,14 @@ package org.sublime.amazon.simpleDB {
 		
 		def domain (name:String) = new Domain(name)
 		
-		def domains = (new ListDomainsRequest()).response.result.domainNames map (
+		def domains = ListDomainsRequest.start.response.result.domainNames map (
 				new Domain(_)
 			)
 			    
 		//// Simple test methods.
 		
 		def listDomains {
-			Console.println((new ListDomainsRequest()).response.result)
+			Console.println(ListDomainsRequest.start.response.result)
 		}
 		
 		def createDomain (name:String) {

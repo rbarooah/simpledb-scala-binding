@@ -53,11 +53,15 @@ package org.sublime.amazon.simpleDB {
 			def awsAccessKeyId = id
 		}
 		
-		class ListDomainsRequest extends ListDomains with Basics {
-			val nextToken = None
-			val maxNumberOfDomains = None
+		class ListDomainsRequest (val nextToken:Option[String], val maxNumberOfDomains:Option[int]) 
+			extends ListDomains with Basics {
 			
 			def response = new ListDomainsResponse() (makeRequest(this))			
+		}
+		
+		object ListDomainsRequest {
+			def start = new ListDomainsRequest(None, None)
+			def start (maxNumberOfDomains:int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
 		}
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
