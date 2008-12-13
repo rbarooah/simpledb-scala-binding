@@ -176,7 +176,7 @@ package org.sublime.amazon.simpleDB {
 		def optionalString (name:String) (implicit xml:NodeSeq) :Option[String] = {
 		    val found = string(name)
 		    if (found.length > 0) Some(found)
-		    None
+		    else None
 		}
 		def strings (name:String) (implicit xml:NodeSeq) = nodes(name) map (_.text)
 		def dateField (name:String) (implicit xml:NodeSeq) = dateFormat.parse(string(name))

@@ -80,12 +80,8 @@ package org.sublime.amazon.simpleDB {
 		}
 		
 		def domain (name:String) = new Domain(name)
-		
-		def domains = ListDomainsRequest.start.response.result.domainNames map (
-				new Domain(_)
-			)
-			    
-        def allDomains :Stream[Domain] = {
+					    
+        def domains :Stream[Domain] = {
             var response:ListDomainsResponse = ListDomainsRequest.start.response
             var names = response.result.domainNames.toList           
             def take = names match {
