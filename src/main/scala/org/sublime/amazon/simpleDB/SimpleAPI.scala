@@ -31,16 +31,31 @@ package org.sublime.amazon.simpleDB {
 				).response.metadata				
 			}
 					
+			def putAttribute (name:String, values:Set[String], replace:Boolean) = {
+			    (new PutAttributesRequest(domain.name, name, 
+			            Map() ++ (values map (value => (name -> (value -> replace))))
+			        )
+			    ).response.metadata
+			}
+			
+			def update (values:Map[String, (String, Boolean)]) = {
+			    (new PutAttributesRequest(domain.name, name, values)).response.metadata
+			}
+					
 			/**
 			 * Add a single attribute to this item.
 			 */
 			def += (pair:(String, String)) = putAttribute(pair, false)
+			
+			def += (name:String, values:Set[String]) = putAttribute(name, values, false)
 
 			/**
 			 * Replace a single attribute in this item.
 			 */
 			def set (pair:(String,String)) = putAttribute(pair, true)
-			
+		
+		    def set (name:String, values:Set[String]) = putAttribute(name, values, true)
+		
 			/** 
 			 * Delete all of the attributes in this item.
 			 */
