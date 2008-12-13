@@ -62,6 +62,11 @@ package org.sublime.amazon.simpleDB {
 		object ListDomainsRequest {
 			def start = new ListDomainsRequest(None, None)
 			def start (maxNumberOfDomains:int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
+			def next (response:ListDomainsResponse) :Option[ListDomainsRequest] = 
+			    response.result.nextToken match {			    
+			        case None => None
+			        case Some(token) => Some(new ListDomainsRequest(Some(token), None))
+		        }
 		}
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics

@@ -100,7 +100,7 @@ package org.sublime.amazon.simpleDB {
 	
 	class ListDomainsResult (implicit xml:NodeSeq) {
 		val domainNames = strings("DomainName")
-		val nextToken = string("NextToken")
+		val nextToken = optionalString("NextToken")
 		
 		override def toString = domainNames mkString ("\n")
 	}
@@ -173,6 +173,11 @@ package org.sublime.amazon.simpleDB {
 		def node (name:String) (implicit xml:NodeSeq) = (xml \ name)
 		def nodes (name:String) (implicit xml:NodeSeq) = (xml \ name)
 		def string (name:String) (implicit xml:NodeSeq) = node(name) text
+		def optionalString (name:String) (implicit xml:NodeSeq) :Option[String] = {
+		    val found = string(name)
+		    if (found.length > 0) Some(found)
+		    None
+		}
 		def strings (name:String) (implicit xml:NodeSeq) = nodes(name) map (_.text)
 		def dateField (name:String) (implicit xml:NodeSeq) = dateFormat.parse(string(name))
 		def int (name:String) (implicit xml:NodeSeq) = Integer.parseInt(string(name))

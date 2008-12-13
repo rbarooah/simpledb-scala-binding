@@ -3,9 +3,7 @@ package org.sublime.amazon.simpleDB {
 	
 	class SimpleConnection (id:String, key:String) 
 		extends Connection(id, key)
-	{	
-		override def trace = true
-		
+	{			
 		class Item(val domain:Domain, val name:String) {
 			/**
 			 * Read all of the attributes from this item.
@@ -86,6 +84,37 @@ package org.sublime.amazon.simpleDB {
 		def domains = ListDomainsRequest.start.response.result.domainNames map (
 				new Domain(_)
 			)
+			    
+        def allDomains :Stream[Domain] = {
+            var response:ListDomainsResponse = ListDomainsRequest.start.response
+            var names = response.result.domainNames.toList           
+            def take = names match {
+                case head :: tail => {
+                    names = tail
+                    head
+                }
+                case List() => throw new RuntimeException("can't take from empty list")
+            }
+            
+            def start : Stream[Domain] = {            
+                if (names.isEmpty) Stream.empty
+                else Stream.cons(new Domain(take), next)
+            }
+            
+            def next : Stream[Domain] = {
+                if (names.isEmpty) {
+                    ListDomainsRequest.next(response) match {
+                        case None => Stream.empty
+                        case Some(request) =>
+                            response = request.response
+                            names = response.result.domainNames.toList
+                            start
+                    }                    
+                } else Stream.cons(new Domain(take), next)
+            }
+                        
+            start
+        }
 			    
 		//// Simple test methods.
 		
