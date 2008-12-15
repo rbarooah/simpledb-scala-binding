@@ -85,16 +85,16 @@ package org.sublime.amazon.simpleDB {
 		
 		class Domain(val name:String) {
 			def metadata = (new DomainMetadataRequest(name)).response.result
-			def query (expression:String) = 
-				(QueryRequest.start(name, Some(expression))).response.result.itemNames map (
-					item(_)
-				)					
 					
 			def delete = (new DeleteDomainRequest(name)).response.metadata
 			def create = (new CreateDomainRequest(name)).response.metadata
 			def item (name:String) = new Item(this, name)
 			
-			def items :Stream[Item] = {
+			def query (expression:String) :Stream[Item] = query(Some(expression))
+			
+			def items :Stream[Item] = query(None)
+			
+			private def query(expression:Option[String]) :Stream[Item] = {
 			    def generate (res:QueryResponse) :Stream[Item] =
 			        streamOfObjects(res.result.itemNames.toList, item)
 			    def responses (req:QueryRequest, res:QueryResponse) :Stream[QueryResponse] =
@@ -102,7 +102,7 @@ package org.sublime.amazon.simpleDB {
 			            case None => Stream.empty
 			            case Some(request) => responses(request, request.response)
 			        })
-			    val start = QueryRequest.start(name, None)
+			    val start = QueryRequest.start(name, expression)
 			    streamOfStreams(responses(start, start.response), generate)
 			}
 			
@@ -114,7 +114,7 @@ package org.sublime.amazon.simpleDB {
 		// given a stream of generators of generators, which generate type T, and a
 		// function to convert a generator into a stream of T, produce a single stream
 		// that yields all of the Ts from each generator.
-		def streamOfStreams [T, G] (sources:Stream[G], generate:(G => Stream[T])) :Stream[T] =
+		private def streamOfStreams [T, G] (sources:Stream[G], generate:(G => Stream[T])) :Stream[T] =
 		{		  		    
 		    def next (sources:Stream[G], generated:Stream[T]) :Stream[T] = 
 	            if (generated.isEmpty) {
@@ -127,7 +127,7 @@ package org.sublime.amazon.simpleDB {
 		
 		// given a list of type K, and a function to convert from K to T, produce
 		// a stream that performs the conversion as each element is accessed
-		def streamOfObjects [T, K] (list:List[K], convert: (K => T)) :Stream[T] =
+		private def streamOfObjects [T, K] (list:List[K], convert: (K => T)) :Stream[T] =
 		{
 		    def makeStream (remaining:List[K]) :Stream[T] = {
 		        remaining match {

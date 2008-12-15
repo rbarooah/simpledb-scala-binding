@@ -130,7 +130,7 @@ package org.sublime.amazon.simpleDB {
                     case None => None
                     case Some(token) =>
                         Some(new QueryRequest(req.domainName, 
-                            req.queryExpression, Some(token), None))
+                                req.queryExpression, Some(token), None))
                 }
         }
 	    
