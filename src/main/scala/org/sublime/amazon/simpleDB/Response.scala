@@ -87,6 +87,7 @@ package org.sublime.amazon.simpleDB {
 	
 	class QueryResult (implicit xml:NodeSeq) {
 		val itemNames = strings("ItemName")
+		val nextToken = optionalString("NextToken")
 		
 		override def toString = itemNames mkString ", "
 	}

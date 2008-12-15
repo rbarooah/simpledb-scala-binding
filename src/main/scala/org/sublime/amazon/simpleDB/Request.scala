@@ -120,13 +120,13 @@ package org.sublime.amazon.simpleDB {
 		def action = "Query"
 		def maxNumberOfItems:Option[int]
 		def nextToken:Option[String]
-		def queryExpression:String
+		def queryExpression:Option[String]
 		def domainName:String
 		
 		def specificParameters = Map(
 				"DomainName" -> domainName,
-				"QueryExpression" -> queryExpression
 			) ++ 
+			optional("QueryExpression", queryExpression) ++
 			optional("MaxNumberOfItems", maxNumberOfItems) ++
 			optional("NextToken", nextToken)			
 	}

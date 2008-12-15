@@ -15,7 +15,7 @@ package org.sublime.amazon.simpleDB {
 		val client = new HttpClient()
 		def trace = false
 		
-		def now () :String = dateFormat.format(new java.util.Date())
+		def now () :String = dateFormat.format(new java.util.Date())		
 		
 		import java.text.SimpleDateFormat
 		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -47,7 +47,17 @@ package org.sublime.amazon.simpleDB {
 		        (parameters.keys map (k => k + ": "+parameters(k))) mkString "\n"
 		    )
 		}
-				
+		
+		// Accounting for box usage
+		private var totalBoxUsage:double = 0 
+		private var lastBoxUsage:double = 0 
+		
+		def accountFor [T <: SimpleDBResponse] (response:T) :T = {
+		    lastBoxUsage = response.metadata.boxUsage
+		    totalBoxUsage = totalBoxUsage + lastBoxUsage
+		    response
+		}
+						
 		trait Basics {
 			def timeStamp = now()
 			def awsAccessKeyId = id
@@ -60,14 +70,13 @@ package org.sublime.amazon.simpleDB {
 		}
 		
 		object ListDomainsRequest {
-			def start = new ListDomainsRequest(None, None)
+			def start = new ListDomainsRequest(None, Some(2))
 			def start (maxNumberOfDomains:int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
-			def next (response:ListDomainsResponse) :Option[ListDomainsRequest] = {
+			def next (response:ListDomainsResponse) :Option[ListDomainsRequest] = 
 			    response.result.nextToken match {			    
 			        case None => None
-			        case Some(token) => Some(new ListDomainsRequest(Some(token), None))
+			        case Some(token) => Some(new ListDomainsRequest(Some(token), Some(2)))
 		        }
-	        }
 		}
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
@@ -77,7 +86,7 @@ package org.sublime.amazon.simpleDB {
 		
 		class DeleteDomainRequest (val domainName:String) extends DeleteDomain with Basics
 		{
-			def response = new DeleteDomainResponse() (makeRequest(this)) 
+			def response = new DeleteDomainResponse() (makeRequest(this))
 		}
 		
 		class DomainMetadataRequest (val domainName:String) extends DomainMetadata with Basics
@@ -106,14 +115,24 @@ package org.sublime.amazon.simpleDB {
 		    def response = new GetAttributesResponse() (makeRequest(this))
 		}
 		
-		class QueryRequest (val domainName:String, val queryExpression:String) 
+		class QueryRequest (val domainName:String, val queryExpression:Option[String],
+		    val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
 		    extends Query with Basics
 		{
-		    val nextToken = None
-		    val maxNumberOfItems = None
-		    
 		    def response = new QueryResponse() (makeRequest(this))
 	    }
+
+        object QueryRequest {
+            def start (domainName:String, queryExpression:Option[String]) =
+                new QueryRequest(domainName, queryExpression, None, None)
+            def next (req:QueryRequest, res:QueryResponse) :Option[QueryRequest] =
+                res.result.nextToken match {
+                    case None => None
+                    case Some(token) =>
+                        Some(new QueryRequest(req.domainName, 
+                            req.queryExpression, Some(token), None))
+                }
+        }
 	    
 	    class QueryWithAttributesRequest (val domainName:String, 
 	        val queryExpression:String,
