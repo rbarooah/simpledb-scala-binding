@@ -80,6 +80,7 @@ package org.sublime.amazon.simpleDB {
 			    formatAttributes(attributes)
 		}
 		
+		val nextToken = optionalString("NextToken")
 		val items = nodes("Item") map (new Item()(_))
 		
 		override def toString = items mkString "\n\n"

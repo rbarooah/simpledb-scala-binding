@@ -123,9 +123,7 @@ package org.sublime.amazon.simpleDB {
 		def queryExpression:Option[String]
 		def domainName:String
 		
-		def specificParameters = Map(
-				"DomainName" -> domainName,
-			) ++ 
+		def specificParameters = Map("DomainName" -> domainName) ++ 
 			optional("QueryExpression", queryExpression) ++
 			optional("MaxNumberOfItems", maxNumberOfItems) ++
 			optional("NextToken", nextToken)			
@@ -138,13 +136,12 @@ package org.sublime.amazon.simpleDB {
 		def attributes:Set[String]
 		def maxNumberOfItems:Option[int]
 		def nextToken:Option[String]
-		def queryExpression:String
+		def queryExpression:Option[String]
 		def domainName:String		
 		
-		def specificParameters = Map[String, String] (
-				"DomainName" -> domainName,
-				"QueryExpression" -> queryExpression
-			) ++ attributeNames(attributes) ++
+		def specificParameters = Map[String, String] ("DomainName" -> domainName) ++
+            attributeNames(attributes) ++
+			optional("QueryExpression", queryExpression) ++			
 			optional("MaxNumberOfItems", maxNumberOfItems) ++
 			optional("NextToken", nextToken)			
 	}	

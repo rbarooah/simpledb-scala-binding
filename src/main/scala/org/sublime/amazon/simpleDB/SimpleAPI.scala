@@ -3,7 +3,12 @@ package org.sublime.amazon.simpleDB {
 	
 	class SimpleConnection (id:String, key:String) 
 		extends Connection(id, key)
-	{			
+	{	
+	    import scala.collection.MapProxy
+	    		
+	    class ItemSnapshot(val item:Item, val self:Map[String,Set[String]]) 
+	        extends MapProxy[String,Set[String]]	    
+	    
 		class Item(val domain:Domain, val name:String) {
 		    
 		    override def toString = domain + "." + name
@@ -11,14 +16,16 @@ package org.sublime.amazon.simpleDB {
 			/**
 			 * Read all of the attributes from this item.
 			 */
-			def attributes = (new GetAttributesRequest(domain.name, name, Set()))
-				.response.result.attributes
+			def attributes = new ItemSnapshot(this, 
+			    (new GetAttributesRequest(domain.name, name, Set())).response.result.attributes
+			)
 			
 			/**
 			 * Read a selection of attributes from this item
 			 */
-			def attributes (attributes:Set[String]) = 
+			def attributes (attributes:Set[String]) = new ItemSnapshot(this,
 				(new GetAttributesRequest(domain.name, name, Set())).response.result.attributes
+			)
 				
 			/**
 			 * Read a single attribute from this item.
@@ -106,6 +113,26 @@ package org.sublime.amazon.simpleDB {
 			    streamOfStreams(responses(start, start.response), generate)
 			}
 			
+			/**
+			 * Get all items and all of their attributes
+			 */
+			def itemsWithAttributes :Stream[ItemSnapshot] = Stream.empty
+			
+			/**
+			 * Get all items and their attributes 
+			 */
+			def withAttributes (expression:String) :Stream[ItemSnapshot] 
+			    = withAttributes(Some(expression), Set[String]())
+			
+			def withAttributes (attributes:Set[String]) :Stream[ItemSnapshot] 
+			    = withAttributes(None, attributes)
+			
+			def withAttributes (expression:String, attributes:Set[String]) :Stream[ItemSnapshot] =			 
+			    withAttributes (Some(expression), attributes)
+			
+			def withAttributes (expression:Option[String], attributes:Set[String]) 
+			    :Stream[ItemSnapshot] = Stream.empty
+			
 			override def toString = name			
 		}
 		
@@ -185,7 +212,7 @@ package org.sublime.amazon.simpleDB {
 		}
 		
 		def queryWithAttributes (domain:String, query:String, attributes:Set[String]) {
-		    Console.println((new QueryWithAttributesRequest(domain, query, attributes)).response.result)
+		    Console.println((new QueryWithAttributesRequest(domain, Some(query), attributes)).response.result)
 		}
 	}
 }

@@ -135,13 +135,33 @@ package org.sublime.amazon.simpleDB {
         }
 	    
 	    class QueryWithAttributesRequest (val domainName:String, 
-	        val queryExpression:String,
+	        val queryExpression:Option[String],
 	        val attributes:Set[String]) extends QueryWithAttributes with Basics
 	    {
-		    val nextToken = None
+		    val nextToken:Option[String] = None
 		    val maxNumberOfItems = None
 		    
 	        def response = new QueryWithAttributesResponse() (makeRequest(this))
 	    }	    
+	    
+	    object QueryWithAttributesRequest
+	    {
+	        def start (domainName:String, queryExpression:Option[String], attributes:Set[String]) =
+	            new QueryWithAttributesRequest (domainName, queryExpression, attributes)
+	        
+	        def next (req:QueryWithAttributesRequest, res:QueryWithAttributesResponse)
+	            :Option[QueryWithAttributesRequest] =
+    	            res.result.nextToken match {
+    	                case None => None
+    	                case Some(token) =>
+    	                    Some(new QueryWithAttributesRequest(
+    	                        req.domainName, 
+    	                        req.queryExpression,
+    	                        req.attributes) {
+    	                                override val nextToken:Option[String] = Some(token)
+    	                            }
+    	                    )
+    	            }
+	    }
 	}	
 }
