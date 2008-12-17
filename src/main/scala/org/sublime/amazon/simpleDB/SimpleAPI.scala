@@ -116,7 +116,7 @@ package org.sublime.amazon.simpleDB {
 			/**
 			 * Get all items and all of their attributes
 			 */
-			def itemsWithAttributes :Stream[ItemSnapshot] = Stream.empty
+			def itemsWithAttributes :Stream[ItemSnapshot] = withAttributes (Set[String]())
 			
 			/**
 			 * Get all items and their attributes 
