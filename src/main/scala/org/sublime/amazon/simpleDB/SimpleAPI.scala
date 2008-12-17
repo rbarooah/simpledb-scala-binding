@@ -2,7 +2,7 @@ package org.sublime.amazon.simpleDB {
 	import scala.xml.PrettyPrinter
 	
 	class SimpleDBAccount (id:String, key:String) 
-		extends Connection(id, key)
+		extends Connection(id, key) with Concrete
 	{	
 	    import scala.collection.MapProxy
 	    		

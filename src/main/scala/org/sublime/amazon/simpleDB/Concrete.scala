@@ -1,66 +1,21 @@
 package org.sublime.amazon.simpleDB {
 	import scala.xml._
 	
-	object Service {
-		val url = "https://sdb.amazonaws.com"
-	}
-	
-	class Connection (val id:String, secretKey:String) {
-		import Service._
+	trait Concrete { 
+	    concrete =>
 		
-		import org.apache.commons.httpclient.HttpClient
-		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
+        def makeRequest (request:SimpleDBRequest) :Elem
 		
-		val signer = new Signer(secretKey)
-		val client = new HttpClient()
-		def trace = false
+		def awsAccessKeyId :String
 		
 		def now () :String = dateFormat.format(new java.util.Date())		
 		
 		import java.text.SimpleDateFormat
-		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-		
-		def makeRequest (request:SimpleDBRequest) :Elem = {
-		    if (trace) diagnose(request.parameters)
-			val method = 
-				new PostMethod(url + 
-					QueryParameters(signer.sign(request.parameters)))
-			client.executeMethod(method)
-			val xml = XML.load(method.getResponseBodyAsStream())
-			method.releaseConnection
-			if (trace) diagnose(xml)
-			xml match { 
-			    case Error(code, message, boxUsage) => 
-			        throw new SimpleDBException(code, message, boxUsage)
-			    case _ => xml
-		    }
-		}
-		
-		val printer = new PrettyPrinter(80, 2)
-		
-		def diagnose (xml:Node) {
-		    Console.println(printer.format(xml))
-		}
-		
-		def diagnose (parameters:Map[String, String]) {
-		    Console.println(
-		        (parameters.keys map (k => k + ": "+parameters(k))) mkString "\n"
-		    )
-		}
-		
-		// Accounting for box usage
-		private var totalBoxUsage:double = 0 
-		private var lastBoxUsage:double = 0 
-		
-		def accountFor [T <: SimpleDBResponse] (response:T) :T = {
-		    lastBoxUsage = response.metadata.boxUsage
-		    totalBoxUsage = totalBoxUsage + lastBoxUsage
-		    response
-		}
+		val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")		
 						
 		trait Basics {
 			def timeStamp = now()
-			def awsAccessKeyId = id
+			def awsAccessKeyId = concrete.awsAccessKeyId
 		}
 		
 		class ListDomainsRequest (val nextToken:Option[String], val maxNumberOfDomains:Option[int]) 
