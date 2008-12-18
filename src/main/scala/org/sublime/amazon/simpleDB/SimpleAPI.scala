@@ -1,8 +1,7 @@
 package org.sublime.amazon.simpleDB {
 	import scala.xml.PrettyPrinter
 	
-	class SimpleDBAccount (id:String, key:String) 
-		extends Connection(id, key) with Concrete
+	trait SimpleAPI extends Concrete
 	{	
 	    import scala.collection.MapProxy
 	    		
@@ -12,7 +11,7 @@ package org.sublime.amazon.simpleDB {
         def select (expression:String) 
 		    :Stream[Map[String, Set[String]]] = {
 		    def convert (i:ItemWithAttributesResult#Item) = i.attributes
-		    def generate(res:SelectResponse) :Stream[Map[String, Set[String]]] =
+		    def generate(res:SelectResponse) :Stream[Map[String,Set[String]]] =
 		        streamOfObjects(res.result.items.toList, convert)
 		    def responses(req:SelectRequest, res:SelectResponse) 
 		        :Stream[SelectResponse] =
