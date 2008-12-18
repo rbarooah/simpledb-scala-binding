@@ -128,7 +128,7 @@ package org.sublime.amazon.simpleDB {
 			optional("MaxNumberOfItems", maxNumberOfItems) ++
 			optional("NextToken", nextToken)			
 	}
-	
+		
 	trait QueryWithAttributes extends SimpleDBRequest {
 		import Attributes._
 		
@@ -145,6 +145,21 @@ package org.sublime.amazon.simpleDB {
 			optional("MaxNumberOfItems", maxNumberOfItems) ++
 			optional("NextToken", nextToken)			
 	}	
+	
+	trait Select extends SimpleDBRequest {
+	    import Attributes._
+	    
+	    def action = "Select"
+	    def maxNumberOfItems:Option[int]
+	    def nextToken:Option[String]
+	    def selectExpression:String
+	    def domainName:String
+	    
+	    def specificParameters = Map[String, String] ("DomainName" => domainName,
+	        "SelectExpression" -> selectExpression) ++
+	        optional("MaxNumberOfItems", maxNumberOfItems) ++
+	        optional("NextToken", nextToken)
+	}
 	
 	object Attributes {
 		def attributeNames (names:Set[String]) :Map[String, String] = {

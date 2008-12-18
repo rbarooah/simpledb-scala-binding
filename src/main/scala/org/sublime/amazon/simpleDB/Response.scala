@@ -70,7 +70,7 @@ package org.sublime.amazon.simpleDB {
 		val result = new QueryWithAttributesResult() (node("QueryWithAttributesResult"))
 	}	
 	
-	class QueryWithAttributesResult (implicit xml:NodeSeq) {
+	abstract class ItemWithAttributesResult (implicit xml:NodeSeq) {
 		class Item (implicit xml:NodeSeq) {
 		    import Format._		    
 			val name = string("Name")
@@ -78,20 +78,17 @@ package org.sublime.amazon.simpleDB {
 			
 			override def toString = name + "\n" + ("-" * name.length) + "\n" +
 			    formatAttributes(attributes)
-		}
-		
+		}	    
+
 		val nextToken = optionalString("NextToken")
 		val items = nodes("Item") map (new Item()(_))
 		
 		override def toString = items mkString "\n\n"
 	}
 	
-	class QueryResult (implicit xml:NodeSeq) {
-		val itemNames = strings("ItemName")
-		val nextToken = optionalString("NextToken")
-		
-		override def toString = itemNames mkString ", "
-	}
+	class QueryWithAttributesResult (implicit xml:NodeSeq) extends ItemWithAttributesResult
+	
+	class SelectResult (implicit xml:NodeSeq) extends ItemWithAttributesResult 
 	
 	class GetAttributesResult (implicit xml:NodeSeq) {		
 	    import Format._
