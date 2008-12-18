@@ -1,4 +1,4 @@
-package org.sublime.amazon.simpleDB {
+package org.sublime.amazon.simpleDB.api {
 	import scala.xml.PrettyPrinter
 	
 	trait SimpleAPI extends Concrete
