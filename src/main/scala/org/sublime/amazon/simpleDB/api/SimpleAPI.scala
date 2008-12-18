@@ -1,13 +1,29 @@
 package org.sublime.amazon.simpleDB.api {
 	import scala.xml.PrettyPrinter
 	
+	/**
+	 * This trait provides a simple API for accessing Amazon SimpleDB.  It is designed to be
+	 * mixed in to objects or classes that provide the necessary networking capabilities. 
+	 * 
+	 * @see SimpleDBAccount for a simple and complete implementation.
+	 */
 	trait SimpleAPI extends Concrete
 	{	
 	    import scala.collection.MapProxy
 	    		
+	    /**
+	     * A map implementation which holds a snapshot of the properties and values of an item.
+	     * An item object which can be used for updates or to make further queries can be accessed
+	     * via the 'item' field.
+	     */
 	    class ItemSnapshot(val item:Item, val self:Map[String,Set[String]]) 
 	        extends MapProxy[String,Set[String]]	    
 	    
+	    /**
+	     * Perform a select operation and return a stream of results.  The results are simple
+	     * maps of attributes names to sets of values.  A single request is made initially, and
+	     * additional requests are made as needed when the stream is read.
+	     */
         def select (expression:String) 
 		    :Stream[Map[String, Set[String]]] = {
 		        
@@ -27,9 +43,19 @@ package org.sublime.amazon.simpleDB.api {
 		    streamOfStreams(responses(start, start.response), generate)        		
 	    }
 	    
+	    /**
+	     * A class which serves as a proxy to an Item within simpleDB.  This class holds none of the
+	     * attributes of the item itself.  Calls to methods which read attributes from the item will 
+	     * result in network requests to SimpleDB.
+	     */
 		class Item(val domain:Domain, val name:String) {
+
+            /**
+             * Return a string assocating this item with it's domain in the form domain.item
+             */
+		    def path = domain + "." + name
 		    
-		    override def toString = domain + "." + name
+		    override def toString = name
 		    
 			/**
 			 * Read all of the attributes from this item.
@@ -108,15 +134,58 @@ package org.sublime.amazon.simpleDB.api {
 			}
 		}
 		
+		/**
+	     * A class which serves as a proxy to a Doman within simpleDB.  This class holds no data
+	     * other than a reference to the domain name.  Calls to methods which access items from
+	     * within the domain will always result in network requests to SimpleDB.
+	     */
 		class Domain(val name:String) {
+		    
+		    /**
+		     * Return a current snapshot of the metadata associated with this domain.
+		     *
+		     * This is the analog of the 'DomainMetadata' request.
+		     */
 			def metadata = (new DomainMetadataRequest(name)).response.result
 					
+			/**
+			 * Delete this domain from the SimpleDB account.
+			 *
+			 * This is the analog of the 'DeleteDomain' request.
+			 */
 			def delete = (new DeleteDomainRequest(name)).response.metadata
+			
+			/**
+			 * Create a domain within SimpleDB corresponding to this object if one doesn't exist
+			 * already.
+			 *
+			 * This is the analog of the 'CreateDomain'
+			 */
 			def create = (new CreateDomainRequest(name)).response.metadata
+			
+			/**
+			 * Return a reference to an item with a given name within this domain. 
+			 */
 			def item (name:String) = new Item(this, name)
 			
+			/**
+			 * Perform a quest and return a stream of the results.  One simpleDB request will be
+			 * performed initially, and subsequent queries will be performed as the stream is read
+			 * if they are needed.
+			 *
+			 * This is the analog of the 'Query' request.
+			 */
 			def query (expression:String) :Stream[Item] = query(Some(expression))
 			
+			/**
+			 * Return a stream containing all of the items within the domain.  One simpleDB request
+			 * will be perfomed initially, and subsequent queries will be performed as the stream
+			 * is read if they are needed.  This query does not obtain any of the attributes but
+			 * returns Item objects that you can use to retrieve the attributes you desire.
+			 *
+			 * This the exact analog of using the 'Query' request without specifying a query
+			 * expression.
+			 */
 			def items :Stream[Item] = query(None)
 			
 			private def query(expression:Option[String]) :Stream[Item] = {
@@ -134,22 +203,57 @@ package org.sublime.amazon.simpleDB.api {
 			}
 			
 			/**
-			 * Get all items and all of their attributes
+			 * Return a stream containing all of the items within the domain with all of their
+			 * attributes.  As with most of the queries that return multiple results, a lazy stream
+			 * is returned and additional requests are made to SimpleDB only when needed.
+			 *
+			 * This is the analog of using the 'QueryWithAttributes' request without specifying a
+			 * query expression.
 			 */
 			def itemsWithAttributes :Stream[ItemSnapshot] = withAttributes (Set[String]())
 			
 			/**
-			 * Get all items and their attributes 
+			 * Return a stream containing the items matching a given query with all of their
+			 * attributes.  As with most of the queries that return multiple results, a lazy stream
+			 * is returned and additional requests are made to SimpleDB only when needed.
+			 *
+			 * This is the analog of using the 'QueryWithAttributes' request with a query expression
+			 * but no list of attributes.
 			 */
 			def withAttributes (expression:String) :Stream[ItemSnapshot] 
 			    = withAttributes(Some(expression), Set[String]())
 			
+			/**
+			 * Return a stream containing all of the items within a domain with a selected set of 
+			 * their attributes.  As with most of the queries that return multiple results, a lazy
+			 * stream is returned and additional requests are made to SimpleDB only when needed.
+			 *
+			 * This is the analog of using the 'QueryWithAttributes' request without a query 
+			 * expression but with a list of attributes.
+			 */
 			def withAttributes (attributes:Set[String]) :Stream[ItemSnapshot] 
 			    = withAttributes(None, attributes)
 			
+			/**
+			 * Return a stream containing the items matching a given query with a selected set of 
+			 * their attributes.  As with most of the queries that return multiple results, a lazy
+			 * stream is returned and additional requests are made to SimpleDB only when needed.
+			 *
+			 * This is the analog of using the 'QueryWithAttributes' request with a query 
+			 * expression and a list of attributes.
+			 */
 			def withAttributes (expression:String, attributes:Set[String]) :Stream[ItemSnapshot] =			 
 			    withAttributes (Some(expression), attributes)
 			
+			
+			/**
+			 * Return a stream containing the items matching an optional query with a selected set 
+			 * of their attributes.  As with most of the queries that return multiple results, a 
+			 * lazy stream is returned and additional requests are made to SimpleDB only when 
+			 * needed.  If 'None' is supplied instead of the query string, all items are returned.
+			 *
+			 * This is the analog of using the 'QueryWithAttributes' request.
+			 */			
 			def withAttributes (expression:Option[String], attributes:Set[String]) 
 			    :Stream[ItemSnapshot] = {
 			    def convert (i:QueryWithAttributesResult#Item) = 
@@ -172,6 +276,11 @@ package org.sublime.amazon.simpleDB.api {
 			override def toString = name			
 		}
 		
+		/**
+		 * Return a proxy object representing the named simpleDB domain.  No request is made
+		 * and the domain may or may not exist on the server. A domain may be created on the server
+		 * using the 'create' method, or deleted using the 'delete' method.
+		 */
 		def domain (name:String) = new Domain(name)
 					
 		// given a stream of generators of generators, which generate type T, and a
@@ -201,6 +310,12 @@ package org.sublime.amazon.simpleDB.api {
 	        makeStream(list)	        
 		}
 			
+	    /**
+	     * Return a stream of all of the domains within the simpleDB account.  As usual this stream
+	     * is fetched lazily, and additional requests to simpleDB will be made only when needed.
+	     * 
+	     * The stream consists of proxy objects that can be used to make further requests.
+	     */
 		def domains :Stream[Domain] = {
 		    def convert (name:String) = new Domain(name)
 		    
