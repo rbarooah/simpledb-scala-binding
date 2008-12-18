@@ -4,7 +4,7 @@ package org.sublime.amazon.simpleDB {
 	trait Concrete { 
 	    concrete =>
 		
-        def makeRequest (request:SimpleDBRequest) :Elem
+        def makeSimpleDBRequest (request:SimpleDBRequest) :Elem
 		
 		def awsAccessKeyId :String
 		
@@ -21,7 +21,7 @@ package org.sublime.amazon.simpleDB {
 		class ListDomainsRequest (val nextToken:Option[String], val maxNumberOfDomains:Option[int]) 
 			extends ListDomains with Basics {
 			
-			def response = new ListDomainsResponse() (makeRequest(this))			
+			def response = new ListDomainsResponse() (makeSimpleDBRequest(this))			
 		}
 		
 		object ListDomainsRequest {
@@ -36,45 +36,45 @@ package org.sublime.amazon.simpleDB {
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
 		{
-			def response = new CreateDomainResponse() (makeRequest(this))
+			def response = new CreateDomainResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class DeleteDomainRequest (val domainName:String) extends DeleteDomain with Basics
 		{
-			def response = new DeleteDomainResponse() (makeRequest(this))
+			def response = new DeleteDomainResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class DomainMetadataRequest (val domainName:String) extends DomainMetadata with Basics
 		{
-			def response = new DomainMetadataResponse() (makeRequest(this))
+			def response = new DomainMetadataResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class PutAttributesRequest (val domainName:String, 
 		    val itemName:String, 
 		    val attributes:Map[String, (String, Boolean)]) extends PutAttributes with Basics
 		{
-		    def response = new PutAttributesResponse() (makeRequest(this))
+		    def response = new PutAttributesResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class DeleteAttributesRequest (val domainName:String, 
 		    val itemName:String,
 		    val attributes:Map[String, Set[String]]) extends DeleteAttributes with Basics
 		{
-		    def response = new DeleteAttributesResponse() (makeRequest(this))
+		    def response = new DeleteAttributesResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class GetAttributesRequest (val domainName:String,
 		    val itemName:String,
 		    val attributes:Set[String]) extends GetAttributes with Basics
 		{
-		    def response = new GetAttributesResponse() (makeRequest(this))
+		    def response = new GetAttributesResponse() (makeSimpleDBRequest(this))
 		}
 		
 		class QueryRequest (val domainName:String, val queryExpression:Option[String],
 		    val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
 		    extends Query with Basics
 		{
-		    def response = new QueryResponse() (makeRequest(this))
+		    def response = new QueryResponse() (makeSimpleDBRequest(this))
 	    }
 
         object QueryRequest {
@@ -96,7 +96,7 @@ package org.sublime.amazon.simpleDB {
 		    val nextToken:Option[String] = None
 		    val maxNumberOfItems = None
 		    
-	        def response = new QueryWithAttributesResponse() (makeRequest(this))
+	        def response = new QueryWithAttributesResponse() (makeSimpleDBRequest(this))
 	    }	    
 	    
 	    object QueryWithAttributesRequest
@@ -123,7 +123,7 @@ package org.sublime.amazon.simpleDB {
 	        val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
 	        extends Select with Basics 
 	    {
-	        def response = new SelectResponse() (makeRequest(this))
+	        def response = new SelectResponse() (makeSimpleDBRequest(this))
 	    }
 	    
 	    object SelectRequest {
