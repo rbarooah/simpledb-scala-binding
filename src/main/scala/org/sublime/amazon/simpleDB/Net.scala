@@ -5,14 +5,15 @@ package org.sublime.amazon.simpleDB {
 		val url = "https://sdb.amazonaws.com"
 	}
 	
-	class Connection (val awsAccessKeyId:String, secretKey:String) {
+	class Connection (val awsAccessKeyId:String, awsSecretKey:String) {
 		import Service._
 		
 		import org.apache.commons.httpclient.HttpClient
 		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
 		
-		val signer = new Signer(secretKey)
-		val client = new HttpClient()
+		def signer = new Signer(awsSecretKey)
+		def client = new HttpClient()
+		
 		def trace = false
 				
 		def makeRequest (request:SimpleDBRequest) :Elem = {
@@ -31,7 +32,7 @@ package org.sublime.amazon.simpleDB {
 		    }
 		}
 		
-		val printer = new PrettyPrinter(80, 2)
+		def printer = new PrettyPrinter(80, 2)
 		
 		def diagnose (xml:Node) {
 		    Console.println(printer.format(xml))
