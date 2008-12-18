@@ -10,15 +10,19 @@ package org.sublime.amazon.simpleDB.api {
 	    
         def select (expression:String) 
 		    :Stream[Map[String, Set[String]]] = {
+		        
 		    def convert (i:ItemWithAttributesResult#Item) = i.attributes
+		    
 		    def generate(res:SelectResponse) :Stream[Map[String,Set[String]]] =
 		        streamOfObjects(res.result.items.toList, convert)
+		        
 		    def responses(req:SelectRequest, res:SelectResponse) 
 		        :Stream[SelectResponse] =
 		        Stream.cons(res, SelectRequest.next(req, res) match {
 		            case None => Stream.empty
 		            case Some(request) => responses(request, request.response)			            
 		        })
+		        
 		    val start = SelectRequest.start(expression)
 		    streamOfStreams(responses(start, start.response), generate)        		
 	    }
@@ -118,11 +122,13 @@ package org.sublime.amazon.simpleDB.api {
 			private def query(expression:Option[String]) :Stream[Item] = {
 			    def generate (res:QueryResponse) :Stream[Item] =
 			        streamOfObjects(res.result.itemNames.toList, item)
+			        
 			    def responses (req:QueryRequest, res:QueryResponse) :Stream[QueryResponse] =
 			        Stream.cons(res, QueryRequest.next(req, res) match {
 			            case None => Stream.empty
 			            case Some(request) => responses(request, request.response)
 			        })
+			        
 			    val start = QueryRequest.start(name, expression)
 			    streamOfStreams(responses(start, start.response), generate)
 			}
@@ -148,14 +154,17 @@ package org.sublime.amazon.simpleDB.api {
 			    :Stream[ItemSnapshot] = {
 			    def convert (i:QueryWithAttributesResult#Item) = 
 			        new ItemSnapshot(item(i.name), i.attributes)
+			        
 			    def generate(res:QueryWithAttributesResponse) :Stream[ItemSnapshot] =
 			        streamOfObjects(res.result.items.toList, convert)
+			        
 			    def responses(req:QueryWithAttributesRequest, res:QueryWithAttributesResponse) 
 			        :Stream[QueryWithAttributesResponse] =
 			        Stream.cons(res, QueryWithAttributesRequest.next(req, res) match {
 			            case None => Stream.empty
 			            case Some(request) => responses(request, request.response)			            
 			        })
+			        
 			    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 			    streamOfStreams(responses(start, start.response), generate)        		
 		    }
@@ -194,13 +203,16 @@ package org.sublime.amazon.simpleDB.api {
 			
 		def domains :Stream[Domain] = {
 		    def convert (name:String) = new Domain(name)
+		    
 		    def generate (res:ListDomainsResponse) :Stream[Domain] = 
 		        streamOfObjects(res.result.domainNames.toList, convert)
+		        
 		    def responses (response:ListDomainsResponse) :Stream[ListDomainsResponse] =
 		        Stream.cons(response, ListDomainsRequest.next(response) match {
 		            case None => Stream.empty
 		            case Some(request) => responses(request.response)
 		        })
+		        
 		    streamOfStreams(responses(ListDomainsRequest.start.response), generate)
 		}
 	}
