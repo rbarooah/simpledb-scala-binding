@@ -11,8 +11,8 @@ package org.sublime.amazon.simpleDB {
 		import org.apache.commons.httpclient.HttpClient
 		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
 		
-		def signer = new Signer(awsSecretKey)
-		def client = new HttpClient()
+		private val signer = new Signer(awsSecretKey)
+		private val client = new HttpClient()
 		
 		def trace = false
 				
