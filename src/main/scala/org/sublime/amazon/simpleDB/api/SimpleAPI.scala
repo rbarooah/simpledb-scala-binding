@@ -1,5 +1,4 @@
 package org.sublime.amazon.simpleDB.api {
-	import scala.xml.PrettyPrinter
 	
 	/**
 	 * This trait provides a simple API for accessing Amazon SimpleDB.  It is designed to be
