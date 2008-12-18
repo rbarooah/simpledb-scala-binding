@@ -8,7 +8,7 @@ package org.sublime.amazon.simpleDB {
 		import scala.util.Sorting._
 		import javax.crypto.spec.SecretKeySpec
 		
-		val awsSecretKey = new SecretKeySpec(key.getBytes, "hmacsha1")
+		private val awsSecretKey = new SecretKeySpec(key.getBytes, "hmacsha1")
 		
 		/**
 		 * Given a map of request parameters, return a signed map containing
