@@ -145,6 +145,22 @@ package org.sublime.amazon.simpleDB {
 			    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 			    streamOfStreams(responses(start, start.response), generate)        		
 		    }
+		    
+		    def select (expression:String) 
+			    :Stream[ItemSnapshot] = {
+			    def convert (i:ItemWithAttributesResult#Item) = 
+			        new ItemSnapshot(item(i.name), i.attributes)
+			    def generate(res:SelectResponse) :Stream[ItemSnapshot] =
+			        streamOfObjects(res.result.items.toList, convert)
+			    def responses(req:SelectRequest, res:SelectResponse) 
+			        :Stream[SelectResponse] =
+			        Stream.cons(res, SelectRequest.next(req, res) match {
+			            case None => Stream.empty
+			            case Some(request) => responses(request, request.response)			            
+			        })
+			    val start = SelectRequest.start(name, expression)
+			    streamOfStreams(responses(start, start.response), generate)        		
+		    }
 			
 			override def toString = name			
 		}

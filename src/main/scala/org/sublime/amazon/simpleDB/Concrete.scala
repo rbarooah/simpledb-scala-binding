@@ -102,7 +102,7 @@ package org.sublime.amazon.simpleDB {
 	    object QueryWithAttributesRequest
 	    {
 	        def start (domainName:String, queryExpression:Option[String], attributes:Set[String]) =
-	            new QueryWithAttributesRequest (domainName, queryExpression, attributes)
+	            new QueryWithAttributesRequest(domainName, queryExpression, attributes)
 	        
 	        def next (req:QueryWithAttributesRequest, res:QueryWithAttributesResponse)
 	            :Option[QueryWithAttributesRequest] =
@@ -118,5 +118,26 @@ package org.sublime.amazon.simpleDB {
     	                    )
     	            }
 	    }
+	    
+	    class SelectRequest (val domainName:String, val selectExpression:String, 
+	        val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
+	        extends Select with Basics 
+	    {
+	        def response = new SelectResponse() (makeRequest(this))
+	    }
+	    
+	    object SelectRequest {
+	        def start (domainName:String, selectExpression:String) =
+	            new SelectRequest(domainName, selectExpression, None, None)
+	            
+	        def next (req:SelectRequest, res:SelectResponse) :Option[SelectRequest] =
+	            res.result.nextToken match {
+	                case None => None
+	                case Some(token) =>
+	                    Some(new SelectRequest(req.domainName, req.selectExpression, 
+	                        Some(token), None))	                        
+	            }
+	        
+	    }	    
 	}	
 }

@@ -155,7 +155,7 @@ package org.sublime.amazon.simpleDB {
 	    def selectExpression:String
 	    def domainName:String
 	    
-	    def specificParameters = Map[String, String] ("DomainName" => domainName,
+	    def specificParameters = Map[String, String] ("DomainName" -> domainName,
 	        "SelectExpression" -> selectExpression) ++
 	        optional("MaxNumberOfItems", maxNumberOfItems) ++
 	        optional("NextToken", nextToken)
