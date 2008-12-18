@@ -41,16 +41,6 @@ package org.sublime.amazon.simpleDB {
 		    Console.println(
 		        (parameters.keys map (k => k + ": "+parameters(k))) mkString "\n"
 		    )
-		}
-		
-		// Accounting for box usage
-		private var totalBoxUsage:double = 0 
-		private var lastBoxUsage:double = 0 
-		
-		def accountFor [T <: SimpleDBResponse] (response:T) :T = {
-		    lastBoxUsage = response.metadata.boxUsage
-		    totalBoxUsage = totalBoxUsage + lastBoxUsage
-		    response
 		}						
 	}	
 }
