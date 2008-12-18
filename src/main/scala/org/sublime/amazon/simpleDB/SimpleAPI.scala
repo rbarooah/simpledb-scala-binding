@@ -9,6 +9,21 @@ package org.sublime.amazon.simpleDB {
 	    class ItemSnapshot(val item:Item, val self:Map[String,Set[String]]) 
 	        extends MapProxy[String,Set[String]]	    
 	    
+        def select (expression:String) 
+		    :Stream[Map[String, Set[String]]] = {
+		    def convert (i:ItemWithAttributesResult#Item) = i.attributes
+		    def generate(res:SelectResponse) :Stream[Map[String, Set[String]]] =
+		        streamOfObjects(res.result.items.toList, convert)
+		    def responses(req:SelectRequest, res:SelectResponse) 
+		        :Stream[SelectResponse] =
+		        Stream.cons(res, SelectRequest.next(req, res) match {
+		            case None => Stream.empty
+		            case Some(request) => responses(request, request.response)			            
+		        })
+		    val start = SelectRequest.start(expression)
+		    streamOfStreams(responses(start, start.response), generate)        		
+	    }
+	    
 		class Item(val domain:Domain, val name:String) {
 		    
 		    override def toString = domain + "." + name
@@ -145,23 +160,7 @@ package org.sublime.amazon.simpleDB {
 			    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 			    streamOfStreams(responses(start, start.response), generate)        		
 		    }
-		    
-		    def select (expression:String) 
-			    :Stream[ItemSnapshot] = {
-			    def convert (i:ItemWithAttributesResult#Item) = 
-			        new ItemSnapshot(item(i.name), i.attributes)
-			    def generate(res:SelectResponse) :Stream[ItemSnapshot] =
-			        streamOfObjects(res.result.items.toList, convert)
-			    def responses(req:SelectRequest, res:SelectResponse) 
-			        :Stream[SelectResponse] =
-			        Stream.cons(res, SelectRequest.next(req, res) match {
-			            case None => Stream.empty
-			            case Some(request) => responses(request, request.response)			            
-			        })
-			    val start = SelectRequest.start(name, expression)
-			    streamOfStreams(responses(start, start.response), generate)        		
-		    }
-			
+		    			
 			override def toString = name			
 		}
 		

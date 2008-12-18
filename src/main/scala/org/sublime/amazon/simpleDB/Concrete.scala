@@ -119,7 +119,7 @@ package org.sublime.amazon.simpleDB {
     	            }
 	    }
 	    
-	    class SelectRequest (val domainName:String, val selectExpression:String, 
+	    class SelectRequest (val selectExpression:String, 
 	        val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
 	        extends Select with Basics 
 	    {
@@ -127,14 +127,14 @@ package org.sublime.amazon.simpleDB {
 	    }
 	    
 	    object SelectRequest {
-	        def start (domainName:String, selectExpression:String) =
-	            new SelectRequest(domainName, selectExpression, None, None)
+	        def start (selectExpression:String) =
+	            new SelectRequest(selectExpression, None, None)
 	            
 	        def next (req:SelectRequest, res:SelectResponse) :Option[SelectRequest] =
 	            res.result.nextToken match {
 	                case None => None
 	                case Some(token) =>
-	                    Some(new SelectRequest(req.domainName, req.selectExpression, 
+	                    Some(new SelectRequest(req.selectExpression, 
 	                        Some(token), None))	                        
 	            }
 	        
