@@ -98,32 +98,45 @@ package org.sublime.amazon.simpleDB.api {
 				).response.metadata				
 			}
 					
-			private def putAttribute (name:String, values:Set[String], replace:Boolean) = {
+			private def putAttribute (attributeName:String, values:Set[String], replace:Boolean) = {
 			    (new PutAttributesRequest(domain.name, name, 
-			            Map(name -> (values, replace))
+			            Map(attributeName -> (values, replace))
 			        )
 			    ).response.metadata
 			}
 			
 			/**
-			 * Update the contents of this item.  The values supplued are 
+			 * Update the contents of this item with a map of attributes names and a set of values
+			 * and boolean for each one.  If the boolean is true, the existing values will be
+			 * replace with those in the set, otherwise the set of values will be added to the
+			 * existing ones.
+			 *
+			 * This is the analog of the 'PutAttributes' request.
 			 */
 			def update (values:Map[String, (Set[String], Boolean)]) = {
 			    (new PutAttributesRequest(domain.name, name, values)).response.metadata
 			}
 					
 			/**
-			 * Add a single attribute to this item.
+			 * Add a single value to an attribute of this item.
 			 */
 			def += (pair:(String, String)) = putAttribute(pair, false)
-			
+
+			/**
+			 * Add multiple values to an attribute of this item.
+			 */
 			def += (name:String, values:Set[String]) = putAttribute(name, values, false)
 
 			/**
-			 * Replace a single attribute in this item.
+			 * Replace the value of an attribute in this item with a single value.  Any previously
+			 * existing values for this item will be deleted.
 			 */
 			def set (pair:(String,String)) = putAttribute(pair, true)
 		
+		    /**
+		     * Replace the value of an attribute in this item with a set of values.  Any previously
+		     * existing values for this item will be deleted.
+		     */
 		    def set (name:String, values:Set[String]) = putAttribute(name, values, true)
 		
 			/** 
@@ -144,8 +157,8 @@ package org.sublime.amazon.simpleDB.api {
 			/**
 			 * Delete a single attribute in this item.
 			 */
-			def -= (name:String) = {
-				(new DeleteAttributesRequest(domain.name, name, Map(name -> Set())))
+			def -= (attributeName:String) = {
+				(new DeleteAttributesRequest(domain.name, attributeName, Map(name -> Set())))
 					.response.metadata
 			}
 		}
