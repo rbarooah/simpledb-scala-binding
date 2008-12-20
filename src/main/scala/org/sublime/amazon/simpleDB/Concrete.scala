@@ -65,7 +65,7 @@ package org.sublime.amazon.simpleDB {
 		
 		class PutAttributesRequest (val domainName:String, 
 		    val itemName:String, 
-		    val attributes:Map[String, (String, Boolean)]) extends PutAttributes with Basics
+		    val attributes:Map[String, (Set[String], Boolean)]) extends PutAttributes with Basics
 		{
 		    def response = new PutAttributesResponse() (makeSimpleDBRequest(this))
 		}

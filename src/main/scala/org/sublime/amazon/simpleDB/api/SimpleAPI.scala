@@ -58,13 +58,13 @@ package org.sublime.amazon.simpleDB.api {
 	    
 	    /**
 	     * A class which serves as a proxy to an Item within simpleDB.  This class holds none of the
-	     * attributes of the item itself.  Calls to methods which read attributes from the item will 
-	     * result in network requests to SimpleDB.
+	     * attributes of the item itself.  Calls to methods which read or write attributes to and
+	     * from the item will result in network requests to SimpleDB.
 	     */
 		class Item(val domain:Domain, val name:String) {
 
             /**
-             * Return a string assocating this item with it's domain in the form domain.item
+             * Return a string assocating this item with it's domain in the form "domain.item"
              */
 		    def path = domain + "." + name
 		    
@@ -91,21 +91,24 @@ package org.sublime.amazon.simpleDB.api {
 				(new GetAttributesRequest(domain.name, name, Set(attributeName)))
 					.response.result.attributes(attributeName)
 			
-			def putAttribute (pair :(String, String), replace:Boolean) = {
+			private def putAttribute (pair :(String, String), replace:Boolean) = {
 				(new PutAttributesRequest(domain.name, name, 
-						Map(pair._1 -> (pair._2 -> replace))
+						Map(pair._1 -> (Set(pair._2) -> replace))
 					)
 				).response.metadata				
 			}
 					
-			def putAttribute (name:String, values:Set[String], replace:Boolean) = {
+			private def putAttribute (name:String, values:Set[String], replace:Boolean) = {
 			    (new PutAttributesRequest(domain.name, name, 
-			            Map() ++ (values map (value => (name -> (value -> replace))))
+			            Map(name -> (values, replace))
 			        )
 			    ).response.metadata
 			}
 			
-			def update (values:Map[String, (String, Boolean)]) = {
+			/**
+			 * Update the contents of this item.  The values supplued are 
+			 */
+			def update (values:Map[String, (Set[String], Boolean)]) = {
 			    (new PutAttributesRequest(domain.name, name, values)).response.metadata
 			}
 					
@@ -182,7 +185,7 @@ package org.sublime.amazon.simpleDB.api {
 			def item (name:String) = new Item(this, name)
 			
 			/**
-			 * Perform a quest and return a stream of the results.  One simpleDB request will be
+			 * Perform a request and return a stream of the results.  One simpleDB request will be
 			 * performed initially, and subsequent queries will be performed as the stream is read
 			 * if they are needed.
 			 *

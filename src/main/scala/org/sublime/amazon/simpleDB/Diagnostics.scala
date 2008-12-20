@@ -34,7 +34,8 @@ package org.sublime.amazon.simpleDB {
         	Console.println((new DomainMetadataRequest(name)).response.result)
         }
 
-        def putAttributes (domain:String, item:String, attributes:Map[String ,(String, Boolean)]) {
+        def putAttributes (domain:String, item:String, 
+            attributes:Map[String ,(Set[String], Boolean)]) {
             Console.println((new PutAttributesRequest(domain, item, attributes)).response.metadata)
         }
 
