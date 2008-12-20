@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>trait SimpleAPI in org.sublime.amazon.simpleDB.api</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.2)" name="generator"></meta><link href="../../../../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../../../../script.js"></script>
+        </head>
+        <body onload="init()">
+        <table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">SimpleDB API for Scala 0.9-SNAPSHOT API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+        
+      <div class="entity">
+        <a href="../../../../../org/sublime/amazon/simpleDB/api$package.html" target="_self">org.sublime.amazon.simpleDB.api</a>
+        <br></br>
+        <span class="entity">trait  SimpleAPI</span>
+      </div><hr></hr>
+      <div class="source">
+        [source: <a href="" class="org/sublime/amazon/simpleDB/api/SimpleAPI"><code>org/sublime/amazon/simpleDB/api/SimpleAPI.scala</code></a>]
+      </div><hr></hr>
+      <a name="SimpleAPI"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>trait</code>
+        <em>SimpleAPI</em>
+      </dt>
+      <dd><code> extends </code><a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html" target="_self">Concrete</a></dd>
+    </dl>
+      <dl><dd>This trait provides a simple API for accessing Amazon SimpleDB.  It is designed to be
+	 mixed in to objects or classes that provide the necessary networking capabilities.</dd></dl>
+      <dl><dt style="margin:10px 0 0 20px;">
+        <b>See Also</b></dt><dd>SimpleDBAccount for a simple and complete implementation.</dd></dl>
+    <dl>
+      <dt style="margin:10px 0 0 20px;"><b>Direct Known Subclasses:</b></dt>
+      <dd><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleDBAccount.html" target="_self">SimpleDBAccount</a>, <a href="../../../../../org/sublime/amazon/simpleDB/TestAccount$object.html" target="_self">TestAccount</a></dd>
+      </dl><hr></hr>
+      
+
+<table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Values and Variables inherited from <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html" target="_self">Concrete</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html#dateFormat" target="_self">dateFormat</a>
+        </td></tr>
+      </table>
+<table summary="" cellpadding="3" class="member">
+      <tr><td class="title" colspan="2">Method Summary</td></tr>
+      <tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html#domain%28String%29" target="_self">domain</a></em>
+        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a>
+        
+        <div>Return a proxy object representing the named simpleDB domain.  No request is made
+		 and the domain may or may not exist on the server. A domain may be created on the server
+		 using the 'create' method, or deleted using the 'delete' method.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html#domains" target="_self">domains</a></em>
+         : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a>]
+        
+        <div>Return a stream of all of the domains within the simpleDB account.  As usual this stream
+	     is fetched lazily, and additional requests to simpleDB will be made only when needed.
+	     
+	     The stream consists of proxy objects that can be used to make further requests.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html#select%28String%29" target="_self">select</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]]
+        
+        <div>Perform a select operation and return a stream of results.  The results are simple
+	     maps of attributes names to sets of values.  A single request is made initially, and
+	     additional requests are made as needed when the stream is read.</div>
+      </td>
+    </tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html" target="_self">Concrete</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html#makeSimpleDBRequest%28org.sublime.amazon.simpleDB.SimpleDBRequest%29" target="_self">makeSimpleDBRequest</a> (abstract), <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html#awsAccessKeyId" target="_self">awsAccessKeyId</a> (abstract), <a href="../../../../../org/sublime/amazon/simpleDB/Concrete.html#now%28%29" target="_self">now</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#getClass%28%29" target="_self">getClass</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#hashCode%28%29" target="_self">hashCode</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#equals%28Any%29" target="_self">equals</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#clone%28%29" target="_self">clone</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#toString%28%29" target="_self">toString</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notify%28%29" target="_self">notify</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notifyAll%28%29" target="_self">notifyAll</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%2CInt%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#finalize%28%29" target="_self">finalize</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%3D%3D%28AnyRef%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%21%3D%28AnyRef%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#eq%28AnyRef%29" target="_self">eq</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#ne%28AnyRef%29" target="_self">ne</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#synchronized%28T0%29" target="_self">synchronized</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html" target="_self">Any</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%3D%3D%28Any%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%21%3D%28Any%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#isInstanceOf" target="_self">isInstanceOf</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#asInstanceOf" target="_self">asInstanceOf</a>
+        </td></tr>
+      </table>
+<table summary="" cellpadding="3" class="member">
+      <tr><td class="title" colspan="2">Class Summary</td></tr>
+      <tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a></em>
+        (<code>val </code><em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        <div>A class which serves as a proxy to a Doman within simpleDB.  This class holds no data
+	     other than a reference to the domain name.  Calls to methods which access items from
+	     within the domain will always result in network requests to SimpleDB.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a></em>
+        (<code>val </code><em>domain</em> : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a>, <code>val </code><em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        <div>A class which serves as a proxy to an Item within simpleDB.  This class holds none of the
+	     attributes of the item itself.  Calls to methods which read or write attributes to and
+	     from the item will result in network requests to SimpleDB.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a></em>
+        (<code>val </code><em>item</em> : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>, <code>val </code><em>self</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]])<code> extends </code><a href="" target="contentFrame" class="scala/collection/MapProxy">scala.collection.MapProxy</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]
+        
+        <div>A map implementation which holds a snapshot of the properties and values of an item.
+	     An item object which can be used for updates or to make further queries can be accessed
+	     via the 'item' field.</div>
+      </td>
+    </tr>
+      </table>
+
+      
+
+
+<table summary="" cellpadding="3" class="member-detail">
+          <tr><td class="title">Method Details</td></tr>
+        </table><div><a name="select%28String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>select</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Perform a select operation and return a stream of results.  The results are simple
+	     maps of attributes names to sets of values.  A single request is made initially, and
+	     additional requests are made as needed when the stream is read.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="domain%28String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>domain</em>(<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a proxy object representing the named simpleDB domain.  No request is made
+		 and the domain may or may not exist on the server. A domain may be created on the server
+		 using the 'create' method, or deleted using the 'delete' method.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="domains"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>domains</em> : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html" target="_self">Domain</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream of all of the domains within the simpleDB account.  As usual this stream
+	     is fetched lazily, and additional requests to simpleDB will be made only when needed.
+	     
+	     The stream consists of proxy objects that can be used to make further requests.</dd></dl>
+      <dl></dl>
+    <hr></hr></div>
+
+
+    <hr></hr>
+        <div>Copyright (c) 2008. All Rights Reserved.</div><table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">SimpleDB API for Scala 0.9-SNAPSHOT API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+      </body>
+      </html>

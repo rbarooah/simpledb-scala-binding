@@ -1,0 +1,529 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>All classes and objects in org.sublime.amazon.simpleDB</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.2)" name="generator"></meta><link href="../../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../../script.js"></script>
+        </head>
+        <body onload="init()"><div class="page-title"><div>SimpleDB API for Scala 0.9-SNAPSHOT API</div></div><p><div>This document is the API specification for SimpleDB API for Scala 0.9-SNAPSHOT API</div></p><table summary="" cellpadding="3" class="member">
+        <tr><td class="title" colspan="2">Class Summary</td></tr>
+        <tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Concrete.html" target="_self">Concrete</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Connection.html" target="_self">Connection</a></em>
+        (<code>val </code><em>awsAccessKeyId</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>awsSecretKey</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/CreateDomain.html" target="_self">CreateDomain</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/CreateDomainResponse.html" target="_self">CreateDomainResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DeleteAttributes.html" target="_self">DeleteAttributes</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DeleteAttributesResponse.html" target="_self">DeleteAttributesResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DeleteDomain.html" target="_self">DeleteDomain</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DeleteDomainResponse.html" target="_self">DeleteDomainResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Diagnostics.html" target="_self">Diagnostics</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/Concrete.html" target="_self">Concrete</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DomainMetadata.html" target="_self">DomainMetadata</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DomainMetadataResponse.html" target="_self">DomainMetadataResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/DomainMetadataResult.html" target="_self">DomainMetadataResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Error.html" target="_self">Error</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Errors.html" target="_self">Errors</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/GetAttributes.html" target="_self">GetAttributes</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/GetAttributesResponse.html" target="_self">GetAttributesResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/GetAttributesResult.html" target="_self">GetAttributesResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code>abstract class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/ItemWithAttributesResult.html" target="_self">ItemWithAttributesResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/ListDomains.html" target="_self">ListDomains</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/ListDomainsResponse.html" target="_self">ListDomainsResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/ListDomainsResult.html" target="_self">ListDomainsResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/PutAttributes.html" target="_self">PutAttributes</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/PutAttributesResponse.html" target="_self">PutAttributesResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Query.html" target="_self">Query</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryParameters.html" target="_self">QueryParameters</a></em>
+        (<code>private </code><em>m</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>])<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryResponse.html" target="_self">QueryResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryResult.html" target="_self">QueryResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryWithAttributes.html" target="_self">QueryWithAttributes</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryWithAttributesResponse.html" target="_self">QueryWithAttributesResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryWithAttributesResult.html" target="_self">QueryWithAttributesResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/ItemWithAttributesResult.html" target="_self">ItemWithAttributesResult</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Select.html" target="_self">Select</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SelectResponse.html" target="_self">SelectResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SelectResult.html" target="_self">SelectResult</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="../../../org/sublime/amazon/simpleDB/ItemWithAttributesResult.html" target="_self">ItemWithAttributesResult</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Signer.html" target="_self">Signer</a></em>
+        (<em>key</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        <div>Class to sign simpleDB REST http requests.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SimpleDBException.html" target="_self">SimpleDBException</a></em>
+        (<code>val </code><em>code</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <code>val </code><em>message</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <code>val </code><em>boxUsage</em> : <a href="http://www.scala-lang.org/docu/files/api/scala/Double.html" target="_self">Double</a>)<code> extends </code><a href="" target="contentFrame" class="java/lang/Exception">java.lang.Exception</a><code> with </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> trait</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SimpleDBRequest.html" target="_self">SimpleDBRequest</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SimpleDBResponse.html" target="_self">SimpleDBResponse</a></em>
+        (<code>implicit </code><em>xml</em> : <a href="" target="contentFrame" class="scala/xml/NodeSeq">scala.xml.NodeSeq</a>)<code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>        
+        </table>
+<table summary="" cellpadding="3" class="member">
+        <tr><td class="title" colspan="2">Object Summary</td></tr>
+        <tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/App$object.html" target="_self">App</a></em>
+        <code> extends </code><a href="" target="contentFrame" class="scala/Application">scala.Application</a>
+        
+        <div>Hello world!</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Attributes$object.html" target="_self">Attributes</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Error$object.html" target="_self">Error</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Format$object.html" target="_self">Format</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/QueryParameters$object.html" target="_self">QueryParameters</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/Service$object.html" target="_self">Service</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/SimpleDBReader$object.html" target="_self">SimpleDBReader</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        <div>Functions for decomposing simpleDB specific types.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/TestAccount$object.html" target="_self">TestAccount</a></em>
+        <code> extends </code><a href="../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html" target="_self">SimpleAPI</a>
+        
+        
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> object</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../org/sublime/amazon/simpleDB/XMLFields$object.html" target="_self">XMLFields</a></em>
+        <code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        
+        <div>functions for breaking down XML</div>
+      </td>
+    </tr>        
+        </table></body>
+      </html>

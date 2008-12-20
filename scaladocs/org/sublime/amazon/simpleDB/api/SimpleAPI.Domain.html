@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+        <head><title>class Domain in org.sublime.amazon.simpleDB.api.SimpleAPI</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8"></meta><meta content="scaladoc (version 2.7.2)" name="generator"></meta><link href="../../../../../style.css" type="text/css" rel="stylesheet"></link><script type="text/javascript" src="../../../../../script.js"></script>
+        </head>
+        <body onload="init()">
+        <table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">SimpleDB API for Scala 0.9-SNAPSHOT API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+        
+      <div class="entity">
+        <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html" target="_self">org.sublime.amazon.simpleDB.api.SimpleAPI</a>
+        <br></br>
+        <span class="entity">class  Domain</span>
+      </div><hr></hr>
+      <div class="source">
+        [source: <a href="" class="org/sublime/amazon/simpleDB/api/SimpleAPI"><code>org/sublime/amazon/simpleDB/api/SimpleAPI.scala</code></a>]
+      </div><hr></hr>
+      <a name="Domain"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>class</code>
+        <em>Domain</em>(<code>val </code><em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)
+      </dt>
+      <dd><code> extends </code><a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a></dd>
+    </dl>
+      <dl><dd>A class which serves as a proxy to a Doman within simpleDB.  This class holds no data
+	     other than a reference to the domain name.  Calls to methods which access items from
+	     within the domain will always result in network requests to SimpleDB.</dd></dl>
+      <dl></dl>
+    
+      
+
+
+<table summary="" cellpadding="3" class="member">
+      <tr><td class="title" colspan="2">Method Summary</td></tr>
+      <tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#create" target="_self">create</a></em>
+         : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        
+        <div>Create a domain within SimpleDB corresponding to this object if one doesn't exist
+			 already.
+			
+			 This is the analog of the 'CreateDomain'</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#delete" target="_self">delete</a></em>
+         : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        
+        <div>Delete this domain from the SimpleDB account.
+			
+			 This is the analog of the 'DeleteDomain' request.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#item%28String%29" target="_self">item</a></em>
+        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>
+        
+        <div>Return a reference to an item with a given name within this domain.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#items" target="_self">items</a></em>
+         : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>]
+        
+        <div>Return a stream containing all of the items within the domain.  One simpleDB request
+			 will be perfomed initially, and subsequent queries will be performed as the stream
+			 is read if they are needed.  This query does not obtain any of the attributes but
+			 returns Item objects that you can use to retrieve the attributes you desire.
+			
+			 This the exact analog of using the 'Query' request without specifying a query
+			 expression.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#itemsWithAttributes" target="_self">itemsWithAttributes</a></em>
+         : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing all of the items within the domain with all of their
+			 attributes.  As with most of the queries that return multiple results, a lazy stream
+			 is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request without specifying a
+			 query expression.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#metadata" target="_self">metadata</a></em>
+         : <a href="../../../../../org/sublime/amazon/simpleDB/DomainMetadataResult.html" target="_self">DomainMetadataResult</a>
+        
+        <div>Return a current snapshot of the metadata associated with this domain.
+		    
+		     This is the analog of the 'DomainMetadata' request.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#query%28String%29" target="_self">query</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>]
+        
+        <div>Perform a request and return a stream of the results.  One simpleDB request will be
+			 performed initially, and subsequent queries will be performed as the stream is read
+			 if they are needed.
+			
+			 This is the analog of the 'Query' request.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code>override def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#toString%28%29" target="_self">toString</a></em>
+         : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>
+        
+        <div>Returns a string representation of the object.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28Option%5BString%5D%2CSet%5BString%5D%29" target="_self">withAttributes</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="scala/Option">scala.Option</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>], <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing the items matching an optional query with a selected set 
+			 of their attributes.  As with most of the queries that return multiple results, a 
+			 lazy stream is returned and additional requests are made to SimpleDB only when 
+			 needed.  If 'None' is supplied instead of the query string, all items are returned.
+			
+			 This is the analog of using the 'QueryWithAttributes' request.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28String%2CSet%5BString%5D%29" target="_self">withAttributes</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing the items matching a given query with a selected set of 
+			 their attributes.  As with most of the queries that return multiple results, a lazy
+			 stream is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request with a query 
+			 expression and a list of attributes.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28String%29" target="_self">withAttributes</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing the items matching a given query with all of their
+			 attributes.  As with most of the queries that return multiple results, a lazy stream
+			 is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request with a query expression
+			 but no list of attributes.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28Set%5BString%5D%29" target="_self">withAttributes</a></em>
+        (<em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing all of the items within a domain with a selected set of 
+			 their attributes.  As with most of the queries that return multiple results, a lazy
+			 stream is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request without a query 
+			 expression but with a list of attributes.</div>
+      </td>
+    </tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html" target="_self">AnyRef</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#getClass%28%29" target="_self">getClass</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#hashCode%28%29" target="_self">hashCode</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#equals%28Any%29" target="_self">equals</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#clone%28%29" target="_self">clone</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notify%28%29" target="_self">notify</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#notifyAll%28%29" target="_self">notifyAll</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28Long%2CInt%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#wait%28%29" target="_self">wait</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#finalize%28%29" target="_self">finalize</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%3D%3D%28AnyRef%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#%21%3D%28AnyRef%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#eq%28AnyRef%29" target="_self">eq</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#ne%28AnyRef%29" target="_self">ne</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/AnyRef.html#synchronized%28T0%29" target="_self">synchronized</a>
+        </td></tr>
+      </table><table summary="" cellpadding="3" class="inherited">
+        <tr><td class="title" colspan="2">
+          Methods inherited from <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html" target="_self">Any</a>
+        </td></tr>
+        <tr><td class="signature" colspan="2">
+          <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%3D%3D%28Any%29" target="_self">==</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#%21%3D%28Any%29" target="_self">!=</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#isInstanceOf" target="_self">isInstanceOf</a>, <a href="http://www.scala-lang.org/docu/files/api/scala/Any.html#asInstanceOf" target="_self">asInstanceOf</a>
+        </td></tr>
+      </table>
+
+
+      
+
+
+<table summary="" cellpadding="3" class="member-detail">
+          <tr><td class="title">Method Details</td></tr>
+        </table><div><a name="metadata"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>metadata</em> : <a href="../../../../../org/sublime/amazon/simpleDB/DomainMetadataResult.html" target="_self">DomainMetadataResult</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a current snapshot of the metadata associated with this domain.
+		    
+		     This is the analog of the 'DomainMetadata' request.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="delete"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>delete</em> : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Delete this domain from the SimpleDB account.
+			
+			 This is the analog of the 'DeleteDomain' request.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="create"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>create</em> : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Create a domain within SimpleDB corresponding to this object if one doesn't exist
+			 already.
+			
+			 This is the analog of the 'CreateDomain'</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="item%28String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>item</em>(<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a reference to an item with a given name within this domain.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="query%28String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>query</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Perform a request and return a stream of the results.  One simpleDB request will be
+			 performed initially, and subsequent queries will be performed as the stream is read
+			 if they are needed.
+			
+			 This is the analog of the 'Query' request.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="items"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>items</em> : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing all of the items within the domain.  One simpleDB request
+			 will be perfomed initially, and subsequent queries will be performed as the stream
+			 is read if they are needed.  This query does not obtain any of the attributes but
+			 returns Item objects that you can use to retrieve the attributes you desire.
+			
+			 This the exact analog of using the 'Query' request without specifying a query
+			 expression.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="itemsWithAttributes"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>itemsWithAttributes</em> : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing all of the items within the domain with all of their
+			 attributes.  As with most of the queries that return multiple results, a lazy stream
+			 is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request without specifying a
+			 query expression.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="withAttributes%28String%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>withAttributes</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing the items matching a given query with all of their
+			 attributes.  As with most of the queries that return multiple results, a lazy stream
+			 is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request with a query expression
+			 but no list of attributes.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="withAttributes%28Set%5BString%5D%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>withAttributes</em>(<em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing all of the items within a domain with a selected set of 
+			 their attributes.  As with most of the queries that return multiple results, a lazy
+			 stream is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request without a query 
+			 expression but with a list of attributes.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="withAttributes%28String%2CSet%5BString%5D%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>withAttributes</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing the items matching a given query with a selected set of 
+			 their attributes.  As with most of the queries that return multiple results, a lazy
+			 stream is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request with a query 
+			 expression and a list of attributes.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="withAttributes%28Option%5BString%5D%2CSet%5BString%5D%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>withAttributes</em>(<em>expression</em> : <a href="" target="contentFrame" class="scala/Option">scala.Option</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>], <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a stream containing the items matching an optional query with a selected set 
+			 of their attributes.  As with most of the queries that return multiple results, a 
+			 lazy stream is returned and additional requests are made to SimpleDB only when 
+			 needed.  If 'None' is supplied instead of the query string, all items are returned.
+			
+			 This is the analog of using the 'QueryWithAttributes' request.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="toString%28%29"></a><dl>
+      <dt>
+        
+        <code>override</code>
+        <code>def</code>
+        <em>toString</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Returns a string representation of the object.  
+    <p>
+    The default representation is platform dependent.</dd></dl>
+      <dl><dt style="margin:10px 0 0 20px;">
+        <b>Returns</b></dt><dd>a string representation of the object.     </p></dd></dl>
+    <hr></hr></div>
+
+
+    <hr></hr>
+        <div>Copyright (c) 2008. All Rights Reserved.</div><table summary="" class="navigation">
+        <tr>
+          <td class="navigation-links" valign="top">
+            <!-- <table><tr></tr></table> -->
+          </td>
+          <td align="right" valign="top" style="white-space:nowrap;" rowspan="2">
+            <div class="doctitle-larger">SimpleDB API for Scala 0.9-SNAPSHOT API</div>
+          </td>
+        </tr>
+        <tr><td></td></tr>
+      </table>
+      </body>
+      </html>
