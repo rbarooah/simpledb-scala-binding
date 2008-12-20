@@ -60,18 +60,20 @@ package org.sublime.amazon.simpleDB {
 	}
 	
 	trait PutAttributes extends SimpleDBRequest {
+	    import Attributes._
+	    
 		def action = "PutAttributes"
 		def itemName:String
 		def attributes:Map[String, (Set[String] , Boolean)]
 		def domainName:String		
-		def specificParameters = attributeNames ++ 
+		def specificParameters = replacableAttributes ++ 
 			Map("DomainName" -> domainName, "ItemName"->itemName) 
 		
-		def attributeNames : Map[String,String] = {
-            def param (kind:String, pos:int, value:String) = Map("Attribute."+pos+"."+kind -> value)
+		def replacableAttributes : Map[String,String] = {
             def flattened = attributes flatMap (e => e match {
               case (name, (value, replace)) => for (each <- value) yield (name, each, replace)
             }) 
+            
             def params :List[Map[String, String]] = 
                 (flattened.toList zipWithIndex) map (z => z match {
                     case ((name, value, replace), pos) => 
@@ -79,41 +81,42 @@ package org.sublime.amazon.simpleDB {
                             (if (replace) param("Replace", pos, "True")
                             else Map.empty)
                 })
+                
             (Map[String, String]() /: params) (_ ++ _)
 		}		
 	}
 	
 	trait DeleteAttributes extends SimpleDBRequest {
+	    import Attributes._
+	    
 		def action = "DeleteAttributes"
 		def attributes:Map[String, Set[String]]
-		def domainName:String		
+		def domainName:String
 		def itemName:String
 		def specificParameters = Map("DomainName" -> domainName, "ItemName" -> itemName) ++ 
-		    attributeNames	
+		    attributeNameValues	
 		
-		def attributeNames :Map[String, String] = {
-			import scala.collection.immutable.HashMap;		
-			var coded :Map[String, String] = new HashMap[String, String]()
-			var pos = 0;
+		def attributeNameValues :Map[String, String] = {
 			
-			def addName (name:String) {
-				coded = coded + ("Attribute."+pos+".Name" -> name)
-				pos = pos + 1
+			def flattened = attributes flatMap { e => e match {
+			    case (name, values) => 
+			        (if (values isEmpty) List((name, None))
+			        else for (value <- values) yield (name, Some(value)))
+			    }
 			}
 			
-			def addPair (name:String, value:String) {
-				coded = coded + ("Attribute."+pos+".Name" -> name)
-				coded = coded + ("Attribute."+pos+".Value" -> value)
-				pos = pos + 1
-			}
+			def numbered = flattened.toList zipWithIndex
 			
-			for (name <- attributes.keys) {
-				val set = attributes(name)
-				if (set.size <= 1) addName(name) 
-					else for (value <- set) addPair(name, value)
-			}
-
-			coded
+			def params = numbered map ( e => e match {
+			    case ((name, value), pos) => 
+			        param ("Name", pos, name) ++
+			        (value match {
+			            case None => param("Name", pos, name)
+			            case Some(value) => param("Value", pos, value)
+			        })
+			})
+			
+			(Map[String,String]() /: params) (_ ++ _)
 		}
 	}
 	
@@ -173,6 +176,8 @@ package org.sublime.amazon.simpleDB {
 	}
 	
 	object Attributes {
+	    def param (kind:String, pos:int, value:String) = Map("Attribute."+pos+"."+kind -> value)        
+	    
 		def attributeNames (names:Set[String]) :Map[String, String] = {
 			import scala.collection.immutable.HashMap;		
 			var coded :Map[String, String] = new HashMap[String, String]()
