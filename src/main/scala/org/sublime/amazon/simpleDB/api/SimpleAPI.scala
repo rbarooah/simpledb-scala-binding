@@ -33,16 +33,24 @@ package org.sublime.amazon.simpleDB.api {
 	        extends MapProxy[String,Set[String]]	    
 	    
 	    /**
+	     * A map implementation which holds a snapshot of the properties and values of an item
+	     * The 'name' field contains the name of the item.
+	     */
+	    class ItemNameSnapshot(val name:String, val self:Map[String,Set[String]])
+	        extends MapProxy[String,Set[String]]
+	    
+	    /**
 	     * Perform a select operation and return a stream of results.  The results are simple
 	     * maps of attributes names to sets of values.  A single request is made initially, and
 	     * additional requests are made as needed when the stream is read.
 	     */
         def select (expression:String) 
-		    :Stream[Map[String, Set[String]]] = {
+		    :Stream[ItemNameSnapshot] = {
 		        
-		    def convert (i:ItemWithAttributesResult#Item) = i.attributes
+		    def convert (i:ItemWithAttributesResult#Item) = new ItemNameSnapshot(i.name, 
+		        i.attributes)
 		    
-		    def generate(res:SelectResponse) :Stream[Map[String,Set[String]]] =
+		    def generate(res:SelectResponse) :Stream[ItemNameSnapshot] =
 		        streamOfObjects(res.result.items.toList, convert)
 		        
 		    def responses(req:SelectRequest, res:SelectResponse) 
@@ -198,6 +206,11 @@ package org.sublime.amazon.simpleDB.api {
 			def item (name:String) = new Item(this, name)
 			
 			/**
+			 * Return a reference to an item given an ItemNameSnapshot (as returned from select)
+			 */
+			def item (snapshot:ItemNameSnapshot) = new Item(this, snapshot.name)
+			
+			/**
 			 * Perform a request and return a stream of the results.  One simpleDB request will be
 			 * performed initially, and subsequent queries will be performed as the stream is read
 			 * if they are needed.
@@ -219,7 +232,7 @@ package org.sublime.amazon.simpleDB.api {
 			
 			private def query(expression:Option[String]) :Stream[Item] = {
 			    def generate (res:QueryResponse) :Stream[Item] =
-			        streamOfObjects(res.result.itemNames.toList, item)
+			        streamOfObjects[Item, String](res.result.itemNames.toList, item)
 			        
 			    def responses (req:QueryRequest, res:QueryResponse) :Stream[QueryResponse] =
 			        Stream.cons(res, QueryRequest.next(req, res) match {
