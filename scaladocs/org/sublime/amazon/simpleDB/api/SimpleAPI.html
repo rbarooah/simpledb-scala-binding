@@ -86,7 +86,7 @@
       </td>
       <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.html#select%28String%29" target="_self">select</a></em>
-        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]]
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemNameSnapshot.html" target="_self">ItemNameSnapshot</a>]
         
         <div>Perform a select operation and return a stream of results.  The results are simple
 	     maps of attributes names to sets of values.  A single request is made initially, and
@@ -148,6 +148,18 @@
         <code> class</code>
       </td>
       <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemNameSnapshot.html" target="_self">ItemNameSnapshot</a></em>
+        (<code>val </code><em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <code>val </code><em>self</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]])<code> extends </code><a href="" target="contentFrame" class="scala/collection/MapProxy">scala.collection.MapProxy</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]
+        
+        <div>A map implementation which holds a snapshot of the properties and values of an item
+	     The 'name' field contains the name of the item.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> class</code>
+      </td>
+      <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a></em>
         (<code>val </code><em>item</em> : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>, <code>val </code><em>self</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]])<code> extends </code><a href="" target="contentFrame" class="scala/collection/MapProxy">scala.collection.MapProxy</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]
         
@@ -168,7 +180,7 @@
         
         <code></code>
         <code>def</code>
-        <em>select</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="" target="contentFrame" class="scala/collection/immutable/Map">scala.collection.immutable.Map</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]]]
+        <em>select</em>(<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemNameSnapshot.html" target="_self">ItemNameSnapshot</a>]
       </dt>
       <dd></dd>
     </dl>

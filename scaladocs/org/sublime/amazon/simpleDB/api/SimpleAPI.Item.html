@@ -48,17 +48,6 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#%2B%3D%28String%2CSet%5BString%5D%29" target="_self">+=</a></em>
-        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>values</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
-        
-        <div>Add multiple values to an attribute of this item.</div>
-      </td>
-    </tr>
-<tr>
-      <td class="modifiers" valign="top"> 
-        <code> def</code>
-      </td>
-      <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#%2B%3D%28%28String%2CString%29%29" target="_self">+=</a></em>
         (<em>pair</em> : (<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
         
@@ -70,10 +59,10 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#-%3D%28String%29" target="_self">-=</a></em>
-        (<em>attributeName</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#%2B%3D%28String%2CSet%5BString%5D%29" target="_self">+=</a></em>
+        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>values</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
         
-        <div>Delete a single attribute in this item.</div>
+        <div>Add multiple values to an attribute of this item.</div>
       </td>
     </tr>
 <tr>
@@ -85,6 +74,17 @@
         (<em>pair</em> : (<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
         
         <div>Delete a single attribute value pair in this item.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#-%3D%28String%29" target="_self">-=</a></em>
+        (<em>attributeName</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        
+        <div>Delete a single attribute in this item.</div>
       </td>
     </tr>
 <tr>
@@ -147,11 +147,11 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#set%28String%2CSet%5BString%5D%29" target="_self">set</a></em>
-        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>values</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#set%28%28String%2CString%29%29" target="_self">set</a></em>
+        (<em>pair</em> : (<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
         
-        <div>Replace the value of an attribute in this item with a set of values.  Any previously
-		     existing values for this item will be deleted.</div>
+        <div>Replace the value of an attribute in this item with a single value.  Any previously
+			 existing values for this item will be deleted.</div>
       </td>
     </tr>
 <tr>
@@ -159,11 +159,11 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#set%28%28String%2CString%29%29" target="_self">set</a></em>
-        (<em>pair</em> : (<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>)) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html#set%28String%2CSet%5BString%5D%29" target="_self">set</a></em>
+        (<em>name</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>values</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="../../../../../org/sublime/amazon/simpleDB/ResponseMetadata.html" target="_self">ResponseMetadata</a>
         
-        <div>Replace the value of an attribute in this item with a single value.  Any previously
-			 existing values for this item will be deleted.</div>
+        <div>Replace the value of an attribute in this item with a set of values.  Any previously
+		     existing values for this item will be deleted.</div>
       </td>
     </tr>
 <tr>

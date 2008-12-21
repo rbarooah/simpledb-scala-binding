@@ -86,6 +86,17 @@
         <code> def</code>
       </td>
       <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#item%28SimpleAPI.this.ItemNameSnapshot%29" target="_self">item</a></em>
+        (<em>snapshot</em> : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemNameSnapshot.html" target="_self">ItemNameSnapshot</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>
+        
+        <div>Return a reference to an item given an ItemNameSnapshot (as returned from select)</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#items" target="_self">items</a></em>
          : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>]
         
@@ -158,22 +169,6 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28Option%5BString%5D%2CSet%5BString%5D%29" target="_self">withAttributes</a></em>
-        (<em>expression</em> : <a href="" target="contentFrame" class="scala/Option">scala.Option</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>], <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
-        
-        <div>Return a stream containing the items matching an optional query with a selected set 
-			 of their attributes.  As with most of the queries that return multiple results, a 
-			 lazy stream is returned and additional requests are made to SimpleDB only when 
-			 needed.  If 'None' is supplied instead of the query string, all items are returned.
-			
-			 This is the analog of using the 'QueryWithAttributes' request.</div>
-      </td>
-    </tr>
-<tr>
-      <td class="modifiers" valign="top"> 
-        <code> def</code>
-      </td>
-      <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28String%2CSet%5BString%5D%29" target="_self">withAttributes</a></em>
         (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>, <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
         
@@ -190,22 +185,6 @@
         <code> def</code>
       </td>
       <td class="signature">
-        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28String%29" target="_self">withAttributes</a></em>
-        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
-        
-        <div>Return a stream containing the items matching a given query with all of their
-			 attributes.  As with most of the queries that return multiple results, a lazy stream
-			 is returned and additional requests are made to SimpleDB only when needed.
-			
-			 This is the analog of using the 'QueryWithAttributes' request with a query expression
-			 but no list of attributes.</div>
-      </td>
-    </tr>
-<tr>
-      <td class="modifiers" valign="top"> 
-        <code> def</code>
-      </td>
-      <td class="signature">
         <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28Set%5BString%5D%29" target="_self">withAttributes</a></em>
         (<em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
         
@@ -215,6 +194,38 @@
 			
 			 This is the analog of using the 'QueryWithAttributes' request without a query 
 			 expression but with a list of attributes.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28Option%5BString%5D%2CSet%5BString%5D%29" target="_self">withAttributes</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="scala/Option">scala.Option</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>], <em>attributes</em> : <a href="" target="contentFrame" class="scala/collection/immutable/Set">scala.collection.immutable.Set</a>[<a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>]) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing the items matching an optional query with a selected set 
+			 of their attributes.  As with most of the queries that return multiple results, a 
+			 lazy stream is returned and additional requests are made to SimpleDB only when 
+			 needed.  If 'None' is supplied instead of the query string, all items are returned.
+			
+			 This is the analog of using the 'QueryWithAttributes' request.</div>
+      </td>
+    </tr>
+<tr>
+      <td class="modifiers" valign="top"> 
+        <code> def</code>
+      </td>
+      <td class="signature">
+        <em><a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Domain.html#withAttributes%28String%29" target="_self">withAttributes</a></em>
+        (<em>expression</em> : <a href="" target="contentFrame" class="java/lang/String">java.lang.String</a>) : <a href="" target="contentFrame" class="scala/Stream">scala.Stream</a>[<a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemSnapshot.html" target="_self">ItemSnapshot</a>]
+        
+        <div>Return a stream containing the items matching a given query with all of their
+			 attributes.  As with most of the queries that return multiple results, a lazy stream
+			 is returned and additional requests are made to SimpleDB only when needed.
+			
+			 This is the analog of using the 'QueryWithAttributes' request with a query expression
+			 but no list of attributes.</div>
       </td>
     </tr>
       </table><table summary="" cellpadding="3" class="inherited">
@@ -292,6 +303,18 @@
       <dd></dd>
     </dl>
       <dl><dd>Return a reference to an item with a given name within this domain.</dd></dl>
+      <dl></dl>
+    <hr></hr>
+<a name="item%28SimpleAPI.this.ItemNameSnapshot%29"></a><dl>
+      <dt>
+        
+        <code></code>
+        <code>def</code>
+        <em>item</em>(<em>snapshot</em> : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.ItemNameSnapshot.html" target="_self">ItemNameSnapshot</a>) : <a href="../../../../../org/sublime/amazon/simpleDB/api/SimpleAPI.Item.html" target="_self">Item</a>
+      </dt>
+      <dd></dd>
+    </dl>
+      <dl><dd>Return a reference to an item given an ItemNameSnapshot (as returned from select)</dd></dl>
       <dl></dl>
     <hr></hr>
 <a name="query%28String%29"></a><dl>
