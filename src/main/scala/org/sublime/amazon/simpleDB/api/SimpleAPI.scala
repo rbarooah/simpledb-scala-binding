@@ -130,6 +130,22 @@ package org.sublime.amazon.simpleDB.api {
 			 */
 			def += (pair:(String, String)) = putAttribute(pair, false)
 
+            /**
+             * Add multiple values to this attribute by specifying a series of mappings.
+             */
+            def += (pairs:(String, String)*) = update(combinePairs(false, pairs:_*))
+
+            private def combinePairs (replace:Boolean, pairs:(String, String)*)
+                :Map[String, (Set[String], Boolean)] = {
+                def combine (map:Map[String,(Set[String], Boolean)], pair:(String, String))
+                    :Map[String,(Set[String], Boolean)] = 
+                        if (map.contains(pair._1)) 
+                            map ++ Map(pair._1 -> (map(pair._1)._1 + pair._2 -> replace))
+                        else map ++ Map(pair._1 -> (Set[String](pair._2) -> replace))
+
+                (Map[String,(Set[String], Boolean)]() /: pairs) (combine(_, _))
+            }
+
 			/**
 			 * Add multiple values to an attribute of this item.
 			 */
@@ -140,12 +156,17 @@ package org.sublime.amazon.simpleDB.api {
 			 * existing values for this item will be deleted.
 			 */
 			def set (pair:(String,String)) = putAttribute(pair, true)
-		
+				
 		    /**
 		     * Replace the value of an attribute in this item with a set of values.  Any previously
 		     * existing values for this item will be deleted.
 		     */
 		    def set (name:String, values:Set[String]) = putAttribute(name, values, true)
+		
+		    /**
+		     * Replace the values of multiple attributes in this item with a series of mappings.
+		     */
+		    def set (pairs:(String,String)*) = update(combinePairs(true, pairs:_*))
 		
 			/** 
 			 * Delete all of the attributes in this item.
