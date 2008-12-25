@@ -335,6 +335,9 @@ package org.sublime.amazon.simpleDB.api {
 			    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 			    streamOfStreams(responses(start, start.response), generate)        		
 		    }
+		    
+		    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
+		    def apply (expr:Expression) = withAttributes (expr.toString)
 		    			
 			override def toString = name			
 		}
