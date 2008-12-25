@@ -21,8 +21,7 @@ package org.sublime.amazon.simpleDB.api {
      */
     class SimpleDBAccount (val awsAccessKeyId:String, awsSecretKey:String) extends SimpleAPI
     {
-        val connection = new Connection(awsAccessKeyId, awsSecretKey)
-        
+        val connection = new Connection(awsAccessKeyId, awsSecretKey)        
         def makeSimpleDBRequest (req:SimpleDBRequest) :Elem = connection.makeRequest(req)
     }
 }
