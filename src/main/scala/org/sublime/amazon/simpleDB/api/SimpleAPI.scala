@@ -337,6 +337,7 @@ package org.sublime.amazon.simpleDB.api {
 		    }
 		    
 		    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
+		    import Query.Expression
 		    def apply (expr:Expression) = withAttributes (expr.toString)
 		    			
 			override def toString = name			
