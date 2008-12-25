@@ -13,15 +13,13 @@ package org.sublime.amazon.simpleDB {
 
         case class Combination(operation:String, lhs:Expression, rhs:Expression) 
             extends Expression with Sortable with Combinable
-        {
-        
+        {        
             override def toString = lhs + " "+operation+" "+rhs
         }    
 
         case class Negation(target:Predicate) extends Expression with Combinable
         {
             override def toString = "not " + target;
-        
         }
 
         case class DescendingSort(target:Expression, name:String) extends Expression
@@ -77,6 +75,12 @@ package org.sublime.amazon.simpleDB {
         case class Attribute [T] (name:String, conversion:Conversion[T])
         {   
             def apply (value:T) = (name -> conversion(value))
+            def apply (result:Map[String,Set[String]]) = 
+                if (! result.contains(name)) Set[T]()
+                else result(name) flatMap ( raw => raw match {
+                    case conversion(value) => List(value)
+                    case _ => List()
+                } )
         
             private def comparison (op:String, value:T) = Comparison(op, this, value)
         
@@ -91,6 +95,6 @@ package org.sublime.amazon.simpleDB {
         }
         
         def attribute (name:String) = Attribute(name, Unconverted)
-        def attribute (name:String, conversion:Conversion[T]) = Attribute(name, conversion)
+        def attribute [T] (name:String, conversion:Conversion[T]) = Attribute(name, conversion)
     }
 }
