@@ -21,6 +21,7 @@ package org.sublime.amazon.simpleDB {
 	
 	class Connection (val awsAccessKeyId:String, awsSecretKey:String) {
 		import Service._
+		import Exceptions.SimpleDBException
 		
 		import org.apache.commons.httpclient.HttpClient
 		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
