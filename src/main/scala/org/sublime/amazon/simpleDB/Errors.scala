@@ -144,5 +144,128 @@ package org.sublime.amazon.simpleDB {
         
         class URITooLong(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)        
+ 
+        def toException(code:String, message:String, boxUsage:Double) = code match {  
+                      
+            case "AccessFailure" => 	
+            	new AccessFailure(code, message, boxUsage)
+
+            case "AuthFailure" => 
+            	new AuthFailure(code, message, boxUsage)
+
+            case "AuthMissingFailure" => 
+            	new AuthMissingFailure(code, message, boxUsage)
+
+            case "FeatureDeprecated" => 
+            	new FeatureDeprecated(code, message, boxUsage)
+
+            case "InternalError" =>  
+            	new InternalError(code, message, boxUsage)
+
+            case "InvalidAction" =>  
+            	new InvalidAction(code, message, boxUsage)
+
+            case "InvalidBatchRequest" => 
+            	new InvalidBatchRequest(code, message, boxUsage)
+
+            case "InvalidHTTPAuthHeader" => 
+            	new InvalidHTTPAuthHeader(code, message, boxUsage)
+
+            case "InvalidHttpRequest" => 
+            	new InvalidHttpRequest(code, message, boxUsage)
+
+            case "InvalidLiteral" => 
+            	new InvalidLiteral(code, message, boxUsage)
+
+            case "InvalidNextToken" => 
+            	new InvalidNextToken(code, message, boxUsage)
+
+            case "InvalidNumberPredicates" => 
+            	new InvalidNumberPredicates(code, message, boxUsage)
+
+            case "InvalidNumberValueTests" => 
+            	new InvalidNumberValueTests(code, message, boxUsage)
+
+            case "InvalidParameterCombination" => 
+            	new InvalidParameterCombination(code, message, boxUsage)
+
+            case "InvalidParameterValue" => 
+            	new InvalidParameterValue(code, message, boxUsage)
+
+            case "InvalidQueryExpression" => 
+            	new InvalidQueryExpression(code, message, boxUsage)
+
+            case "InvalidResponseGroups" => 
+            	new InvalidResponseGroups(code, message, boxUsage)
+
+            case "InvalidService" => 
+            	new InvalidService(code, message, boxUsage)
+
+            case "InvalidSOAPRequest" => 
+            	new InvalidSOAPRequest(code, message, boxUsage)
+
+            case "InvalidURI" => 
+            	new InvalidURI(code, message, boxUsage)
+
+            case "InvalidWSAddressingProperty" => 
+            	new InvalidWSAddressingProperty(code, message, boxUsage)
+
+            case "MalformedSOAPSignature" => 
+            	new MalformedSOAPSignature(code, message, boxUsage)
+
+            case "MissingAction" => 
+            	new MissingAction(code, message, boxUsage)
+
+            case "MissingParameter" => 
+            	new MissingParameter(code, message, boxUsage)
+
+            case "MissingWSAddressingProperty" => 
+            	new MissingWSAddressingProperty(code, message, boxUsage)
+
+            case "NoSuchDomain" => 
+            	new NoSuchDomain(code, message, boxUsage)
+
+            case "NoSuchVersion" => 
+            	new NoSuchVersion(code, message, boxUsage)
+
+            case "NotYetImplemented" => 
+            	new NotYetImplemented(code, message, boxUsage)
+
+            case "NumberDomainsExceeded" => 
+            	new NumberDomainsExceeded(code, message, boxUsage)
+
+            case "NumberDomainAttributesExceeded" => 
+            	new NumberDomainAttributesExceeded(code, message, boxUsage)
+
+            case "NumberDomainBytesExceeded" => 
+            	new NumberDomainBytesExceeded(code, message, boxUsage)
+
+            case "NumberItemAttributesExceeded" => 
+            	new NumberItemAttributesExceeded(code, message, boxUsage)
+
+            case "NumberSubmittedAttributesExceeded" => 
+            	new NumberSubmittedAttributesExceeded(code, message, boxUsage)
+
+            case "RequestExpired" => 
+            	new RequestExpired(code, message, boxUsage)
+
+            case "RequestTimeout" => 
+            	new RequestTimeout(code, message, boxUsage)
+
+            case "ServiceUnavailable" => 
+            	new ServiceUnavailable(code, message, boxUsage)
+
+            case "TooManyRequestedAttributes" => 
+            	new TooManyRequestedAttributes(code, message, boxUsage)
+
+            case "UnsupportedHttpVerb" => 
+            	new UnsupportedHttpVerb(code, message, boxUsage)
+
+            case "UnsupportedNextToken" => 
+            	new UnsupportedNextToken(code, message, boxUsage)
+
+            case "URITooLong" => 
+            	new URITooLong(code, message, boxUsage)
+        }
     }
 }

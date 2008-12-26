@@ -21,7 +21,7 @@ package org.sublime.amazon.simpleDB {
 	
 	class Connection (val awsAccessKeyId:String, awsSecretKey:String) {
 		import Service._
-		import Exceptions.SimpleDBException
+		import Exceptions.toException
 		
 		import org.apache.commons.httpclient.HttpClient
 		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
@@ -42,7 +42,7 @@ package org.sublime.amazon.simpleDB {
 			if (trace) diagnose(xml)
 			xml match { 
 			    case Error(code, message, boxUsage) => 
-			        throw new SimpleDBException(code, message, boxUsage)
+			        throw toException(code, message, boxUsage)
 			    case _ => xml
 		    }
 		}
