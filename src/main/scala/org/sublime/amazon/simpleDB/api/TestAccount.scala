@@ -26,10 +26,10 @@ package org.sublime.amazon.simpleDB.api {
         private val idProperty = "awsAccessKeyId"
         private val keyProperty = "awsSecretKey"
         
-        def propertyMissing (p:String) = 
+        private def propertyMissing (p:String) = 
             throw new RuntimeException(resource + " does not define "+p)
         
-        def using [T] (p:String) (next: String => T) (implicit prop:Properties) :T = {
+        private def using [T] (p:String) (next: String => T) (implicit prop:Properties) :T = {
             val v = prop.getProperty(p)
             if (v == null) propertyMissing(p)
             else next(v)
@@ -39,7 +39,6 @@ package org.sublime.amazon.simpleDB.api {
             val is = getClass.getResourceAsStream(resource)
             if (is == null) throw new RuntimeException("resource "+resource+" not on classpath")
             else {
-                Console.println("found file")
                 implicit val p = new Properties()
                 p.load(is)
                 using (idProperty) { id =>
