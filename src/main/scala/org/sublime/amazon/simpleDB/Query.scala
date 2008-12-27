@@ -1,6 +1,6 @@
 package org.sublime.amazon.simpleDB {
     
-    object Query {
+    object Query {        
         
         abstract case class Expression {
             //def query :String

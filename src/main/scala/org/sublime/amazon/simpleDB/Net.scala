@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package org.sublime.amazon.simpleDB {
+    import Request._
 	import scala.xml._
 	
 	object Service {
