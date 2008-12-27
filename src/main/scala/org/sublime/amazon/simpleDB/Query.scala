@@ -1,6 +1,7 @@
 package org.sublime.amazon.simpleDB {
     
     object Query {
+        
         abstract case class Expression {
             //def query :String
         }
@@ -21,7 +22,7 @@ package org.sublime.amazon.simpleDB {
         {
             override def toString = "not " + target;
         }
-
+        
         case class DescendingSort(target:Expression, name:String) extends Expression
         {
             override def toString = target.toString + " order by " + name + " desc"
@@ -94,7 +95,7 @@ package org.sublime.amazon.simpleDB {
             def does_not_start_with (value:T) = comparison("does_not_start_with", value)
         }
         
-        def attribute (name:String) = Attribute(name, Unconverted)
-        def attribute [T] (name:String, conversion:Conversion[T]) = Attribute(name, conversion)
+        def attribute (name:String) = Attribute(name, Conversions.PassThrough)
+        def attribute [T] (name:String, conversion:Conversion[T]) = Attribute[T](name, conversion)
     }
 }
