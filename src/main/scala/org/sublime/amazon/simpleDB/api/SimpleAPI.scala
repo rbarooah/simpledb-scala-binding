@@ -337,9 +337,14 @@ package org.sublime.amazon.simpleDB.api {
 		    }
 		    
 		    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
-		    import Query.Expression
+		    import Query.{Expression, NamedAttribute}
+		    private def attributeSet (attrs:NamedAttribute*) :Set[String] = 
+		        (Set[String]() /: (for (a <- attrs) yield (Set[String](a.name)))) (_ ++ _)
+		        
 		    def apply (expr:Expression) = withAttributes (expr.toString)
-		    			
+		    def apply (attrs:NamedAttribute*) (expr:Expression) = 
+		        withAttributes(expr.toString, attributeSet(attrs:_*))
+		    		    			
 			override def toString = name			
 		}
 		

@@ -71,13 +71,16 @@ package org.sublime.amazon.simpleDB {
                 val (name, converted) = attribute(value) 
                 quote (name) + " " + operator + " " + quote (converted)
             }
-        }    
+        }
+        
+        case class NamedAttribute (name:String)
 
-        case class Attribute [T] (name:String, conversion:Conversion[T])
+        case class Attribute [T] (override val name:String, conversion:Conversion[T]) extends
+            NamedAttribute(name)
         {   
             def apply (value:T) = (name -> conversion(value))
             def apply (result:Map[String,Set[String]]) = 
-                if (! result.contains(name)) Set[T]()
+                if (! result.contains(name)) List[T]()
                 else result(name) flatMap ( raw => raw match {
                     case conversion(value) => List(value)
                     case _ => List()
