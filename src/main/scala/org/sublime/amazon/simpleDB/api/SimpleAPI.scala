@@ -29,7 +29,7 @@ package org.sublime.amazon.simpleDB.api {
 	     * An item object which can be used for updates or to make further queries can be accessed
 	     * via the 'item' field.
 	     */
-	    class ItemSnapshot(val item:Item, val self:Map[String,Set[String]]) 
+	    class ItemSnapshot(val item:Item, val self:Map[String,Set[String]])
 	        extends MapProxy[String,Set[String]]	    
 	    
 	    /**
@@ -220,6 +220,11 @@ package org.sublime.amazon.simpleDB.api {
 			 * This is the analog of the 'CreateDomain'
 			 */
 			def create = (new CreateDomainRequest(name)).response.metadata
+			
+			/**
+			 * Return a reference to a theoretically unique item with a new UUID as it's name.
+			 */
+			def unique = new Item(this, java.util.UUID.randomUUID.toString)            
 			
 			/**
 			 * Return a reference to an item with a given name within this domain. 
