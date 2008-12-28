@@ -79,12 +79,14 @@ package org.sublime.amazon.simpleDB {
             NamedAttribute(name)
         {   
             def apply (value:T) = (name -> conversion(value))
-            def apply (result:Map[String,Set[String]]) = 
+            
+            import scala.collection.Map
+            def apply (result:Map[String,Set[String]]) : List[T] = 
                 if (! result.contains(name)) List[T]()
-                else result(name) flatMap ( raw => raw match {
-                    case conversion(value) => List(value)
-                    case _ => List()
-                } )
+                else (result(name) flatMap ( raw => raw match {
+                    case conversion(value) => List[T](value)
+                    case _ => List[T]()
+                } )).toList
         
             private def comparison (op:String, value:T) = Comparison(op, this, value)
         
