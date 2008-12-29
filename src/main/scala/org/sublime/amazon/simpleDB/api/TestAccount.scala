@@ -35,7 +35,7 @@ package org.sublime.amazon.simpleDB.api {
             else next(v)
         }         
         
-        def loadAccount :SimpleAPI = {
+        def loadAccount :SimpleDBAccount = {
             val is = getClass.getResourceAsStream(resource)
             if (is == null) throw new RuntimeException("resource "+resource+" not on classpath")
             else {

@@ -24,5 +24,9 @@ package org.sublime.amazon.simpleDB.api {
     {
         val connection = new Connection(awsAccessKeyId, awsSecretKey)        
         def makeSimpleDBRequest (req:SimpleDBRequest) :Elem = connection.makeRequest(req)
+
+        // allow connection tracing to be switched on and off
+        def trace = connection.trace
+        def trace_= (v:Boolean) { connection.trace = v }
     }
 }

@@ -30,7 +30,7 @@ package org.sublime.amazon.simpleDB {
 		private val signer = new Signer(awsSecretKey)
 		private val client = new HttpClient()
 		
-		def trace = false
+		var trace = false
 				
 		def makeRequest (request:SimpleDBRequest) :Elem = {
 		    if (trace) diagnose(request.parameters)

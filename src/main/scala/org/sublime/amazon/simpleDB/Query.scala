@@ -7,7 +7,7 @@ package org.sublime.amazon.simpleDB {
             case '`' => "``"
             case '\'' => "''"
             case a:Char => a 
-        }}) mkString) + "'"
+        }}) mkString) + "'"        
         
         abstract case class Expression {
             //def query :String
@@ -20,33 +20,35 @@ package org.sublime.amazon.simpleDB {
         }
 
         case class Combination(operation:String, lhs:Expression, rhs:Expression) 
-            extends Expression with Sortable with Combinable
+            extends Expression  with Combinable
         {        
             override def toString = lhs + " "+operation+" "+rhs
         }    
+        
+        trait Negatable extends Expression
 
-        case class Negation(target:Predicate) extends Expression with Combinable
+        case class Negation(target:Negatable) extends Expression with Combinable
         {
             override def toString = "not " + target;
         }
         
-        case class DescendingSort(target:Expression, name:String) extends Expression
+        case class DescendingSort(target:Sortable, name:String) extends Expression with Negatable
         {
-            override def toString = target.toString + " sort " + name + " desc"
+            override def toString = "[" + target.component + "] sort " + quote(name) + " desc"
         }
 
-        case class AscendingSort(target:Expression, name:String) extends Expression
+        case class AscendingSort(target:Sortable, name:String) extends Expression with Negatable
         {
             def desc = DescendingSort(target, name)
-            override def toString = target.toString + " sort " + name + " asc"
+            override def toString = "[" + target.component + "] sort " + quote(name) + " asc"
         }
 
-        trait Sortable extends Expression {
-            def order_by [T] (attribute:Attribute[T]) :AscendingSort 
-                = AscendingSort(this, attribute.name)        
+        trait Sortable extends Predicate {
+            def sort [T] (attribute:Attribute[T]) :AscendingSort 
+                = AscendingSort(this, attribute.name)                        
         }
 
-        abstract case class Predicate extends Expression with Sortable
+        abstract case class Predicate extends Expression with Negatable
         {
             def and (other:Predicate) = Conjunction("and", this, other)
             def or (other:Predicate) = Conjunction("and", this, other)
@@ -59,13 +61,13 @@ package org.sublime.amazon.simpleDB {
         }
     
         case class Conjunction (operator:String, lhs:Predicate, rhs:Predicate)
-            extends Predicate
+            extends Predicate with Sortable
         {
             def component = lhs.component + " " + operator + " " + rhs.component
         }
 
         case class Comparison [T] (operator:String, attribute:Attribute[T], value:T)
-            extends Predicate
+            extends Predicate with Sortable
         {
             def component = {
                 val (name, converted) = attribute(value) 
