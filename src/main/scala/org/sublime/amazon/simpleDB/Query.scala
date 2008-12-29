@@ -1,6 +1,13 @@
 package org.sublime.amazon.simpleDB {
     
     object Query {        
+
+        def quote (value:String) = "'" + ((value map { c => c match {
+            case '"' => "\"\""
+            case '`' => "``"
+            case '\'' => "''"
+            case a:Char => a 
+        }}) mkString) + "'"
         
         abstract case class Expression {
             //def query :String
@@ -25,13 +32,13 @@ package org.sublime.amazon.simpleDB {
         
         case class DescendingSort(target:Expression, name:String) extends Expression
         {
-            override def toString = target.toString + " order by " + name + " desc"
+            override def toString = target.toString + " sort " + name + " desc"
         }
 
         case class AscendingSort(target:Expression, name:String) extends Expression
         {
             def desc = DescendingSort(target, name)
-            override def toString = target.toString + " order by " + name + " asc"
+            override def toString = target.toString + " sort " + name + " asc"
         }
 
         trait Sortable extends Expression {
@@ -60,13 +67,6 @@ package org.sublime.amazon.simpleDB {
         case class Comparison [T] (operator:String, attribute:Attribute[T], value:T)
             extends Predicate
         {
-            def quote (value:String) = "'" + ((value map { c => c match {
-                case '"' => "\"\""
-                case '`' => "``"
-                case '\'' => "''"
-                case a:Char => a 
-            }}) mkString) + "'"
-
             def component = {
                 val (name, converted) = attribute(value) 
                 quote (name) + " " + operator + " " + quote (converted)
