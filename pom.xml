@@ -5,12 +5,14 @@
   <version>0.9-SNAPSHOT</version>
   <inceptionYear>2008</inceptionYear>
   <name>SimpleDB API for Scala</name>
-
-	<license>
-		<name>The Apache Software License, Version 2.0</name>
-  	<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-	</license>
 	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+	  	<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+		
 	<mailingLists>
 		<mailingList>		
 			<name>Sublime simpleDB Google Group</name>
