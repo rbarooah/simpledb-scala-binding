@@ -4,11 +4,39 @@
   <artifactId>sublime-simpleDB</artifactId>
   <version>0.9-SNAPSHOT</version>
   <inceptionYear>2008</inceptionYear>
+  <name>SimpleDB API for Scala</name>
+
+	<license>
+		<name>The Apache Software License, Version 2.0</name>
+  	<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+	</license>
+	
+	<mailingLists>
+		<mailingList>		
+			<name>Sublime simpleDB Google Group</name>
+			<archive>http://groups.google.com/group/sublime-simpledb</archive>
+		</mailingList>
+	</mailingLists>
+
+	<issueManagement>
+		<system>lighthouse</system>
+		<url>http://sublime.lighthouseapp.com/projects/22276/home</url>
+	</issueManagement>
+
+  <developers>
+  	<developer>
+  		<id>robin@sublime.org</id>
+  		<name>Robin Barooah</name>
+  		<email>robin@sublime.org</email>
+  		<url>http://www.sublime.org</url>
+  		<timezone>-8</timezone>
+  	</developer>
+  </developers>	
+
   <properties>
     <scala.version>2.7.2</scala.version>
   </properties>
 
-  <name>SimpleDB API for Scala</name>
 
   <repositories>
     <repository>
