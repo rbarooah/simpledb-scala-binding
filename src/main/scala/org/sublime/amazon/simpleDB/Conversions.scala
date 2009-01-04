@@ -37,6 +37,21 @@ package org.sublime.amazon.simpleDB {
                 else Some(date)
             }
         }
+        
+        object SHA1Base64 extends Conversion[String] {
+            import java.security.MessageDigest
+            
+            import org.apache.commons.codec.binary.Base64
+			private def base64Encode :(Array[Byte]) => String = 
+			    (bytes) => (new Base64).encode(bytes).toString
+						
+			private def digest :(String) => Array[Byte] =
+			    (in) => MessageDigest.getInstance("SHA-1").digest(in.getBytes)
+			       
+            def apply (in:String) :String = base64Encode(digest(in))
+            
+            def unapply (in:String) :Option[String] = None
+        }
     }
 
     trait Conversion [T] {
