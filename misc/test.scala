@@ -31,6 +31,5 @@ for (i <- data (visits > 16 and visits < 50)) { println(user(i).head) }
 
 for (i <- data (visits > 1 and visits < 50 sort visits desc)) { println(user(i).head) }
 
-
 // get rid of the test data
 (data items) foreach (_.clear)
