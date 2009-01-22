@@ -19,10 +19,20 @@ package org.sublime.amazon.simpleDB.api {
      * Convenient way to read test account details from a properties file on the classpath useful
      * for running tests or operating from the console.
      */
-    object Test {
+    object Test extends PropertiesReader {
+        val resource = "/simpleDBTest.properties"
+
+    }
+    
+    object Production extends PropertiesReader {
+        val resource = "/simpleDB.properties"        
+    }
+    
+    abstract class PropertiesReader {
         import java.util.Properties
         
-        private val resource = "/simpleDBTest.properties"
+        def resource :String
+        
         private val idProperty = "awsAccessKeyId"
         private val keyProperty = "awsSecretKey"
         
@@ -35,7 +45,7 @@ package org.sublime.amazon.simpleDB.api {
             else next(v)
         }         
         
-        def loadAccount :SimpleDBAccount = {
+        lazy val account :SimpleDBAccount = {
             val is = getClass.getResourceAsStream(resource)
             if (is == null) throw new RuntimeException("resource "+resource+" not on classpath")
             else {
@@ -47,6 +57,6 @@ package org.sublime.amazon.simpleDB.api {
                     }
                 }
             }
-        }
-    }    
+        }   
+    }
 }
