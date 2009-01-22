@@ -28,6 +28,8 @@ package org.sublime.amazon.simpleDB.api {
         val resource = "/simpleDB.properties"        
     }
     
+    case class AWSCredentials(id:String, key:String)
+    
     abstract class PropertiesReader {
         import java.util.Properties
         
@@ -45,7 +47,9 @@ package org.sublime.amazon.simpleDB.api {
             else next(v)
         }         
         
-        lazy val account :SimpleDBAccount = {
+        lazy val account = new SimpleDBAccount(credentials.id, credentials.key)
+        
+        lazy val credentials :AWSCredentials = {
             val is = getClass.getResourceAsStream(resource)
             if (is == null) throw new RuntimeException("resource "+resource+" not on classpath")
             else {
@@ -53,7 +57,7 @@ package org.sublime.amazon.simpleDB.api {
                 p.load(is)
                 using (idProperty) { id =>
                     using (keyProperty) { key =>
-                        new SimpleDBAccount(id, key)
+                        new AWSCredentials(id, key)
                     }
                 }
             }
