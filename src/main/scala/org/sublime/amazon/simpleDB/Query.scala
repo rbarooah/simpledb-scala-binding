@@ -23,7 +23,19 @@ package org.sublime.amazon.simpleDB {
             extends Expression  with Combinable
         {        
             override def toString = lhs + " "+operation+" "+rhs
-        }    
+            def sort [T] (attribute:Attribute[T]) = SortedCombination(this, attribute.name)
+        }
+        
+        case class SortedCombination(target:Combination, name:String)
+        {
+            override def toString = target + " sort "+quote(name) + " asc"
+            def desc = DescendingSortedCombination(target, name)
+        }
+        
+        case class DescendingSortedCombination(target:Combination, name:String)
+        {
+            override def toString = target + " sort "+quote(name) + " desc"
+        }
         
         trait Negatable extends Expression
 
