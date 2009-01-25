@@ -23,7 +23,7 @@ package org.sublime.amazon.simpleDB {
 	
 	object Error {
 	    /** Extractor so we can pattern match errors **/
-	    def unapply (xml:NodeSeq) :Option[(String, String, Double)] = {
+	    def unapply (xml:NodeSeq) :Option[(String, String, Option[Double])] = {
 	        val element = node("Errors") (xml)
 	        if (element.length > 0) {
 	            val error = (new Errors() (element)).error
@@ -35,7 +35,7 @@ package org.sublime.amazon.simpleDB {
 	class Error (implicit xml:NodeSeq) {
 	    val code = string("Code")
 	    val message = string("Message")
-	    val boxUsage = double("BoxUsage")
+	    val boxUsage = optionalDouble("BoxUsage")
 	}
 	
 	class SimpleDBResponse (implicit xml:NodeSeq) {
@@ -210,6 +210,11 @@ package org.sublime.amazon.simpleDB {
 		def dateField (name:String) (implicit xml:NodeSeq) = dateFormat.parse(string(name))
 		def int (name:String) (implicit xml:NodeSeq) = Integer.parseInt(string(name))
 		def double (name:String) (implicit xml:NodeSeq) = java.lang.Double.parseDouble(string(name))
+		def optionalDouble (name:String) (implicit xml:NodeSeq) :Option[Double] = {
+		    val found = string(name)
+		    if (found.length > 0) Some(java.lang.Double.parseDouble(found))
+		    else None
+		}
 		def boolean (name:String) (implicit xml:NodeSeq) = string(name) match { 
 				case "True" => true
 				case "False" => false

@@ -145,7 +145,10 @@ package org.sublime.amazon.simpleDB {
         class URITooLong(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)        
  
-        def toException(code:String, message:String, boxUsage:Double) = code match {  
+        def toException(code:String, message:String, usage:Option[Double]) = 
+            makeException(code, message, usage getOrElse 0.0)
+            
+        def makeException(code:String, message:String, boxUsage:Double) = code match {  
                       
             case "AccessFailure" => 	
             	new AccessFailure(code, message, boxUsage)
