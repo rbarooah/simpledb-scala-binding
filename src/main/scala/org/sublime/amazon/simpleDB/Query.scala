@@ -26,13 +26,13 @@ package org.sublime.amazon.simpleDB {
             def sort [T] (attribute:Attribute[T]) = SortedCombination(this, attribute.name)
         }
         
-        case class SortedCombination(target:Combination, name:String)
+        case class SortedCombination(target:Combination, name:String) extends Expression
         {
             override def toString = target + " sort "+quote(name) + " asc"
             def desc = DescendingSortedCombination(target, name)
         }
         
-        case class DescendingSortedCombination(target:Combination, name:String)
+        case class DescendingSortedCombination(target:Combination, name:String) extends Expression
         {
             override def toString = target + " sort "+quote(name) + " desc"
         }
