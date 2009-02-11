@@ -15,20 +15,48 @@
 package org.sublime.amazon.simpleDB {
     import Request._
 	import scala.xml._
-	
+
+	import org.apache.commons.httpclient.HttpClient
+	import org.apache.commons.pool._
+	import org.apache.commons.pool.impl._
+
 	object Service {
 		val url = "https://sdb.amazonaws.com"
 	}
-	
+
+	private class ConnectionProvider extends BasePoolableObjectFactory {
+		override def makeObject () = {
+		    new HttpClient();
+		}
+	}
+
+	private class ConnectionPool {
+		private val pool = {
+			val p = new GenericObjectPool(new ConnectionProvider)
+			p.setMaxActive(-1)
+			p.setMaxIdle(100)
+			p.setTimeBetweenEvictionRunsMillis(5 * 60 * 100) // 5 minute eviction runs
+			p
+		}
+
+		def exec[T] (f: (HttpClient) => T) : T = {
+			val client = pool.borrowObject.asInstanceOf[HttpClient]
+			try {
+			    return f(client);
+			} finally {
+			    pool.returnObject(client);
+			}
+		}
+	}
+
 	class Connection (val awsAccessKeyId:String, awsSecretKey:String) {
 		import Service._
 		import Exceptions.toException
 		
-		import org.apache.commons.httpclient.HttpClient
 		import org.apache.commons.httpclient.methods.{GetMethod, PostMethod}
 		
 		private val signer = new Signer(awsSecretKey)
-		private val client = new HttpClient()
+		private val pool = new ConnectionPool()
 		
 		var trace = false
 				
@@ -37,15 +65,18 @@ package org.sublime.amazon.simpleDB {
 			val method = 
 				new PostMethod(url + 
 					QueryParameters(signer.sign(request.parameters)))
-			client.executeMethod(method)
-			val xml = XML.load(method.getResponseBodyAsStream())
-			method.releaseConnection
-			if (trace) diagnose(xml)
-			xml match { 
-			    case Error(code, message, boxUsage) => 
-			        throw toException(code, message, boxUsage)
-			    case _ => xml
-		    }
+
+			pool.exec((c) => {
+				c.executeMethod(method)
+				val xml = XML.load(method.getResponseBodyAsStream())
+				method.releaseConnection
+				if (trace) diagnose(xml)
+				xml match {
+					case Error(code, message, boxUsage) =>
+						throw toException(code, message, boxUsage)
+					case _ => xml
+				}
+			})
 		}
 		
 		def printer = new PrettyPrinter(80, 2)
