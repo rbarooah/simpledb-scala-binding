@@ -29,7 +29,7 @@ package org.sublime.amazon.simpleDB {
         	import java.util.TimeZone
 
         	def format = {
-        	    val f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        	    val f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         	    f.setTimeZone(TimeZone.getTimeZone("UTC"))
         	    f
     	    }
