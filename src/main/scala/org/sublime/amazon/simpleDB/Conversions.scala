@@ -26,8 +26,13 @@ package org.sublime.amazon.simpleDB {
     
         object ISO8610Date extends Conversion[Date] {
         	import java.text.SimpleDateFormat
+        	import java.util.TimeZone
 
-        	val format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")		
+        	def format = {
+        	    val f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        	    f.setTimeZone(TimeZone.getTimeZone("UTC"))
+        	    f
+    	    }
     
             def apply (date:Date) :String = format.format(date)
     
