@@ -186,6 +186,7 @@ package org.sublime.amazon.simpleDB {
     			var pos = 0;
     			for (name <- names) {
     				coded = coded + ("AttributeName."+pos -> name)
+    				pos = pos + 1
     			}			
     			coded
     		}
