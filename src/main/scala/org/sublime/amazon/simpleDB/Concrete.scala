@@ -43,10 +43,8 @@ package org.sublime.amazon.simpleDB {
 			def start = new ListDomainsRequest(None, Some(2))
 			def start (maxNumberOfDomains:int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
 			def next (response:ListDomainsResponse) :Option[ListDomainsRequest] = 
-			    response.result.nextToken match {			    
-			        case None => None
-			        case Some(token) => Some(new ListDomainsRequest(Some(token), Some(2)))
-		        }
+			    response.result.nextToken map 
+			        (token => new ListDomainsRequest(Some(token), Some(2)))						    
 		}
 		
 		class CreateDomainRequest (val domainName:String) extends CreateDomain with Basics
@@ -96,12 +94,10 @@ package org.sublime.amazon.simpleDB {
             def start (domainName:String, queryExpression:Option[String]) =
                 new QueryRequest(domainName, queryExpression, None, None)
             def next (req:QueryRequest, res:QueryResponse) :Option[QueryRequest] =
-                res.result.nextToken match {
-                    case None => None
-                    case Some(token) =>
-                        Some(new QueryRequest(req.domainName, 
-                                req.queryExpression, Some(token), None))
-                }
+                res.result.nextToken map
+                    (token =>
+                        new QueryRequest(req.domainName, 
+                            req.queryExpression, Some(token), None))
         }
 	    
 	    class QueryWithAttributesRequest (val domainName:String, 
@@ -121,17 +117,15 @@ package org.sublime.amazon.simpleDB {
 	        
 	        def next (req:QueryWithAttributesRequest, res:QueryWithAttributesResponse)
 	            :Option[QueryWithAttributesRequest] =
-    	            res.result.nextToken match {
-    	                case None => None
-    	                case Some(token) =>
-    	                    Some(new QueryWithAttributesRequest(
+    	            res.result.nextToken map (
+    	                token =>
+    	                    new QueryWithAttributesRequest(
     	                        req.domainName, 
     	                        req.queryExpression,
     	                        req.attributes) {
-    	                                override val nextToken:Option[String] = Some(token)
-    	                            }
+    	                            override val nextToken:Option[String] = Some(token)
+    	                        }
     	                    )
-    	            }
 	    }
 	    
 	    class SelectRequest (val selectExpression:String, 
@@ -146,13 +140,10 @@ package org.sublime.amazon.simpleDB {
 	            new SelectRequest(selectExpression, None, None)
 	            
 	        def next (req:SelectRequest, res:SelectResponse) :Option[SelectRequest] =
-	            res.result.nextToken match {
-	                case None => None
-	                case Some(token) =>
-	                    Some(new SelectRequest(req.selectExpression, 
-	                        Some(token), None))	                        
-	            }
-	        
+	            res.result.nextToken map (
+	                token =>
+	                    new SelectRequest(req.selectExpression, 
+	                        Some(token), None))	        
 	    }	    
 	}	
 }
