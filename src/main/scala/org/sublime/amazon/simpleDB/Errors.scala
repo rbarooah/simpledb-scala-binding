@@ -126,6 +126,9 @@ package org.sublime.amazon.simpleDB {
         
         class NumberSubmittedAttributesExceeded(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)
+
+        class QueryTimeout(code:String, message:String, boxUsage:Double)
+            extends ServerException(code, message, boxUsage)
         
         class RequestExpired(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)
@@ -248,6 +251,9 @@ package org.sublime.amazon.simpleDB {
 
             case "NumberSubmittedAttributesExceeded" => 
             	new NumberSubmittedAttributesExceeded(code, message, boxUsage)
+            	
+            case "QueryTimeout" =>
+              new QueryTimeout(code, message, boxUsage)
 
             case "RequestExpired" => 
             	new RequestExpired(code, message, boxUsage)
