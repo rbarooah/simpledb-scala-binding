@@ -338,6 +338,31 @@ package org.sublime.amazon.simpleDB.api {
 	    implicit val concrete:Concrete = this
 	    
 	    /**
+	     * Perform a select operation associated with a known domain and return a stream of results.
+	     * A single request is made initially, and additional requests are made as needed when the
+	     * stream is read.
+	     */	     
+        def select (expression:String, domain:Domain) 
+		    :Stream[ItemSnapshot] = {
+		   
+		    def convert (i:ItemWithAttributesResult#Item) = new ItemSnapshot(domain.item(i.name), 
+		        i.attributes)
+		    
+		    def generate(res:SelectResponse) :Stream[ItemSnapshot] =
+		        streamOfObjects(res.result.items.toList, convert)
+		        
+		    def responses(req:SelectRequest, res:SelectResponse) 
+		        :Stream[SelectResponse] =
+		        Stream.cons(res, SelectRequest.next(req, res) match {
+		            case None => Stream.empty
+		            case Some(request) => responses(request, request.response)			            
+		        })
+		        
+		    val start = SelectRequest.start(expression)
+		    streamOfStreams(responses(start, start.response), generate)        		
+	    }
+	    
+	    /**
 	     * Perform a select operation and return a stream of results.  The results are simple
 	     * maps of attributes names to sets of values.  A single request is made initially, and
 	     * additional requests are made as needed when the stream is read.
