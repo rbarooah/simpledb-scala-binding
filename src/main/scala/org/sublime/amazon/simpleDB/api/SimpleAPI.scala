@@ -342,38 +342,26 @@ package org.sublime.amazon.simpleDB.api {
 	     * A single request is made initially, and additional requests are made as needed when the
 	     * stream is read.
 	     */	     
-        def select (expression:String, domain:Domain) 
-		    :Stream[ItemSnapshot] = {
-		   
-		    def convert (i:ItemWithAttributesResult#Item) = new ItemSnapshot(domain.item(i.name), 
-		        i.attributes)
-		    
-		    def generate(res:SelectResponse) :Stream[ItemSnapshot] =
-		        streamOfObjects(res.result.items.toList, convert)
-		        
-		    def responses(req:SelectRequest, res:SelectResponse) 
-		        :Stream[SelectResponse] =
-		        Stream.cons(res, SelectRequest.next(req, res) match {
-		            case None => Stream.empty
-		            case Some(request) => responses(request, request.response)			            
-		        })
-		        
-		    val start = SelectRequest.start(expression)
-		    streamOfStreams(responses(start, start.response), generate)        		
-	    }
-	    
+        def select (expression:String, domain:Domain) =
+            select[ItemSnapshot] (i => new ItemSnapshot(domain.item(i.name), i.attributes)) _
+
 	    /**
 	     * Perform a select operation and return a stream of results.  The results are simple
 	     * maps of attributes names to sets of values.  A single request is made initially, and
 	     * additional requests are made as needed when the stream is read.
 	     */
-        def select (expression:String) 
-		    :Stream[ItemNameSnapshot] = {
-		        
-		    def convert (i:ItemWithAttributesResult#Item) = new ItemNameSnapshot(i.name, 
-		        i.attributes)
+        def select (expression:String) =
+            select [ItemNameSnapshot] (i => new ItemNameSnapshot(i.name, i.attributes)) _
+	    
+	    /**
+	     * Perform a select operation and return a stream of results.  Convert the results using
+	     * the supplied function. A single request is made initially, and additional requests are 
+	     * made as needed when the stream is read.
+	     */
+ 	    def select [T] (convert: (ItemWithAttributesResult#Item) => T) 
+ 	        (expression:String) :Stream[T] = {
 		    
-		    def generate(res:SelectResponse) :Stream[ItemNameSnapshot] =
+		    def generate(res:SelectResponse) :Stream[T] =
 		        streamOfObjects(res.result.items.toList, convert)
 		        
 		    def responses(req:SelectRequest, res:SelectResponse) 
