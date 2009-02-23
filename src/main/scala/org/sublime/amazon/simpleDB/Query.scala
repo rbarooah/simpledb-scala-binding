@@ -1,15 +1,9 @@
 package org.sublime.amazon.simpleDB {
 
     import org.sublime.Attributes._
+    import Quoting._
     
     object Query {        
-
-        def quote (value:String) = "'" + ((value map { c => c match {
-            case '"' => "\"\""
-            case '`' => "``"
-            case '\'' => "''"
-            case a:Char => a 
-        }}) mkString) + "'"        
         
         abstract case class Expression {
             //def query :String
@@ -92,7 +86,7 @@ package org.sublime.amazon.simpleDB {
         implicit def toQueryAttribute[T] (a:Attribute[T]) :QueryAttribute [T] = 
             new QueryAttribute(a)
 
-        case class QueryAttribute [T] (a:Attribute[T])
+        class QueryAttribute [T] (a:Attribute[T])
         {           
             private def comparison (op:String, value:T) = Comparison(op, a, value)
         

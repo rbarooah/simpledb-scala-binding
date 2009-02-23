@@ -32,12 +32,12 @@ package org.sublime.amazon.simpleDB.api {
         extends MapProxy[String,Set[String]]
 
 	/**
-     * A class which serves as a proxy to a Doman within simpleDB.  This class holds no data
+     * A class which serves as a proxy to a Domain within simpleDB.  This class holds no data
      * other than a reference to the domain name.  Calls to methods which access items from
      * within the domain will always result in network requests to SimpleDB.
      */
-	class Domain(val name:String) (implicit val concrete:Concrete) {
-	    import concrete._
+	class Domain(val name:String) (implicit val api:SimpleAPI) {
+	    import api._
 	    import StreamMaker._
 	    
 	    /**
@@ -200,9 +200,9 @@ package org.sublime.amazon.simpleDB.api {
      * attributes of the item itself.  Calls to methods which read or write attributes to and
      * from the item will result in network requests to SimpleDB.
      */
-	class Item(val domain:Domain, val name:String) (implicit val concrete:Concrete)
+	class Item(val domain:Domain, val name:String) (implicit val api:SimpleAPI)
 	{
-	    import concrete._
+	    import api._
 
         /**
          * Return a string assocating this item with it's domain in the form "domain.item"
@@ -336,23 +336,25 @@ package org.sublime.amazon.simpleDB.api {
 	    import StreamMaker._
 	    
 	    // make an implementation of the concrete objects available to implicit consumers.
-	    implicit val concrete:Concrete = this
+	    implicit val api:SimpleAPI = this
 	    
 	    /**
 	     * Perform a select operation associated with a known domain and return a stream of results.
 	     * A single request is made initially, and additional requests are made as needed when the
 	     * stream is read.
 	     */	     
-        def select (expression:String, domain:Domain) =
-            select[ItemSnapshot] (i => new ItemSnapshot(domain.item(i.name), i.attributes)) _
+        def select (expression:String, domain:Domain) :Stream[ItemSnapshot] =
+            select[ItemSnapshot] (i => new ItemSnapshot(domain.item(i.name), i.attributes)) ( 
+                expression)
 
 	    /**
 	     * Perform a select operation and return a stream of results.  The results are simple
 	     * maps of attributes names to sets of values.  A single request is made initially, and
 	     * additional requests are made as needed when the stream is read.
 	     */
-        def select (expression:String) =
-            select [ItemNameSnapshot] (i => new ItemNameSnapshot(i.name, i.attributes)) _
+        def select (expression:String) :Stream[ItemNameSnapshot] =
+            select [ItemNameSnapshot] (i => new ItemNameSnapshot(i.name, i.attributes)) (
+                expression)
 	    
 	    /**
 	     * Perform a select operation and return a stream of results.  Convert the results using
