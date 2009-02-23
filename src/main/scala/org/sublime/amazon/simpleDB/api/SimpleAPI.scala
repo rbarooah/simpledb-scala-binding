@@ -183,7 +183,8 @@ package org.sublime.amazon.simpleDB.api {
 	    }
 	    
 	    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
-	    import Query.{Expression, NamedAttribute}
+	    import org.sublime.Attributes.NamedAttribute
+	    import Query.Expression
 	    private def attributeSet (attrs:NamedAttribute*) :Set[String] = 
 	        (Set[String]() /: (for (a <- attrs) yield (Set[String](a.name)))) (_ ++ _)
 	        

@@ -1,4 +1,6 @@
 package org.sublime.amazon.simpleDB {
+
+    import org.sublime.Attributes._
     
     object Query {        
 
@@ -87,22 +89,12 @@ package org.sublime.amazon.simpleDB {
             }
         }
         
-        case class NamedAttribute (name:String)
+        implicit def toQueryAttribute[T] (a:Attribute[T]) :QueryAttribute [T] = 
+            new QueryAttribute(a)
 
-        case class Attribute [T] (override val name:String, conversion:Conversion[T]) extends
-            NamedAttribute(name)
-        {   
-            def apply (value:T) = (name -> conversion(value))
-            
-            import scala.collection.Map
-            def apply (result:Map[String,Set[String]]) : List[T] = 
-                if (! result.contains(name)) List[T]()
-                else (result(name) flatMap ( raw => raw match {
-                    case conversion(value) => List[T](value)
-                    case _ => List[T]()
-                } )).toList
-        
-            private def comparison (op:String, value:T) = Comparison(op, this, value)
+        case class QueryAttribute [T] (a:Attribute[T])
+        {           
+            private def comparison (op:String, value:T) = Comparison(op, a, value)
         
             def eq (value:T) = comparison("=", value)
             def ne (value:T) = comparison("!=", value)
@@ -112,9 +104,6 @@ package org.sublime.amazon.simpleDB {
             def <= (value:T) = comparison("<=", value)
             def starts_with (value:T) = comparison("starts-with", value)
             def does_not_start_with (value:T) = comparison("does_not_start_with", value)
-        }
-        
-        def attribute (name:String) = Attribute(name, Conversions.PassThrough)
-        def attribute [T] (name:String, conversion:Conversion[T]) = Attribute[T](name, conversion)
+        }        
     }
 }

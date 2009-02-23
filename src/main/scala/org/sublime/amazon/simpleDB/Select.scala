@@ -1,5 +1,6 @@
+import org.sublime.Attributes._
+
 package org.sublime.amazon.simpleDB {
-    import Query._
     
     object Select {
      
