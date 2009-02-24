@@ -374,7 +374,7 @@ package org.sublime.amazon.simpleDB.api {
 		            case Some(request) => responses(request, request.response)			            
 		        })
 		        
-		    val start = SelectRequest.start(expression)
+    	    val start = SelectRequest.start("select "+expression)
 		    streamOfStreams(responses(start, start.response), generate)        		
 	    }
 	    		

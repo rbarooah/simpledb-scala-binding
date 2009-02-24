@@ -26,14 +26,14 @@ package org.sublime.amazon.simpleDB {
 
         case class DescendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
-            def queryString = e.queryString + " order by " + a.name + " desc"
+            def queryString = e.queryString + " order by " + quote(a.name) + " desc"
         }
         
         case class AscendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
             def asc = this
             def desc = DescendingOrder(e, a)
-            def queryString = e.queryString + " order by " + a.name + " asc"
+            def queryString = e.queryString + " order by " + quote(a.name) + " asc"
         }
 
         trait Expression extends LimitableExpression
@@ -77,19 +77,19 @@ package org.sublime.amazon.simpleDB {
         
         case class BasicComparison [T] (op:String, c:Comparable[T], value:T) extends Comparison
         {
-            def queryString = c.name + " " + op + " " + quote(c.conversion(value))
+            def queryString = quote(c.name) + " " + op + " " + quote(c.conversion(value))
         }
 
         case class StringComparison [T] (op:String, c:Comparable[T], value:String)
             extends Comparison
         {
-            def queryString = c.name + " " + op + " " + quote(value)
+            def queryString = quote(c.name) + " " + op + " " + quote(value)
         }        
 
         case class Between [T] (c:Comparable[T], start:T, finish:T) extends Comparison
         {
             def queryString = 
-                c.name + " between " + quote(c.conversion(start)) + " and " + 
+                quote(c.name) + " between " + quote(c.conversion(start)) + " and " + 
                 quote(c.conversion(finish))
         }
 
@@ -103,7 +103,7 @@ package org.sublime.amazon.simpleDB {
         }
         
         case class Unary [T] (op:String, c:Comparable[T]) extends Comparison {
-            def queryString = c.name + " " + op
+            def queryString = quote(c.name) + " " + op
         }
         
         trait Comparable [T] {
@@ -136,7 +136,7 @@ package org.sublime.amazon.simpleDB {
         class Every [T] (a:Attribute[T]) extends Comparable[T]
         {
             def conversion = a.conversion
-            def name = "every("+a.name+")"
+            def name = "every("+quote(a.name)+")"
         }
 
         def every [T] (a:Attribute[T]) = new Every(a)
@@ -144,17 +144,34 @@ package org.sublime.amazon.simpleDB {
         implicit def toSelectableDomain (d:Domain) = new SelectableDomain(d)     
      
         class SelectableDomain(val d:Domain) {
+            
+            val all = "* "
+            
+            val toCount = "count(*) "
+            
+            private def whereClause (e:FromExpression) = "where "+e.queryString
+            
+            private def from (d:Domain) = "from "+d.name
+            
+            private def names (attributes:Attribute[Any]*) = 
+                (attributes map (a => quote(a.name))) mkString ", "
+            
+            def apply (a:Attribute[Any]*) (e:FromExpression) :Stream[ItemSnapshot] =
+                d.api.select(names(a:_*) + from(d) + whereClause(e), d)      
+            
+            def apply (e:FromExpression) :Stream[ItemSnapshot] = where(e)
+            
             def where (e:FromExpression) :Stream[ItemSnapshot] =
-                d.api.select("select * from "+d.name+" where "+e.queryString, d)
+                d.api.select(all + from(d) + whereClause(e), d)
                 
-            val countValue = attribute("Count", PositiveInt)
+            private val countValue = attribute("Count", PositiveInt)
                                 
             def count (e:Expression) :int = {
-                def values = d.api.select("select count(*) from "+d.name+" where "+e.queryString, d) flatMap
+                def values = d.api.select(toCount + from(d) + whereClause(e), d) flatMap
                     {countValue(_)}
                     
                 (0 /: values) (_ + _)
             }
-        }
+        }        
     }
 }
