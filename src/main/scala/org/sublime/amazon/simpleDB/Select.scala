@@ -124,7 +124,7 @@ package org.sublime.amazon.simpleDB {
             def between (value:T) = BetweenLHS(this, value)
             def in (value:T*) = In[T](this, value:_*)
             def is_null = Unary("is null", this)
-            def is_not_null = Unary("is not null", this)
+            def is_not_null = Unary("is not null", this)            
         }
         
         class SelectAttribute [T] (a:Attribute[T]) extends Comparable[T]
@@ -148,9 +148,9 @@ package org.sublime.amazon.simpleDB {
                 d.api.select("select * from "+d.name+" where "+e.queryString, d)
                 
             val countValue = attribute("Count", PositiveInt)
-                
+                                
             def count (e:Expression) :int = {
-                def values = d.api.select("select count(*) from "+e.queryString, d) flatMap
+                def values = d.api.select("select count(*) from "+d.name+" where "+e.queryString, d) flatMap
                     {countValue(_)}
                     
                 (0 /: values) (_ + _)
