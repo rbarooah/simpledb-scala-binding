@@ -2,7 +2,7 @@ import org.sublime.Attributes._
 import org.sublime.Conversions._
 
 package org.sublime.amazon.simpleDB {
-    import api.{Domain, ItemSnapshot}
+    import api.{Domain, ItemSnapshot, SimpleAPI}
     import Quoting._
     
     object Select {
@@ -26,14 +26,14 @@ package org.sublime.amazon.simpleDB {
 
         case class DescendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
-            def queryString = e.queryString + " order by " + quote(a.name) + " desc"
+            def queryString = e.queryString + " order by " + a.name + " desc"
         }
         
         case class AscendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
             def asc = this
             def desc = DescendingOrder(e, a)
-            def queryString = e.queryString + " order by " + quote(a.name) + " asc"
+            def queryString = e.queryString + " order by " + a.name + " asc"
         }
 
         trait Expression extends LimitableExpression
@@ -41,6 +41,11 @@ package org.sublime.amazon.simpleDB {
             def order_by [T] (a:Attribute[T])  = AscendingOrder(this, a)            
             def queryString:String
         }   
+        
+        case object EmptyExpression extends Expression
+        {
+            def queryString = ""
+        }
         
         case class Intersection (lhs:SelectExpression, rhs:SelectExpression) 
             extends SelectExpression
@@ -77,19 +82,19 @@ package org.sublime.amazon.simpleDB {
         
         case class BasicComparison [T] (op:String, c:Comparable[T], value:T) extends Comparison
         {
-            def queryString = quote(c.name) + " " + op + " " + quote(c.conversion(value))
+            def queryString = c.name + " " + op + " " + quote(c.conversion(value))
         }
 
         case class StringComparison [T] (op:String, c:Comparable[T], value:String)
             extends Comparison
         {
-            def queryString = quote(c.name) + " " + op + " " + quote(value)
+            def queryString = c.name + " " + op + " " + quote(value)
         }        
 
         case class Between [T] (c:Comparable[T], start:T, finish:T) extends Comparison
         {
             def queryString = 
-                quote(c.name) + " between " + quote(c.conversion(start)) + " and " + 
+                c.name + " between " + quote(c.conversion(start)) + " and " + 
                 quote(c.conversion(finish))
         }
 
@@ -103,7 +108,7 @@ package org.sublime.amazon.simpleDB {
         }
         
         case class Unary [T] (op:String, c:Comparable[T]) extends Comparison {
-            def queryString = quote(c.name) + " " + op
+            def queryString = c.name + " " + op
         }
         
         trait Comparable [T] {
@@ -136,42 +141,70 @@ package org.sublime.amazon.simpleDB {
         class Every [T] (a:Attribute[T]) extends Comparable[T]
         {
             def conversion = a.conversion
-            def name = "every("+quote(a.name)+")"
+            def name = "every("+a.name+")"
         }
 
         def every [T] (a:Attribute[T]) = new Every(a)
 
-        implicit def toSelectableDomain (d:Domain) = new SelectableDomain(d)     
+        implicit def toSelectableDomain (d:Domain) :SelectableDomain = new SelectableDomain(d)     
+    
+        /// Building elements of the query syntax
+        private[Select] def names (attributes:NamedAttribute*) = 
+            "(" + ((attributes map (a => a.name)) mkString ", ") + ")"
+            
+        private[Select] def whereClause (e:FromExpression) = "where "+e.queryString
+            
+        private[Select] def from (d:Domain) = "from "+d.name+" "
      
-        class SelectableDomain(val d:Domain) {
+        class SelectableDomain (val d:Domain) {
             
-            val all = "* "
-            
-            val toCount = "count(*) "
-            
-            private def whereClause (e:FromExpression) = "where "+e.queryString
-            
-            private def from (d:Domain) = "from "+d.name
-            
-            private def names (attributes:Attribute[Any]*) = 
-                (attributes map (a => quote(a.name))) mkString ", "
-            
-            def apply (a:Attribute[Any]*) (e:FromExpression) :Stream[ItemSnapshot] =
+            val all = "* "            
+                        
+            def apply (a:NamedAttribute*) (e:FromExpression) :Stream[ItemSnapshot] =
                 d.api.select(names(a:_*) + from(d) + whereClause(e), d)      
             
             def apply (e:FromExpression) :Stream[ItemSnapshot] = where(e)
             
             def where (e:FromExpression) :Stream[ItemSnapshot] =
                 d.api.select(all + from(d) + whereClause(e), d)
-                
-            private val countValue = attribute("Count", PositiveInt)
-                                
-            def count (e:Expression) :int = {
-                def values = d.api.select(toCount + from(d) + whereClause(e), d) flatMap
-                    {countValue(_)}
-                    
-                (0 /: values) (_ + _)
+                            
+            def count (e:Expression) :int = new CountSource(d.api, d).where(e)
+            
+            def count :int = count(EmptyExpression)
+        }
+                 
+        class SourceSelection (attributes:AttributeSelection, d:Domain) {
+            def where (e:FromExpression) :Stream[ItemSnapshot] = {
+                d.api.select(attributes.queryString + from(d) + whereClause(e), d)
             }
-        }        
+        }
+         
+        class CountSource (api:SimpleAPI, d:Domain) {
+            private val countValue = attribute("Count", PositiveInt)
+            
+            val toCount = "count(*) "
+            
+            private def values (whereClause:String) =  
+                d.api.select(toCount + from(d) + whereClause, d) flatMap
+                    {countValue(_)}
+            
+            def where (e:Expression) :int = 
+                (0/: values(
+                    e match {
+                        case EmptyExpression => ""
+                        case e:Expression => whereClause(e)
+                    })) (_ + _)
+        }
+                  
+        class AttributeSelection (val api:SimpleAPI, val queryString:String)
+        {
+            def from (d:Domain) = new SourceSelection(this, d)
+            def from (name:String) = new SourceSelection(this, api.domain(name))
+        }
+
+        class CountSelection (val api:SimpleAPI) {
+            def from (d:Domain) = new CountSource(api, d)
+            def from (name:String) = new CountSource(api, api.domain(name))
+        }
     }
 }

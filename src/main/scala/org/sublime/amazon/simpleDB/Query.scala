@@ -1,5 +1,6 @@
 package org.sublime.amazon.simpleDB {
 
+    import api.{Domain, ItemSnapshot, SimpleAPI}
     import org.sublime.Attributes._
     import Quoting._
     
@@ -98,6 +99,18 @@ package org.sublime.amazon.simpleDB {
             def <= (value:T) = comparison("<=", value)
             def starts_with (value:T) = comparison("starts-with", value)
             def does_not_start_with (value:T) = comparison("does_not_start_with", value)
-        }        
+        }
+        
+        implicit def toQueryableDomain (d:Domain) :QueryableDomain = new QueryableDomain(d)
+        
+        class QueryableDomain (d:Domain) {            
+    	    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
+    	    private def attributeSet (attrs:NamedAttribute*) :Set[String] = 
+    	        (Set[String]() /: (for (a <- attrs) yield (Set[String](a.name)))) (_ ++ _)
+
+    	    def apply (expr:Expression) = d.withAttributes (expr.toString)
+    	    def apply (attrs:NamedAttribute*) (expr:Expression) = 
+    	        d.withAttributes(expr.toString, attributeSet(attrs:_*))
+        }
     }
 }

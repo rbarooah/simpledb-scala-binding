@@ -181,16 +181,6 @@ package org.sublime.amazon.simpleDB.api {
 		    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 		    streamOfStreams(responses(start, start.response), generate)        		
 	    }
-	    
-	    /*** EXPERIMENTAL METHODS ASSOCIATED WITH THE QUERY DSL ***/
-	    import org.sublime.Attributes.NamedAttribute
-	    import Query.Expression
-	    private def attributeSet (attrs:NamedAttribute*) :Set[String] = 
-	        (Set[String]() /: (for (a <- attrs) yield (Set[String](a.name)))) (_ ++ _)
-	        
-	    def apply (expr:Expression) = withAttributes (expr.toString)
-	    def apply (attrs:NamedAttribute*) (expr:Expression) = 
-	        withAttributes(expr.toString, attributeSet(attrs:_*))
 	    		    			
 		override def toString = name			
 	}
@@ -344,7 +334,7 @@ package org.sublime.amazon.simpleDB.api {
 	     * stream is read.
 	     */	     
         def select (expression:String, domain:Domain) :Stream[ItemSnapshot] =
-            select[ItemSnapshot] (i => new ItemSnapshot(domain.item(i.name), i.attributes)) ( 
+            select [ItemSnapshot] (i => new ItemSnapshot(domain.item(i.name), i.attributes), 
                 expression)
 
 	    /**
@@ -353,7 +343,7 @@ package org.sublime.amazon.simpleDB.api {
 	     * additional requests are made as needed when the stream is read.
 	     */
         def select (expression:String) :Stream[ItemNameSnapshot] =
-            select [ItemNameSnapshot] (i => new ItemNameSnapshot(i.name, i.attributes)) (
+            select [ItemNameSnapshot] (i => new ItemNameSnapshot(i.name, i.attributes), 
                 expression)
 	    
 	    /**
@@ -361,8 +351,8 @@ package org.sublime.amazon.simpleDB.api {
 	     * the supplied function. A single request is made initially, and additional requests are 
 	     * made as needed when the stream is read.
 	     */
- 	    def select [T] (convert: (ItemWithAttributesResult#Item) => T) 
- 	        (expression:String) :Stream[T] = {
+ 	    private def select [T] (convert: (ItemWithAttributesResult#Item) => T, expression:String) 
+ 	        :Stream[T] = {
 		    
 		    def generate(res:SelectResponse) :Stream[T] =
 		        streamOfObjects(res.result.items.toList, convert)
