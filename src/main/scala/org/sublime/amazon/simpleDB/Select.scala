@@ -118,8 +118,8 @@ package org.sublime.amazon.simpleDB {
             
             // provides
             def comparison (op:String, value:T) = BasicComparison(op, this, value)
-            def eq (value:T) = comparison("=", value)
-            def ne (value:T) = comparison("!=", value)
+            def is (value:T) = comparison("=", value)
+            def is_not (value:T) = comparison("!=", value)
             def > (value:T) = comparison(">", value)
             def >= (value:T) = comparison(">=", value)
             def < (value:T) = comparison("<", value)
