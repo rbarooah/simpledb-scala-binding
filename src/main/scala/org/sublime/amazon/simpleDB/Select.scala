@@ -150,7 +150,7 @@ package org.sublime.amazon.simpleDB {
     
         /// Building elements of the query syntax
         private[Select] def names (attributes:NamedAttribute*) = 
-            "(" + ((attributes map (a => a.name)) mkString ", ") + ")"
+            ((attributes map (a => a.name)) mkString ", ") + " "
             
         private[Select] def whereClause (e:FromExpression) = "where "+e.queryString
             
