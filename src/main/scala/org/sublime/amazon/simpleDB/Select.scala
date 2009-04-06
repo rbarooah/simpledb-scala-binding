@@ -2,7 +2,7 @@ import org.sublime.Attributes._
 import org.sublime.Conversions._
 
 package org.sublime.amazon.simpleDB {
-    import api.{Domain, ItemSnapshot, SimpleAPI}
+    import api.{Domain, Item, ItemSnapshot, SimpleAPI}
     import Quoting._
     
     object Select {
@@ -160,6 +160,8 @@ package org.sublime.amazon.simpleDB {
             
             val all = "* "            
                         
+            val itemName = "itemName() "
+                        
             def apply (a:NamedAttribute*) (e:FromExpression) :Stream[ItemSnapshot] =
                 d.api.select(names(a:_*) + from(d) + whereClause(e), d)      
             
@@ -168,7 +170,18 @@ package org.sublime.amazon.simpleDB {
             def where (e:FromExpression) :Stream[ItemSnapshot] =
                 d.api.select(all + from(d) + whereClause(e), d)
                             
+            /**
+             * Return the integer count of items within the domain that match the supplied
+             * expression.
+             */
             def count (e:Expression) :int = new CountSource(d.api, d).where(e)
+            
+            /**
+             * Return a stream of items matching the supplied expression.  These are items without
+             * attributes associated with then.
+             */
+            def itemsWhere (e:Expression) :Stream[Item] = 
+                d.api.items(itemName + from(d) + whereClause(e), d)
             
             def count :int = count(EmptyExpression)
         }

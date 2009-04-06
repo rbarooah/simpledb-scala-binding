@@ -347,6 +347,14 @@ package org.sublime.amazon.simpleDB.api {
                 expression)
 	    
 	    /**
+	     * Perform a select operation and return a stream of results.  The results are item objects
+	     * which contain no attributes.  A single request is made initially and additional requests
+	     * are made as needed when the stream is read.
+	     */
+	    def items (expression:String, domain:Domain) :Stream[Item] =
+	        select [Item] (i => domain.item(i.name), expression)
+	    
+	    /**
 	     * Perform a select operation and return a stream of results.  Convert the results using
 	     * the supplied function. A single request is made initially, and additional requests are 
 	     * made as needed when the stream is read.
