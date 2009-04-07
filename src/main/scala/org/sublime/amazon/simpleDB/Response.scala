@@ -63,6 +63,9 @@ package org.sublime.amazon.simpleDB {
 	class PutAttributesResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 	
+	class BatchPutAttributesResponse (implicit xml:NodeSeq)
+	    extends SimpleDBResponse
+	
 	class DeleteAttributesResponse (implicit xml:NodeSeq)
 		extends SimpleDBResponse
 		

@@ -61,6 +61,9 @@ package org.sublime.amazon.simpleDB {
     		def specificParameters = Map("DomainName" -> domainName)
     	}
 	
+	    /**
+	     * Trait for constructing a PutAttributes request.
+	     */
     	trait PutAttributes extends SimpleDBRequest {
     	    import Attributes._
 	    
@@ -87,6 +90,62 @@ package org.sublime.amazon.simpleDB {
                 (Map[String, String]() /: params) (_ ++ _)
     		}		
     	}
+    	
+    	/**
+    	 * Trait for constructing a BatchPutAttributes request.
+    	 */
+    	trait BatchPutAttributes extends SimpleDBRequest {
+    	    def action = "BatchPutAttributes"
+    	    def domainName:String
+    	    def operations:List[AttributeOperation] 
+            def specificParameters = {
+                // collect the operations into a map of lists by item
+                var byItem = Map[String, List[AttributeOperation]] ()            
+                for (op <- operations) {
+                    byItem = byItem + 
+                        op.item -> ((byItem getOrElse(op.item,  List[AttributeOperation]())) ++ 
+                        List(op))
+                }
+                // various parameter name encodings
+                def item (itemNumber:int) = "Item."+itemNumber
+                def itemParameter (itemNumber:int, name:String) = Map(
+                    item(itemNumber) + ".itemName" -> name
+                )
+                def attribute (attributeNumber:int) = ".Attribute." + attributeNumber
+                def pair (itemNumber:int, attributeNumber:int, op:AttributeOperation) = Map(
+                    item(itemNumber) + attribute(attributeNumber) + ".Name" -> op.name,
+                    item(itemNumber) + attribute(attributeNumber) + ".Value" -> op.value
+                )
+                def replace (itemNumber:int, pos:int) = Map(
+                    item(itemNumber) + attribute(pos) + ".Replace" -> "true"
+                )
+                // and now zip it all up
+                Map("DomainName" -> domainName) ++ (
+                    (byItem.toList zipWithIndex) flatMap {
+                        case ((name, operations), itemNumber) => {
+                            itemParameter(itemNumber, name) ++
+                            (operations zipWithIndex) flatMap {                            
+                                case (a:AddValue, pos:int) => pair(itemNumber, pos, a)
+                                case (r:ReplaceValue, pos:int) => pair(itemNumber, pos, r) ++
+                                    replace(itemNumber, pos)
+                            }
+                        }
+                        case _ => Map[String,String]()
+                    }                         
+                )       
+            }
+    	}
+	
+	    /**
+	     * Case classes for the various operations possible on attributes.
+	     */	    
+	    abstract class AttributeOperation {
+	        def item:String
+	        def name:String
+	        def value:String
+	    }
+	    case class AddValue(item:String, name:String, value:String) extends AttributeOperation
+	    case class ReplaceValue(item:String, name:String, value:String) extends AttributeOperation
 	
     	trait DeleteAttributes extends SimpleDBRequest {
     	    import Attributes._
