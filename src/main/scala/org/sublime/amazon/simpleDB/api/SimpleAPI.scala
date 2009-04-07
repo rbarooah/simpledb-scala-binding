@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.sublime.amazon.simpleDB.Request.{AttributeOperation, AddValue, ReplaceValue}
+
 package org.sublime.amazon.simpleDB.api {
 	
 	import scala.collection.MapProxy
@@ -181,9 +183,36 @@ package org.sublime.amazon.simpleDB.api {
 		    val start = QueryWithAttributesRequest.start(name, expression, attributes)
 		    streamOfStreams(responses(start, start.response), generate)        		
 	    }
+	    
+	    /**
+	     * Perform a batch of attribute modifications on multiple items within the same domain in
+	     * one operation.
+	     */
+	    def apply (batch:List[AttributeOperation]*) = {
+	        // combine the atributes into a single operation.
+	        val operations = (List[AttributeOperation]() /: batch) (_ ++ _)
+	        new BatchPutAttributesRequest(name, operations).response.metadata
+	    }
 	    		    			
 		override def toString = name			
 	}
+
+    /**
+     * A trait that defines batch operations for updating attributes on more than one item
+     * at a time.
+     */
+    trait BatchOperations {
+        
+        /**
+         * Add values to one or more attributes.
+         */         
+        def += (pairs:(String, String)*) :List[AttributeOperation]
+        
+        /**
+         * Set the value of one or more attributes.
+         */
+        def set (pairs:(String, String)*) :List[AttributeOperation]
+    }
 
     /**
      * A class which serves as a proxy to an Item within simpleDB.  This class holds none of the

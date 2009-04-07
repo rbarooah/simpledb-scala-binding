@@ -69,6 +69,12 @@ package org.sublime.amazon.simpleDB {
 		    def response = new PutAttributesResponse() (makeSimpleDBRequest(this))
 		}
 		
+		class BatchPutAttributesRequest (val domainName:String, 
+		    val operations:List[AttributeOperation]) extends BatchPutAttributes with Basics
+		{
+		    def response = new BatchPutAttributesResponse() (makeSimpleDBRequest(this))
+		}
+		
 		class DeleteAttributesRequest (val domainName:String, 
 		    val itemName:String,
 		    val attributes:Map[String, Set[String]]) extends DeleteAttributes with Basics
