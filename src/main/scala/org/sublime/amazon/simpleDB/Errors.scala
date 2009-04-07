@@ -40,6 +40,9 @@ package org.sublime.amazon.simpleDB {
         class AuthMissingFailure(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)
     
+        class DuplicateItemName(code:String, message:String, boxUsage:Double)
+            extends ClientException(code, message, boxUsage)
+    
         class FeatureDeprecated(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)
     
@@ -127,6 +130,9 @@ package org.sublime.amazon.simpleDB {
         class NumberSubmittedAttributesExceeded(code:String, message:String, boxUsage:Double)
             extends ClientException(code, message, boxUsage)
 
+        class NumberSubmittedItemsExceeded(code:String, message:String, boxUsage:Double)
+            extends ClientException(code, message, boxUsage)
+
         class QueryTimeout(code:String, message:String, boxUsage:Double)
             extends ServerException(code, message, boxUsage)
         
@@ -161,6 +167,9 @@ package org.sublime.amazon.simpleDB {
 
             case "AuthMissingFailure" => 
             	new AuthMissingFailure(code, message, boxUsage)
+
+            case "DuplicateItemName" =>
+                new DuplicateItemName(code, message, boxUsage)
 
             case "FeatureDeprecated" => 
             	new FeatureDeprecated(code, message, boxUsage)
@@ -251,6 +260,9 @@ package org.sublime.amazon.simpleDB {
 
             case "NumberSubmittedAttributesExceeded" => 
             	new NumberSubmittedAttributesExceeded(code, message, boxUsage)
+            	
+            case "NumberSubmittedItemsExceeded" =>
+                new NumberSubmittedItemsExceeded(code, message, boxUsage)
             	
             case "QueryTimeout" =>
               new QueryTimeout(code, message, boxUsage)
