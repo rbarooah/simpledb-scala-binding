@@ -24,14 +24,20 @@ package org.sublime.amazon.simpleDB.api {
      * via the 'item' field.
      */
     class ItemSnapshot(val item:Item, val self:Map[String,Set[String]])
-        extends MapProxy[String,Set[String]]	    
+        extends MapProxy[String,Set[String]] with BatchOperations
+    {
+        def batch = item.batch
+    } 
     
     /**
      * A map implementation which holds a snapshot of the properties and values of an item
      * The 'name' field contains the name of the item.
      */
     class ItemNameSnapshot(val name:String, val self:Map[String,Set[String]])
-        extends MapProxy[String,Set[String]]
+        extends MapProxy[String,Set[String]] with BatchOperations
+    {
+        lazy val batch = new Batch(name)
+    }
 
 	/**
      * A class which serves as a proxy to a Domain within simpleDB.  This class holds no data
@@ -202,16 +208,27 @@ package org.sublime.amazon.simpleDB.api {
      * at a time.
      */
     trait BatchOperations {
-        
+        /**
+         * Return an object that can be used to create batch operations.
+         */
+        def batch:Batch
+    }
+
+    /**
+     * Class for creating batch operations that work on a particular item.
+     */
+    class Batch (val itemName:String) {
         /**
          * Add values to one or more attributes.
          */         
-        def += (pairs:(String, String)*) :List[AttributeOperation]
+        def += (pairs:(String, String)*) :List[AttributeOperation] = 
+            (for (pair <- pairs) yield { AddValue(itemName, pair._1, pair._2) }).toList
         
         /**
          * Set the value of one or more attributes.
          */
-        def set (pairs:(String, String)*) :List[AttributeOperation]
+        def set (pairs:(String, String)*) :List[AttributeOperation] =
+            (for (pair <- pairs) yield { ReplaceValue(itemName, pair._1, pair._2) }).toList
     }
 
     /**
@@ -219,7 +236,8 @@ package org.sublime.amazon.simpleDB.api {
      * attributes of the item itself.  Calls to methods which read or write attributes to and
      * from the item will result in network requests to SimpleDB.
      */
-	class Item(val domain:Domain, val name:String) (implicit val api:SimpleAPI)
+	class Item(val domain:Domain, val name:String) (implicit val api:SimpleAPI) 
+	    extends BatchOperations
 	{
 	    import api._
 
@@ -342,6 +360,11 @@ package org.sublime.amazon.simpleDB.api {
 			(new DeleteAttributesRequest(domain.name, attributeName, Map(name -> Set())))
 				.response.metadata
 		}
+		
+		/**
+		 * Supply an object that can be used to create batch operations.
+		 */
+		lazy val batch = new Batch(name)
 	}    
 	
 	/**

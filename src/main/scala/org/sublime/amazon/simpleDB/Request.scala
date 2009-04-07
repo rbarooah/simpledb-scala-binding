@@ -109,7 +109,7 @@ package org.sublime.amazon.simpleDB {
                 // various parameter name encodings
                 def item (itemNumber:int) = "Item."+itemNumber
                 def itemParameter (itemNumber:int, name:String) = Map(
-                    item(itemNumber) + ".itemName" -> name
+                    item(itemNumber) + ".ItemName" -> name
                 )
                 def attribute (attributeNumber:int) = ".Attribute." + attributeNumber
                 def pair (itemNumber:int, attributeNumber:int, op:AttributeOperation) = Map(
@@ -119,16 +119,22 @@ package org.sublime.amazon.simpleDB {
                 def replace (itemNumber:int, pos:int) = Map(
                     item(itemNumber) + attribute(pos) + ".Replace" -> "true"
                 )
-                // and now zip it all up
+                
+                // Creation of the          
+                def itemOperations (itemNumber:int, operations:List[AttributeOperation]) = {
+                        (operations zipWithIndex) flatMap {                            
+                            case (a:AddValue, pos:int) => pair(itemNumber, pos, a)
+                            case (r:ReplaceValue, pos:int) => pair(itemNumber, pos, r) ++
+                                replace(itemNumber, pos)
+                        }
+                    }
+                
+                // Create the final map of parameters.
                 Map("DomainName" -> domainName) ++ (
                     (byItem.toList zipWithIndex) flatMap {
-                        case ((name, operations), itemNumber) => {
+                        case ((name:String, operations:List[AttributeOperation]), itemNumber) => {
                             itemParameter(itemNumber, name) ++
-                            (operations zipWithIndex) flatMap {                            
-                                case (a:AddValue, pos:int) => pair(itemNumber, pos, a)
-                                case (r:ReplaceValue, pos:int) => pair(itemNumber, pos, r) ++
-                                    replace(itemNumber, pos)
-                            }
+                            itemOperations(itemNumber, operations)
                         }
                         case _ => Map[String,String]()
                     }                         
