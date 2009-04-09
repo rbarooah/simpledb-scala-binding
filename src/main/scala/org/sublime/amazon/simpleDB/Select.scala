@@ -26,14 +26,14 @@ package org.sublime.amazon.simpleDB {
 
         case class DescendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
-            def queryString = e.queryString + " order by " + a.name + " desc"
+            def queryString = e.queryString + " order by " + quoteName(a.name) + " desc"
         }
         
         case class AscendingOrder [T] (e:Expression, a:Attribute[T]) extends SortedExpression
         {
             def asc = this
             def desc = DescendingOrder(e, a)
-            def queryString = e.queryString + " order by " + a.name + " asc"
+            def queryString = e.queryString + " order by " + quoteName(a.name) + " asc"
         }
 
         trait Expression extends LimitableExpression
@@ -82,20 +82,20 @@ package org.sublime.amazon.simpleDB {
         
         case class BasicComparison [T] (op:String, c:Comparable[T], value:T) extends Comparison
         {
-            def queryString = c.name + " " + op + " " + quote(c.conversion(value))
+            def queryString = quoteName(c.name) + " " + op + " " + quoteValue(c.conversion(value))
         }
 
         case class StringComparison [T] (op:String, c:Comparable[T], value:String)
             extends Comparison
         {
-            def queryString = c.name + " " + op + " " + quote(value)
+            def queryString = quoteName(c.name) + " " + op + " " + quoteValue(value)
         }        
 
         case class Between [T] (c:Comparable[T], start:T, finish:T) extends Comparison
         {
             def queryString = 
-                c.name + " between " + quote(c.conversion(start)) + " and " + 
-                quote(c.conversion(finish))
+                quoteName(c.name) + " between " + quoteValue(c.conversion(start)) + " and " + 
+                quoteValue(c.conversion(finish))
         }
 
         case class BetweenLHS [T] (c:Comparable[T], start:T) {
@@ -103,12 +103,12 @@ package org.sublime.amazon.simpleDB {
         }
         
         case class In [T] (c:Comparable[T], values:T*) extends Comparison {
-            def terms = values map (t => quote(c.conversion(t))) mkString ", "
+            def terms = values map (t => quoteValue(c.conversion(t))) mkString ", "
             def queryString = "in(" + terms + ")"
         }
         
         case class Unary [T] (op:String, c:Comparable[T]) extends Comparison {
-            def queryString = c.name + " " + op
+            def queryString = quoteName(c.name) + " " + op
         }
         
         trait Comparable [T] {
@@ -141,7 +141,7 @@ package org.sublime.amazon.simpleDB {
         class Every [T] (a:Attribute[T]) extends Comparable[T]
         {
             def conversion = a.conversion
-            def name = "every("+a.name+")"
+            def name = "every("+quoteName(a.name)+")"
         }
 
         def every [T] (a:Attribute[T]) = new Every(a)
@@ -154,7 +154,7 @@ package org.sublime.amazon.simpleDB {
             
         private[Select] def whereClause (e:FromExpression) = "where "+e.queryString
             
-        private[Select] def from (d:Domain) = "from "+d.name+" "
+        private[Select] def from (d:Domain) = "from "+quoteName(d.name)+" "
      
         class SelectableDomain (val d:Domain) {
             

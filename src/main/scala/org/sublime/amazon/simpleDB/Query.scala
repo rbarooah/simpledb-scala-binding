@@ -25,13 +25,13 @@ package org.sublime.amazon.simpleDB {
         
         case class SortedCombination(target:Combination, name:String) extends Expression
         {
-            override def toString = target + " sort "+quote(name) + " asc"
+            override def toString = target + " sort "+quoteValue(name) + " asc"
             def desc = DescendingSortedCombination(target, name)
         }
         
         case class DescendingSortedCombination(target:Combination, name:String) extends Expression
         {
-            override def toString = target + " sort "+quote(name) + " desc"
+            override def toString = target + " sort "+quoteValue(name) + " desc"
         }
         
         trait Negatable extends Expression
@@ -43,13 +43,13 @@ package org.sublime.amazon.simpleDB {
         
         case class DescendingSort(target:Sortable, name:String) extends Expression with Negatable
         {
-            override def toString = "[" + target.component + "] sort " + quote(name) + " desc"
+            override def toString = "[" + target.component + "] sort " + quoteValue(name) + " desc"
         }
 
         case class AscendingSort(target:Sortable, name:String) extends Expression with Negatable
         {
             def desc = DescendingSort(target, name)
-            override def toString = "[" + target.component + "] sort " + quote(name) + " asc"
+            override def toString = "[" + target.component + "] sort " + quoteValue(name) + " asc"
         }
 
         trait Sortable extends Predicate {
@@ -80,7 +80,7 @@ package org.sublime.amazon.simpleDB {
         {
             def component = {
                 val (name, converted) = attribute(value) 
-                quote (name) + " " + operator + " " + quote (converted)
+                quoteValue (name) + " " + operator + " " + quoteValue (converted)
             }
         }
         
