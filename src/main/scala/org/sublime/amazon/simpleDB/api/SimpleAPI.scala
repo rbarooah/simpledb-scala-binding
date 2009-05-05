@@ -303,9 +303,14 @@ package org.sublime.amazon.simpleDB.api {
         /**
          * Add multiple values to this attribute by specifying a series of mappings.
          */
-        def += (pairs:(String, String)*) = update(combinePairs(false, pairs:_*))
+        def += (pairs:(String, String)*) = update(combinePairs(false, pairs))
+                
+        /**
+         * Add multiple values to this attribute by specifying a sequence of mappings.
+         */               
+        def addSeq (pairs:Seq[(String, String)]) = update(combinePairs(false, pairs))
 
-        private def combinePairs (replace:Boolean, pairs:(String, String)*)
+        private def combinePairs (replace:Boolean, pairs:Seq[(String, String)])
             :Map[String, (Set[String], Boolean)] = {
             def combine (map:Map[String,(Set[String], Boolean)], pair:(String, String))
                 :Map[String,(Set[String], Boolean)] = 
@@ -336,8 +341,13 @@ package org.sublime.amazon.simpleDB.api {
 	    /**
 	     * Replace the values of multiple attributes in this item with a series of mappings.
 	     */
-	    def set (pairs:(String,String)*) = update(combinePairs(true, pairs:_*))
-	
+	    def set (pairs:(String,String)*) = update(combinePairs(true, pairs))
+
+        /**
+         * Replace the values of multiple attributes in this item with a series of mappings.
+         */
+        def setSeq (pairs:Seq[(String, String)]) = update(combinePairs(true, pairs))
+
 		/** 
 		 * Delete all of the attributes in this item.
 		 */
