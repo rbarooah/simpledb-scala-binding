@@ -27,6 +27,11 @@ package org.sublime.amazon.simpleDB.api {
         extends MapProxy[String,Set[String]] with BatchOperations
     {
         def batch = item.batch
+        
+        /**
+         * Friendly toString for diagnostics.
+         */        
+        override def toString = "ItemSnapshot("+item+", "+self
     } 
     
     /**
@@ -36,7 +41,12 @@ package org.sublime.amazon.simpleDB.api {
     class ItemNameSnapshot(val name:String, val self:Map[String,Set[String]])
         extends MapProxy[String,Set[String]] with BatchOperations
     {
-        lazy val batch = new Batch(name)
+        lazy val batch = new Batch(name)     
+        
+        /**
+         * Friendly toString for diagnostics.
+         */
+        override def toString = "ItemSnapshot("+name+", "+self
     }
 
 	/**
