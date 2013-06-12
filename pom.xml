@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.sublime</groupId>
   <artifactId>sublime-simpleDB</artifactId>
-  <version>0.9-SNAPSHOT</version>
+  <version>1.0-2.9.1-SNAPSHOT</version>
   <inceptionYear>2008</inceptionYear>
   <name>SimpleDB API for Scala</name>
 	
@@ -36,7 +36,7 @@
   </developers>	
 
   <properties>
-    <scala.version>2.7.3</scala.version>
+    <scala.version>2.9.1</scala.version>
   </properties>
 
 
@@ -69,10 +69,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.specs</groupId>
-      <artifactId>specs</artifactId>
-      <version>1.4.1</version>
-      <scope>test</scope>
+      <groupId>org.specs2</groupId> 
+      <artifactId>specs2_2.9.2</artifactId> 
+      <version>1.12.3</version> 
+      <scope>test</scope> 
     </dependency>
 	<dependency>
 	    <groupId>commons-httpclient</groupId>

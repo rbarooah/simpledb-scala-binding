@@ -181,7 +181,7 @@ package org.sublime.amazon.simpleDB {
 			var found:Map[String,Set[String]] = new HashMap[String,Set[String]]()
 						
 			def add(name:String, value:String) {
-				found = found update (name, (found getOrElse(name, Set())) + value)
+				found = found updated (name, (found getOrElse(name, Set())) + value)
 			}
 			
 			for (node <- nodes("Attribute")) 

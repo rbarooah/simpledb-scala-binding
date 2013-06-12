@@ -14,16 +14,16 @@ package org.sublime
             def unapply (value:String) = Some(value)
         }
 
-        object PositiveInt extends Conversion[int] {
+        object PositiveInt extends Conversion[Int] {
             import java.text.DecimalFormat
     
             val format = new DecimalFormat("0" * Integer.MAX_VALUE.toString.length)
     
-            def apply (number:int) = 
+            def apply (number:Int) = 
                 if (number >= 0) format.format(number)
                 else throw new IllegalArgumentException("field can only be positive but was "+number)
     
-            def unapply (string:String) :Option[int] = {
+            def unapply (string:String) :Option[Int] = {
                 val number = format.parse(string)
                 if (number == null) None
                 else Some(number.intValue)

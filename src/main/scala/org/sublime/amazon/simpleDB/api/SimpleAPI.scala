@@ -12,7 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.sublime.amazon.simpleDB.Concrete
 import org.sublime.amazon.simpleDB.Request.{AttributeOperation, AddValue, ReplaceValue}
+import org.sublime.amazon.simpleDB.QueryResponse
+import org.sublime.amazon.simpleDB.QueryWithAttributesResponse
+import org.sublime.amazon.simpleDB.QueryWithAttributesResult
+import org.sublime.amazon.simpleDB.ItemWithAttributesResult
+import org.sublime.amazon.simpleDB.SelectResponse
+import org.sublime.amazon.simpleDB.ListDomainsResponse
 
 package org.sublime.amazon.simpleDB.api {
 	

@@ -1,11 +1,6 @@
 package org.sublime.amazon.simpleDB
 
-import org.specs._
-import org.specs.runner.{ConsoleRunner, JUnit4}
-
-class MySpecTest extends JUnit4(MySpec)
-//class MySpecSuite extends ScalaTestSuite(MySpec)
-object MySpecRunner extends ConsoleRunner(MySpec)
+import org.specs2.mutable._
 
 object MySpec extends Specification {
   "This wonderful system" should {
