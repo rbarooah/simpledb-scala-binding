@@ -15,10 +15,10 @@ package org.sublime.amazon.simpleDB {
         }
 
         trait LimitableExpression extends FromExpression {
-            def limit (n:int) = LimitedExpression(this, n)
+            def limit (n:Int) = LimitedExpression(this, n)
         }
 
-        case class LimitedExpression(e:LimitableExpression, n:int) extends FromExpression {
+        case class LimitedExpression(e:LimitableExpression, n:Int) extends FromExpression {
             def queryString = e.queryString + " limit " + n
         }
 
@@ -174,7 +174,7 @@ package org.sublime.amazon.simpleDB {
              * Return the integer count of items within the domain that match the supplied
              * expression.
              */
-            def count (e:Expression) :int = new CountSource(d.api, d).where(e)
+            def count (e:Expression) :Int = new CountSource(d.api, d).where(e)
             
             /**
              * Return a stream of items matching the supplied expression.  These are items without
@@ -183,7 +183,7 @@ package org.sublime.amazon.simpleDB {
             def itemsWhere (e:Expression) :Stream[Item] = 
                 d.api.items(itemName + from(d) + whereClause(e), d)
             
-            def count :int = count(EmptyExpression)
+            def count :Int = count(EmptyExpression)
         }
                  
         class SourceSelection (attributes:AttributeSelection, d:Domain) {
@@ -201,7 +201,7 @@ package org.sublime.amazon.simpleDB {
                 d.api.select(toCount + from(d) + whereClause, d) flatMap
                     {countValue(_)}
             
-            def where (e:Expression) :int = 
+            def where (e:Expression) :Int = 
                 (0/: values(
                     e match {
                         case EmptyExpression => ""

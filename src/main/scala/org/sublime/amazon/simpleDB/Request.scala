@@ -48,7 +48,7 @@ package org.sublime.amazon.simpleDB {
     	    import Attributes._
 	    
     		def action = "ListDomains"
-    		def maxNumberOfDomains:Option[int]
+    		def maxNumberOfDomains:Option[Int]
     		def nextToken:Option[String]
     		def specificParameters = 
     			optional("MaxNumberOfDomains", maxNumberOfDomains) ++
@@ -102,29 +102,34 @@ package org.sublime.amazon.simpleDB {
                 // collect the operations into a map of lists by item
                 var byItem = Map[String, List[AttributeOperation]] ()            
                 for (op <- operations) {
-                    byItem = byItem + 
-                        op.item -> ((byItem getOrElse(op.item,  List[AttributeOperation]())) ++ 
+                    //byItem = byItem +
+                    byItem +=
+                        //op.item mapping to whatever
+                        op.item -> (
+                                     (byItem 
+                                         getOrElse(op.item,  List[AttributeOperation]())
+                                     ) ++ 
                         List(op))
                 }
                 // various parameter name encodings
-                def item (itemNumber:int) = "Item."+itemNumber
-                def itemParameter (itemNumber:int, name:String) = Map(
+                def item (itemNumber:Int) = "Item."+itemNumber
+                def itemParameter (itemNumber:Int, name:String) = Map(
                     item(itemNumber) + ".ItemName" -> name
                 )
-                def attribute (attributeNumber:int) = ".Attribute." + attributeNumber
-                def pair (itemNumber:int, attributeNumber:int, op:AttributeOperation) = Map(
+                def attribute (attributeNumber:Int) = ".Attribute." + attributeNumber
+                def pair (itemNumber:Int, attributeNumber:Int, op:AttributeOperation) = Map(
                     item(itemNumber) + attribute(attributeNumber) + ".Name" -> op.name,
                     item(itemNumber) + attribute(attributeNumber) + ".Value" -> op.value
                 )
-                def replace (itemNumber:int, pos:int) = Map(
+                def replace (itemNumber:Int, pos:Int) = Map(
                     item(itemNumber) + attribute(pos) + ".Replace" -> "true"
                 )
                 
                 // Creation of the          
-                def itemOperations (itemNumber:int, operations:List[AttributeOperation]) = {
+                def itemOperations (itemNumber:Int, operations:List[AttributeOperation]) = {
                         (operations zipWithIndex) flatMap {                            
-                            case (a:AddValue, pos:int) => pair(itemNumber, pos, a)
-                            case (r:ReplaceValue, pos:int) => pair(itemNumber, pos, r) ++
+                            case (a:AddValue, pos:Int) => pair(itemNumber, pos, a)
+                            case (r:ReplaceValue, pos:Int) => pair(itemNumber, pos, r) ++
                                 replace(itemNumber, pos)
                         }
                     }
@@ -201,7 +206,7 @@ package org.sublime.amazon.simpleDB {
     	    import Attributes._
 	    
     		def action = "Query"
-    		def maxNumberOfItems:Option[int]
+    		def maxNumberOfItems:Option[Int]
     		def nextToken:Option[String]
     		def queryExpression:Option[String]
     		def domainName:String
@@ -217,7 +222,7 @@ package org.sublime.amazon.simpleDB {
 		
     		def action = "QueryWithAttributes"
     		def attributes:Set[String]
-    		def maxNumberOfItems:Option[int]
+    		def maxNumberOfItems:Option[Int]
     		def nextToken:Option[String]
     		def queryExpression:Option[String]
     		def domainName:String		
@@ -233,7 +238,7 @@ package org.sublime.amazon.simpleDB {
     	    import Attributes._
 	    
     	    def action = "Select"
-    	    def maxNumberOfItems:Option[int]
+    	    def maxNumberOfItems:Option[Int]
     	    def nextToken:Option[String]
     	    def selectExpression:String
 	    
@@ -243,7 +248,7 @@ package org.sublime.amazon.simpleDB {
     	}
 	
     	object Attributes {
-    	    def param (kind:String, pos:int, value:String) = Map("Attribute."+pos+"."+kind -> value)        
+    	    def param (kind:String, pos:Int, value:String) = Map("Attribute."+pos+"."+kind -> value)        
 	    
     		def attributeNames (names:Set[String]) :Map[String, String] = {
     			import scala.collection.immutable.HashMap;		

@@ -33,7 +33,7 @@ package org.sublime.amazon.simpleDB {
 			def awsAccessKeyId = concrete.awsAccessKeyId
 		}
 		
-		class ListDomainsRequest (val nextToken:Option[String], val maxNumberOfDomains:Option[int]) 
+		class ListDomainsRequest (val nextToken:Option[String], val maxNumberOfDomains:Option[Int]) 
 			extends ListDomains with Basics {
 			
 			def response = new ListDomainsResponse() (makeSimpleDBRequest(this))			
@@ -41,7 +41,7 @@ package org.sublime.amazon.simpleDB {
 		
 		object ListDomainsRequest {
 			def start = new ListDomainsRequest(None, Some(2))
-			def start (maxNumberOfDomains:int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
+			def start (maxNumberOfDomains:Int) = new ListDomainsRequest(None, Some(maxNumberOfDomains))
 			def next (response:ListDomainsResponse) :Option[ListDomainsRequest] = 
 			    response.result.nextToken map 
 			        (token => new ListDomainsRequest(Some(token), Some(2)))						    
@@ -90,7 +90,7 @@ package org.sublime.amazon.simpleDB {
 		}
 		
 		class QueryRequest (val domainName:String, val queryExpression:Option[String],
-		    val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
+		    val nextToken:Option[String], val maxNumberOfItems:Option[Int]) 
 		    extends Query with Basics
 		{
 		    def response = new QueryResponse() (makeSimpleDBRequest(this))
@@ -135,7 +135,7 @@ package org.sublime.amazon.simpleDB {
 	    }
 	    
 	    class SelectRequest (val selectExpression:String, 
-	        val nextToken:Option[String], val maxNumberOfItems:Option[int]) 
+	        val nextToken:Option[String], val maxNumberOfItems:Option[Int]) 
 	        extends Select with Basics 
 	    {
 	        def response = new SelectResponse() (makeSimpleDBRequest(this))

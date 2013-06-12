@@ -31,7 +31,7 @@ package org.sublime.amazon.simpleDB {
 		 */
 		def sign (m:Map[String, String]) = {
 			// the parameters with the actual signature and version added
-			val versioned = m update ("SignatureVersion", "1")
+			val versioned = m updated ("SignatureVersion", "1")
 			versioned + signature(versioned)
 		}
 				

@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package org.sublime.amazon.simpleDB.api {
-    import Request._    
+    import org.sublime.amazon.simpleDB.Request._    
+    import org.sublime.amazon.simpleDB.Connection
     import scala.xml._
     
     /**
